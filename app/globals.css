@@ -1,26 +1,233 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap');
 @import "tailwindcss";
+@plugin "@tailwindcss/typography";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Quora Business-inspired palette (flat, minimal) */
+  --brand-red: #b32b2b;
+  --brand-red-dark: #8f2626;
+  --paper: #ffffff;
+  --page: #fbfbfb;
+  --surface: #ffffff;
+  --ink: #1b1b1b;
+  --muted: #707070;
+  --line: #e6e6e6;
+  --shadow-soft: none;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--page);
+  color: var(--ink);
+  font-family: 'Manrope', Arial, Helvetica, sans-serif;
+}
+
+/* Ensure any semantic 'font-serif' utilities use the site font for consistency */
+.font-serif {
+  font-family: 'Manrope', Arial, Helvetica, sans-serif !important;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: 'Manrope', Arial, Helvetica, sans-serif;
+  letter-spacing: -0.02em;
+}
+
+/* Tighter typography to resemble Quora Business */
+h1 { font-size: 2.75rem; line-height: 1.04; font-weight: 800; letter-spacing: -0.02em }
+@media (min-width: 768px) { h1 { font-size: 3.25rem } }
+h2 { font-size: 1.875rem; line-height: 1.08; font-weight: 700; letter-spacing: -0.01em }
+h3 { font-size: 1.25rem; line-height: 1.12; font-weight: 700 }
+
+/* Body and muted text */
+body { font-size: 16px; line-height: 1.6 }
+.muted { color: var(--muted) }
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+::selection {
+  background: rgba(106, 125, 82, 0.18);
+}
+
+.prose {
+  color: var(--ink);
+}
+
+.prose h1,
+.prose h2,
+.prose h3,
+.prose h4 {
+  color: var(--ink);
+}
+
+.prose a {
+  color: var(--brand-red);
+  text-decoration: underline;
+  text-underline-offset: 0.12em;
+}
+
+/* Remove default rounded corners and shadows used elsewhere to match flat design */
+* {
+  border-radius: 0 !important;
+}
+
+/* Allow specific elements to have rounded corners (hero search) */
+.rounded-hero {
+  border-radius: 9999px !important;
+}
+
+.no-shadow {
+  box-shadow: none !important;
+}
+
+.prose strong {
+  color: var(--ink);
+}
+
+.prose blockquote {
+  border-left-color: var(--line);
+  background: transparent;
+  color: var(--muted);
+  padding-left: 1rem;
+}
+
+/* Pill search used across the site */
+.search-pill {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.9rem;
+  border: 2px solid var(--brand-red);
+  background: var(--surface);
+  border-radius: 9999px;
+}
+.search-pill .icon,
+.search-pill svg {
+  color: var(--brand-red);
+  flex: 0 0 auto;
+}
+.search-pill input {
+  border: 0;
+  outline: none;
+  background: transparent;
+  padding: 0;
+  font-size: 0.95rem;
+  color: var(--ink);
+  width: 100%;
+}
+.search-pill input::placeholder { color: var(--muted); }
+
+.about-hero-pattern {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 18% 20%, rgba(255,255,255,0.18), transparent 24%),
+    radial-gradient(circle at 82% 14%, rgba(255,255,255,0.12), transparent 20%),
+    linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
+  background-size: 220px 220px, 180px 180px, 14px 14px;
+  opacity: 0.56;
+  pointer-events: none;
+}
+
+.about-hero-panel,
+.about-card-soft,
+.about-grid-card {
+  background: rgba(255,255,255,0.92);
+}
+
+.about-hero-panel {
+  border: 1px solid rgba(255,255,255,0.22);
+}
+
+.about-card-soft {
+  border: 1px solid #e6e6e6;
+}
+
+.about-grid-card {
+  border: 1px solid #e6d7d7;
+}
+
+.prose table {
+  overflow: hidden;
+  border-radius: 0.75rem;
+}
+
+.prose th {
+  background: #f0f4eb;
+  color: var(--olive-deep);
+}
+
+.prose td,
+.prose th {
+  border-color: var(--line);
+}
+
+/* Sitemap specific styles */
+.sitemap-hero {
+  padding: 3.5rem 0;
+}
+.sitemap-intro {
+  max-width: 60ch;
+  margin-bottom: 1.25rem;
+}
+.sitemap-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1.75rem;
+}
+.sitemap-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 1.25rem;
+  
+}
+
+.sitemap-card h3 {
+  font-size: 1.125rem;
+  margin-bottom: 0.5rem;
+  color: var(--ink);
+}
+.sitemap-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  gap: 0.5rem;
+}
+.sitemap-item {
+  font-size: 0.95rem;
+  color: var(--muted);
+}
+.sitemap-link {
+  color: var(--brand-red-dark);
+  font-weight: 600;
+  text-decoration: none;
+}
+.sitemap-meta {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+/* subtle fade-up animation for list items */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-up {
+  animation: fadeUp 420ms cubic-bezier(.2,.9,.2,1) both;
+}
+
+@media (max-width: 768px) {
+  .sitemap-grid { grid-template-columns: 1fr; }
+  .sitemap-hero { padding: 2rem 0; }
 }
