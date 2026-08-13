@@ -46,7 +46,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </header>
 
-        <main className="mx-auto w-full max-w-6xl flex-grow px-4 pt-0 pb-6 sm:px-5 sm:pb-8">{children}</main>
+        {/* 👇 CHANGED pt-0 to pt-8 right here 👇 */}
+        <main className="mx-auto w-full max-w-6xl flex-grow px-4 pt-8 pb-6 sm:px-5 sm:pb-8">{children}</main>
 
         <footer className="mt-16 bg-[var(--page)] text-[var(--muted)]">
           <div className="mx-auto max-w-6xl px-4 py-12 text-sm sm:px-5">
