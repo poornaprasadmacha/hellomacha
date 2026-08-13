@@ -4,6 +4,8 @@ import matter from 'gray-matter'
 import { Suspense } from 'react'
 import ArticleClient from './ArticleClient'
 
+export const dynamic = 'force-static'
+
 export interface ArticleMeta {
   slug: string
   title: string

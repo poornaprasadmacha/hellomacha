@@ -6,7 +6,9 @@ import { MDXRemote } from 'next-mdx-remote/rsc'
 import ScrollToTop from '@/components/ScrollToTop'
 import { Metadata } from 'next'
 
-export const dynamicParams = false;
+// 1. ADD THIS LINE: Completely disables Edge runtime for this route
+export const dynamic = 'force-static' 
+export const dynamicParams = false
 
 function getArticle(slug: string) {
   const filePath = path.join(process.cwd(), 'content/articles', `${slug}.mdx`)

@@ -1,4 +1,3 @@
-
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
@@ -6,6 +5,8 @@ import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import { Metadata } from 'next'
 
+// 1. ADD THIS LINE: Completely disables Edge runtime for this route
+export const dynamic = 'force-static'
 export const dynamicParams = false;
 
 // Helper to fetch a single page from the /content/pages directory
@@ -37,8 +38,6 @@ export async function generateStaticParams() {
       slug: fileName.replace(/\.mdx?$/, ''),
     }))
 }
-
-// Inside app/[slug]/page.tsx (Keep your imports and getPage function at the top)
 
 // Define the new Promise type for Next.js 15
 type PageProps = {
