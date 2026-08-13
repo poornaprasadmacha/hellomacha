@@ -70,7 +70,7 @@ export default async function StandalonePage({ params }: PageProps) {
   const { data, content } = page
 
   return (
-    <div className="w-full py-8">
+    <div className="w-full pt-24 pb-8">
       <div className="prose prose-lg prose-blue max-w-none text-gray-800">
         <MDXRemote source={content} />
       </div>

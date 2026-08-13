@@ -85,7 +85,8 @@ export default async function ArticlePage({ params }: ArticleProps) {
   const { data, content } = article
 
   return (
-    <article className="mx-auto max-w-5xl py-8 sm:py-10">
+    
+        <article className="mx-auto max-w-5xl pt-24 pb-8 sm:pt-28 sm:pb-10">
       <header className="mb-10 text-center">
         <p className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-[var(--muted)]">
           {data.date}

@@ -11,9 +11,12 @@ export const metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" suppressHydrationWarning>
+    // Added scroll-pt-24 here so if someone links to a specific heading, it doesn't hide under the fixed navbar
+    <html lang="en" className="scroll-pt-24" suppressHydrationWarning>
       <body className="min-h-screen flex flex-col bg-[var(--page)] text-[var(--ink)]" suppressHydrationWarning>
-        <header className="sticky top-0 z-50 bg-white border-b" role="banner">
+        
+        {/* CHANGED: Replaced "sticky" with "fixed w-full" */}
+        <header className="fixed top-0 w-full z-50 bg-white border-b" role="banner">
           <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:px-5">
             <Link href="/" className="flex items-center gap-3 select-none">
               <HelloMachaLogo textOnly />
@@ -46,8 +49,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </header>
 
-        {/* 👇 CHANGED pt-0 to pt-8 right here 👇 */}
-        <main className="mx-auto w-full max-w-6xl flex-grow px-4 pt-8 pb-6 sm:px-5 sm:pb-8">{children}</main>
+        {/* CHANGED: pt-8 is now pt-24 (which is bigger than the h-16 header) */}
+        <main className="mx-auto w-full max-w-6xl flex-grow px-4 pt-0 pb-6 sm:px-5 sm:pb-8">
+          {children}
+        </main>
 
         <footer className="mt-16 bg-[var(--page)] text-[var(--muted)]">
           <div className="mx-auto max-w-6xl px-4 py-12 text-sm sm:px-5">
