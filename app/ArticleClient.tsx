@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import {
   FiArrowRight,
   FiBookOpen,
@@ -15,10 +15,18 @@ import ScrollToTop from '@/components/ScrollToTop'
 import type { ArticleMeta } from './page'
 
 export default function ArticleClient({ articles }: { articles: ArticleMeta[] }) {
-  const searchParams = useSearchParams()
-  const searchQuery = searchParams?.get('q')?.trim() || ''
+  const [searchQuery, setSearchQuery] = useState('')
+  const [isMounted, setIsMounted] = useState(false)
 
-  const filteredArticles = searchQuery
+  // Wait for the browser to load, then read the URL. 
+  // This completely bypasses the Next.js server routing.
+  useEffect(() => {
+    setIsMounted(true)
+    const params = new URLSearchParams(window.location.search)
+    setSearchQuery(params.get('q')?.trim() || '')
+  }, [])
+
+  const filteredArticles = isMounted && searchQuery
     ? articles.filter((article) => {
         const haystack = `${article.title} ${article.description}`.toLowerCase()
         return haystack.includes(searchQuery.toLowerCase())
@@ -65,7 +73,7 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
 
   return (
     <div className="pb-16">
-      {searchQuery ? (
+      {isMounted && searchQuery ? (
         <div className="mb-6 text-sm font-medium text-[#62735d]">
           Showing results for <span className="font-bold text-[#2c352d]">“{searchQuery}”</span>
         </div>
@@ -210,5 +218,5 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
 
       <ScrollToTop />
     </div>
-  )
+ )
 }
