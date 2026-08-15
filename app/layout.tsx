@@ -5,6 +5,7 @@ import HelloMachaLogo from '../components/HelloMachaLogo'
 import ShareButtons from '../components/ShareButtons'
 
 export const metadata = {
+  metadataBase: new URL('https://hellomacha.com'),
   title: 'HelloMacha | Financial Tips & Tech Reviews',
   description: 'Your trusted source for tech reviews, financial tips, and home products.',
 }

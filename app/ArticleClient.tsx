@@ -124,7 +124,7 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
 
       <section className="mb-12">
         <article className="group border border-[#e6e6e6] bg-white p-3 sm:p-4">
-          <Link href={`/articles/${featured.slug}`} className="block">
+          <Link href={`/${featured.slug}`} className="block">
             <div className="grid gap-5 lg:grid-cols-[1.25fr_0.75fr] lg:items-center">
               <div className="relative h-[260px] overflow-hidden sm:h-[340px] lg:h-[420px]">
                 <img
@@ -184,7 +184,7 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
           <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
             {remaining.map((article, index) => (
               <article key={article.slug} className="group h-full">
-                <Link href={`/articles/${article.slug}`} className="block h-full border border-[#dfe4d4] bg-white p-3 transition-transform duration-200">
+                <Link href={`/${article.slug}`} className="block h-full border border-[#dfe4d4] bg-white p-3 transition-transform duration-200">
                   <div className="overflow-hidden">
                     <img
                       src={article.thumbnail}

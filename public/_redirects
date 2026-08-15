@@ -1,0 +1,2 @@
+/articles/:slug  /:slug  301
+/articles        /       301

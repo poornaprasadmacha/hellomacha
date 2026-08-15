@@ -16,7 +16,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     articles = fileNames
       .filter((file) => file.endsWith('.mdx') || file.endsWith('.md'))
       .map((file) => ({
-        url: `${baseUrl}/articles/${file.replace(/\.mdx?$/, '')}`,
+        url: `${baseUrl}/${file.replace(/\.mdx?$/, '')}`,
         lastModified: new Date(),
         changeFrequency: 'weekly',
         priority: 0.8,

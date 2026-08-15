@@ -32,7 +32,7 @@ function getLinks(directory: string, prefix: string) {
 }
 
 export default function SitemapPage() {
-  const articles = getLinks('articles', 'articles')
+  const articles = getLinks('articles', '')
   const pages = getLinks('pages', '')
 
   return (
@@ -58,7 +58,7 @@ export default function SitemapPage() {
             </ul>
           )}
           {articles.length > 18 && (
-            <div className="mt-3 text-sm"><Link href="/articles" className="sitemap-link">View all articles</Link></div>
+            <div className="mt-3 text-sm"><Link href="/" className="sitemap-link">View all articles</Link></div>
           )}
         </aside>
 
