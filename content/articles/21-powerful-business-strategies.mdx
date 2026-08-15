@@ -47,7 +47,7 @@ type: "article"
   </p>
 
   {/* SECTION 1 WITH SVG CHART */}
-  <div className="grid md:grid-cols-5 gap-8 items-center border-t border-gray-200 pt-12 mb-12">
+  <div className="grid md:grid-cols-5 gap-8 items-center mb-12">
     <div className="md:col-span-3">
       <h2 className="text-3xl font-black text-gray-900 mb-6 tracking-tight !no-underline">
         1. Understand Cash Flow Before Chasing Profit
@@ -77,24 +77,24 @@ type: "article"
     <div className="md:col-span-2 bg-white border border-gray-200 p-6 flex flex-col justify-end h-72 relative">
       <p className="absolute top-4 left-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Profit vs. Cash Flow</p>
       <div className="flex items-end justify-around w-full h-40 gap-4 px-2">
-        <div className="w-full flex flex-col items-center gap-2 group">
+        <div className="editorial-bar-col gap-2 group">
           <div className="w-full bg-gray-300 h-[100%] rounded-t-sm relative transition-all group-hover:bg-gray-400">
              <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-bold text-gray-500 opacity-0 group-hover:opacity-100">$20k</span>
           </div>
-          <span className="text-xs font-bold text-gray-600 text-center">Paper Profit</span>
+          <span className="text-xs font-bold text-gray-600">Paper Profit</span>
         </div>
-        <div className="w-full flex flex-col items-center gap-2 group">
+        <div className="editorial-bar-col gap-2 group">
           <div className="w-full bg-red-700 h-[20%] rounded-t-sm relative transition-all group-hover:bg-red-800">
              <span className="absolute -top-6 left-1/2 -translate-x-1/2 text-xs font-bold text-red-700 opacity-0 group-hover:opacity-100">$4k</span>
           </div>
-          <span className="text-xs font-bold text-gray-600 text-center">Actual Cash</span>
+          <span className="text-xs font-bold text-gray-600">Actual Cash</span>
         </div>
       </div>
     </div>
   </div>
 
   {/* SECTION 2 */}
-  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight border-t border-gray-200 pt-10 !no-underline">
+  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight !no-underline">
     2. Healthy Revenue Is Better Than High Revenue
   </h2>
   <p className="mb-4 text-gray-700">
@@ -118,7 +118,7 @@ type: "article"
   </div>
 
   {/* SECTION 3 WITH PIE CHART */}
-  <div className="mt-16 mb-12 grid md:grid-cols-5 gap-8 items-center border-t border-gray-200 pt-10">
+  <div className="mt-16 mb-12 grid md:grid-cols-5 gap-8 items-center">
     <div className="md:col-span-3 order-2 md:order-1">
       <h2 className="text-3xl font-black text-gray-900 mb-6 tracking-tight !no-underline">
         3. Not Every Customer Is the Right Customer
@@ -146,7 +146,7 @@ type: "article"
     </div>
 
     {/* Custom SVG Pie Chart: Customer Energy Drain */}
-    <div className="md:col-span-2 order-1 md:order-2 bg-white border border-gray-200 p-6 flex flex-col items-center justify-center relative h-72">
+    <div className="md:col-span-2 order-1 md:order-2 bg-white border border-gray-200 p-6 editorial-pie-wrapper h-72">
       <p className="absolute top-4 left-4 text-xs font-bold text-gray-400 uppercase tracking-widest">Client Energy Drain</p>
       <svg viewBox="0 0 100 100" className="w-32 h-32 transform -rotate-90">
         {/* Good Customers (80%) */}
@@ -162,7 +162,7 @@ type: "article"
   </div>
 
   {/* SECTION 4 */}
-  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight border-t border-gray-200 pt-10 !no-underline">
+  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight !no-underline">
     4. Price Your Product Based on Value, Not Fear
   </h2>
   <p className="mb-4 text-gray-700">
@@ -194,7 +194,7 @@ type: "article"
   </p>
 
   {/* SECTION 5 */}
-  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight border-t border-gray-200 pt-10 !no-underline">
+  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight !no-underline">
     5. Take Action Instead of Waiting for Perfection
   </h2>
   <p className="mb-4 text-gray-700">
@@ -208,7 +208,7 @@ type: "article"
   </div>
 
   {/* SECTION 6 */}
-  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight border-t border-gray-200 pt-10 !no-underline">
+  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight !no-underline">
     6. Stay Busy with the Right Work
   </h2>
   <p className="mb-4 text-gray-700">
@@ -230,7 +230,7 @@ type: "article"
   </p>
 
   {/* SECTION 7 */}
-  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight border-t border-gray-200 pt-10 !no-underline">
+  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight !no-underline">
     7. Build Systems That Save Time and Reduce Stress
   </h2>
   <p className="mb-4 text-gray-700">
@@ -262,7 +262,7 @@ type: "article"
   </p>
 
   {/* SECTIONS 8 to 11 (Rapid Fire Editorial formatting) */}
-  <div className="grid md:grid-cols-2 gap-10 border-t border-gray-200 pt-10 mb-16">
+  <div className="grid md:grid-cols-2 gap-10 mb-16">
     
     <div>
       <h2 className="text-2xl font-black text-gray-900 mb-4 tracking-tight !no-underline">8. Make Decisions Faster</h2>
@@ -296,7 +296,7 @@ type: "article"
   </div>
 
   {/* SECTION 12 */}
-  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight border-t border-gray-200 pt-10 !no-underline">
+  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight !no-underline">
     12. Know Your Business Numbers
   </h2>
   <p className="mb-6 text-gray-700">
@@ -324,49 +324,49 @@ type: "article"
   <p className="mb-10 text-gray-700">Review these numbers every month. They tell you what's working and what needs attention. Successful businesses rely on facts, not guesses.</p>
 
   {/* SECTIONS 13 to 19 (Continuous Flow) */}
-  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight border-t border-gray-200 pt-10 !no-underline">
+  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight !no-underline">
     13. Build Value Instead of Offering Constant Discounts
   </h2>
   <p className="mb-10 text-gray-700">
     Discounts attract attention, but if customers only buy when prices are low, your profits suffer. Increase your value instead. Offer better customer support, faster delivery, free setup, or helpful resources. Customers choose businesses that provide the best overall experience—a strong brand is built on value, not discounts.
   </p>
 
-  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight border-t border-gray-200 pt-10 !no-underline">
+  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight !no-underline">
     14. Protect Your Business Reputation
   </h2>
   <p className="mb-10 text-gray-700">
     Your reputation takes years to build, but only one poor decision can damage it. People remember how a business treats them. Protect it by keeping promises, being transparent, solving problems quickly, and treating employees fairly. Trust becomes your best marketing tool.
   </p>
 
-  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight border-t border-gray-200 pt-10 !no-underline">
+  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight !no-underline">
     15. Keep Your Business Simple and Clear
   </h2>
   <p className="mb-10 text-gray-700">
     If people are confused, they usually won't buy. Customers should immediately understand what you sell, who it is for, how it solves their problem, and why they should choose you. When everything is clear, decisions become easier, customers trust you more, and your team works efficiently.
   </p>
 
-  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight border-t border-gray-200 pt-10 !no-underline">
+  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight !no-underline">
     16. Focus Beats Having Too Many Ideas
   </h2>
   <p className="mb-10 text-gray-700">
     Entrepreneurs are full of ideas. But chasing every idea divides your time and energy. Instead of making one business stronger, you end up making several projects weaker. Successful business owners know when to say <strong>no</strong>. Focus is what turns opportunities into results.
   </p>
 
-  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight border-t border-gray-200 pt-10 !no-underline">
+  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight !no-underline">
     17. Don't Let Emotions Control Your Decisions
   </h2>
   <p className="mb-10 text-gray-700">
     Running a business is emotional. Avoid making important decisions when you're angry, frustrated, or overly excited. Take a short break, review the facts, and make a calm decision. Staying steady is one of the most valuable leadership skills you can develop.
   </p>
 
-  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight border-t border-gray-200 pt-10 !no-underline">
+  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight !no-underline">
     18. Build Relationships, Not Just Sales
   </h2>
   <p className="mb-10 text-gray-700">
     Every sale is important, but the relationship after the sale is even more valuable. Follow up, ask for feedback, reward loyal customers, and provide useful information. Long-term relationships create steady income without constantly searching for new customers.
   </p>
 
-  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight border-t border-gray-200 pt-10 !no-underline">
+  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight !no-underline">
     19. Prepare Before Challenges Arrive
   </h2>
   <p className="mb-10 text-gray-700">
@@ -374,7 +374,7 @@ type: "article"
   </p>
 
   {/* SECTION 20 */}
-  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight border-t border-gray-200 pt-10 !no-underline">
+  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight !no-underline">
     20. Small Daily Actions Create Big Results
   </h2>
   <p className="mb-6 text-gray-700">
@@ -399,7 +399,7 @@ type: "article"
   </div>
 
   {/* SECTION 21 */}
-  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight border-t border-gray-200 pt-10 !no-underline">
+  <h2 className="text-3xl font-black text-gray-900 mt-16 mb-6 tracking-tight !no-underline">
     21. Your Business Grows When You Grow
   </h2>
   <p className="mb-4 text-gray-700">
@@ -444,7 +444,7 @@ type: "article"
   </div>
 
   {/* FAQS */}
-  <h2 className="text-3xl font-black text-gray-900 mt-20 mb-8 tracking-tight border-b-2 border-gray-900 pb-2 inline-block !no-underline">
+  <h2 className="text-3xl font-black text-gray-900 mt-20 mb-8 tracking-tight inline-block !no-underline">
     Frequently Asked Questions
   </h2>
 
@@ -471,14 +471,14 @@ type: "article"
   </div>
 
   {/* CONCLUSION */}
-  <div className="py-12 my-12 text-center border-t-2 border-b-2 border-gray-900">
+  <div className="py-12 my-12">
     <h2 className="text-3xl md:text-4xl font-black text-gray-900 mb-6 tracking-tight !no-underline">
       Conclusion
     </h2>
-    <p className="text-gray-700 max-w-3xl mx-auto text-lg font-serif italic mb-6">
+    <p className="text-gray-700 max-w-3xl text-lg font-serif italic mb-6">
       Building a successful business isn't about finding a secret formula. It's about making smart decisions every day. The best businesses don't become successful overnight.
     </p>
-    <p className="text-gray-700 max-w-3xl mx-auto text-lg font-serif italic mb-8">
+    <p className="text-gray-700 max-w-3xl text-lg font-serif italic mb-8">
       Success isn't about being perfect. It's about staying committed, learning continuously, and taking the next right step.
     </p>
   </div>

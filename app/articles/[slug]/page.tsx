@@ -4,6 +4,7 @@ import matter from 'gray-matter'
 import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import ScrollToTop from '@/components/ScrollToTop'
+import ShareButtons from '@/components/ShareButtons'
 import { Metadata } from 'next'
 
 // 1. ADD THIS LINE: Completely disables Edge runtime for this route
@@ -85,17 +86,19 @@ export default async function ArticlePage({ params }: ArticleProps) {
   const { data, content } = article
 
   return (
-    
-        <article className="mx-auto max-w-5xl pt-24 pb-8 sm:pt-28 sm:pb-10">
-      <header className="mb-10 text-center">
-        <p className="mb-3 text-sm font-semibold uppercase tracking-[0.24em] text-[var(--muted)]">
+    <article className="mx-auto max-w-5xl px-4 pt-20 pb-8 sm:px-6 sm:pt-24 sm:pb-10">
+      <header className="mb-8 text-left">
+        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--muted)] text-left sm:text-sm">
           {data.date}
         </p>
-        <h1 className="mb-6 font-serif text-4xl font-black leading-[0.96] tracking-[-0.05em] text-[#2c352d] md:text-6xl">
+        <h1 className="mb-4 font-serif text-2xl font-black leading-snug tracking-tight text-[#2c352d] text-left sm:text-4xl sm:leading-[1.05] sm:tracking-[-0.03em] md:text-5xl lg:text-6xl">
           {data.title}
         </h1>
+        <div className="mb-6 text-left">
+          <ShareButtons title={data.title} />
+        </div>
         {data.thumbnail && (
-          <div className="relative mx-auto h-[280px] w-full overflow-hidden border border-[#dfe4d4] md:h-[420px]">
+          <div className="relative h-[220px] w-full overflow-hidden border border-[#dfe4d4] sm:h-[320px] md:h-[420px]">
             <img
               src={data.thumbnail}
               alt={data.title}
@@ -111,4 +114,4 @@ export default async function ArticlePage({ params }: ArticleProps) {
       <ScrollToTop />
     </article>
   )
-}
+}

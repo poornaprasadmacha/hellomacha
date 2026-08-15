@@ -231,3 +231,26 @@ img {
   .sitemap-grid { grid-template-columns: 1fr; }
   .sitemap-hero { padding: 2rem 0; }
 }
+
+
+
+/* Editorial Bar Chart Columns */
+.editorial-bar-col {
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: flex-end !important;
+  align-items: center !important;
+  height: 100% !important;
+  width: 100%;
+}
+
+/* Editorial Pie Chart Container */
+.editorial-pie-wrapper {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: relative !important;
+  height: 100% !important;
+  width: 100%;
+}
