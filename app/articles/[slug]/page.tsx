@@ -54,18 +54,19 @@ export async function generateMetadata({ params }: ArticleProps): Promise<Metada
   if (!article) return { title: 'Article Not Found' }
 
   const { data } = article
+  const geoRegion = data.geoRegion || 'IN-AP'
+  const geoPlacename = data.geoPlacename || 'Andhra Pradesh, India'
+  const geoPosition = data.geoPosition || '14.4673;78.8242'
 
   return {
     title: `${data.title} | HelloMacha`,
     description: data.description,
     keywords: data.seoKeywords?.join(', '),
     other: {
-      ...(data.geoRegion && { 'geo.region': data.geoRegion }),
-      ...(data.geoPlacename && { 'geo.placename': data.geoPlacename }),
-      ...(data.geoPosition && {
-        'geo.position': data.geoPosition,
-        'ICBM': data.geoPosition,
-      }),
+      'geo.region': geoRegion,
+      'geo.placename': geoPlacename,
+      'geo.position': geoPosition,
+      'ICBM': geoPosition,
     },
     openGraph: {
       title: data.title,
@@ -73,6 +74,12 @@ export async function generateMetadata({ params }: ArticleProps): Promise<Metada
       images: [data.thumbnail || '/placeholder-image.jpg'],
       type: 'article',
       publishedTime: data.date,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: data.title,
+      description: data.description,
+      images: [data.thumbnail || '/placeholder-image.jpg'],
     },
   }
 }
@@ -86,23 +93,23 @@ export default async function ArticlePage({ params }: ArticleProps) {
   const { data, content } = article
 
   return (
-    <article className="mx-auto max-w-5xl px-4 pt-20 pb-8 sm:px-6 sm:pt-24 sm:pb-10">
-      <header className="mb-8 text-left">
-        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--muted)] text-left sm:text-sm">
+    <article className="mx-auto max-w-5xl px-4 pt-24 pb-8 sm:px-6 sm:pt-28 sm:pb-10">
+      <header className="mt-4 mb-8 text-left sm:mt-6">
+        <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--muted)] text-left sm:text-sm">
           {data.date}
         </p>
-        <h1 className="mb-4 font-serif text-2xl font-black leading-snug tracking-tight text-[#2c352d] text-left sm:text-4xl sm:leading-[1.05] sm:tracking-[-0.03em] md:text-5xl lg:text-6xl">
+        <h1 className="mb-4 font-serif text-lg font-black leading-snug tracking-tight text-[#2c352d] text-left sm:text-2xl md:text-3xl lg:text-4xl">
           {data.title}
         </h1>
-        <div className="mb-6 text-left">
+        <div className="mb-6 flex justify-start text-left">
           <ShareButtons title={data.title} />
         </div>
         {data.thumbnail && (
-          <div className="relative h-[220px] w-full overflow-hidden border border-[#dfe4d4] sm:h-[320px] md:h-[420px]">
+          <div className="relative w-full overflow-hidden border border-[#dfe4d4]">
             <img
               src={data.thumbnail}
               alt={data.title}
-              className="h-full w-full object-contain"
+              className="w-full h-auto object-cover block"
             />
           </div>
         )}

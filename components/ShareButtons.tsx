@@ -83,12 +83,12 @@ export default function ShareButtons({ title, url }: ShareButtonsProps) {
   }
 
   return (
-    <div className="my-4 flex items-center justify-start gap-2.5">
+    <div className="my-2 flex flex-wrap items-center justify-start gap-3">
       {/* Share / Copy Link Icon */}
       <button
         type="button"
         onClick={handleNativeShare}
-        className="relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-gray-300 bg-white text-gray-700 shadow-sm transition-all hover:border-gray-900 hover:bg-gray-900 hover:text-white active:scale-95"
+        className="relative inline-flex h-9 w-9 items-center justify-center rounded-full border border-gray-300 bg-white text-gray-700 shadow-sm transition-all duration-200 hover:scale-110 hover:border-gray-900 hover:bg-gray-900 hover:text-white active:scale-95 sm:h-10 sm:w-10"
         title={copied ? "Link Copied!" : "Share / Copy Link"}
         aria-label="Share article"
       >
@@ -106,7 +106,7 @@ export default function ShareButtons({ title, url }: ShareButtonsProps) {
       <button
         type="button"
         onClick={handleWhatsAppShare}
-        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-emerald-500 bg-emerald-600 text-white shadow-sm transition-all hover:bg-emerald-700 active:scale-95"
+        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#25D366] bg-[#25D366] text-white shadow-sm transition-all duration-200 hover:scale-110 hover:bg-[#1da851] active:scale-95 sm:h-10 sm:w-10"
         title="Share on WhatsApp"
         aria-label="Share on WhatsApp"
       >
@@ -120,7 +120,7 @@ export default function ShareButtons({ title, url }: ShareButtonsProps) {
       <button
         type="button"
         onClick={handleInstagramShare}
-        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-pink-500 bg-gradient-to-r from-purple-600 via-pink-600 to-amber-500 text-white shadow-sm transition-all hover:opacity-90 active:scale-95"
+        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-pink-500 bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white shadow-sm transition-all duration-200 hover:scale-110 hover:opacity-90 active:scale-95 sm:h-10 sm:w-10"
         title="Share on Instagram"
         aria-label="Share on Instagram"
       >
@@ -133,7 +133,7 @@ export default function ShareButtons({ title, url }: ShareButtonsProps) {
       <button
         type="button"
         onClick={handleXShare}
-        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-gray-900 bg-gray-900 text-white shadow-sm transition-all hover:bg-black active:scale-95"
+        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-black bg-black text-white shadow-sm transition-all duration-200 hover:scale-110 hover:bg-gray-800 active:scale-95 sm:h-10 sm:w-10"
         title="Share on X"
         aria-label="Share on X"
       >
@@ -146,7 +146,7 @@ export default function ShareButtons({ title, url }: ShareButtonsProps) {
       <button
         type="button"
         onClick={handleFacebookShare}
-        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-blue-600 bg-blue-600 text-white shadow-sm transition-all hover:bg-blue-700 active:scale-95"
+        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#1877F2] bg-[#1877F2] text-white shadow-sm transition-all duration-200 hover:scale-110 hover:bg-[#125ebd] active:scale-95 sm:h-10 sm:w-10"
         title="Share on Facebook"
         aria-label="Share on Facebook"
       >
@@ -159,7 +159,7 @@ export default function ShareButtons({ title, url }: ShareButtonsProps) {
       <button
         type="button"
         onClick={handleMailShare}
-        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-red-600 bg-red-600 text-white shadow-sm transition-all hover:bg-red-700 active:scale-95"
+        className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-[#ea4335] bg-[#ea4335] text-white shadow-sm transition-all duration-200 hover:scale-110 hover:bg-[#c53727] active:scale-95 sm:h-10 sm:w-10"
         title="Share via Mail"
         aria-label="Share via Mail"
       >
