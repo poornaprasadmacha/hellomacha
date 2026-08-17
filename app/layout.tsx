@@ -4,10 +4,15 @@ import { FiBookOpen, FiCompass, FiCpu, FiSearch, FiHome, FiInfo } from 'react-ic
 import HelloMachaLogo from '../components/HelloMachaLogo'
 import ShareButtons from '../components/ShareButtons'
 
-export const metadata = {
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
   metadataBase: new URL('https://hellomacha.com'),
   title: 'HelloMacha | Financial Tips & Tech Reviews',
   description: 'Your trusted source for tech reviews, financial tips, and home products.',
+  other: {
+    'google-adsense-account': 'ca-pub-3202279426660861',
+  },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
