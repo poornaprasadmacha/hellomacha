@@ -27,9 +27,9 @@ export default function ReadingProgressBar() {
   }, [])
 
   return (
-    <div className="fixed top-0 left-0 w-full h-[3px] bg-gray-200/40 z-[60] pointer-events-none">
+    <div className="fixed top-0 left-0 w-full h-[4px] bg-[#1b1b1b] z-[60] pointer-events-none">
       <div
-        className="h-full bg-[var(--brand-red)] transition-all duration-75 ease-out shadow-[0_0_8px_rgba(179,43,43,0.6)]"
+        className="h-full bg-[var(--brand-red)] transition-all duration-75 ease-out"
         style={{ width: `${completion}%` }}
         role="progressbar"
         aria-valuenow={Math.round(completion)}

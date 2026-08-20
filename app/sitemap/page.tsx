@@ -45,7 +45,7 @@ export default function SitemapPage() {
       <div className="sitemap-grid mt-8">
         <aside className="sitemap-card">
           <h3>Articles & Reviews</h3>
-          <p className="sitemap-meta mb-4">Latest and evergreen guides, reduced text size for faster scanning.</p>
+          <p className="sitemap-meta mb-4">Latest and evergreen guides.</p>
           {articles.length === 0 ? (
             <div className="sitemap-item text-sm text-gray-500 italic">No articles published yet.</div>
           ) : (
