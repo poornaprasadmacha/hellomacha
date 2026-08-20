@@ -23,8 +23,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="min-h-screen flex flex-col bg-[var(--page)] text-[var(--ink)]" suppressHydrationWarning>
         
         {/* CHANGED: Replaced "sticky" with "fixed w-full" */}
-        <header className="fixed top-0 w-full z-50 bg-white border-b" role="banner">
-          <ReadingProgressBar />
+        <header className="fixed top-0 w-full z-50 bg-white" role="banner">
           <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:px-5">
             <Link href="/" className="flex items-center gap-3 select-none">
               <HelloMachaLogo textOnly />
@@ -55,6 +54,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               />
             </form>
           </div>
+          <ReadingProgressBar />
         </header>
 
         {/* CHANGED: pt-8 is now pt-24 (which is bigger than the h-16 header) */}
