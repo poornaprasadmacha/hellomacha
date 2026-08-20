@@ -2,6 +2,20 @@
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
+@font-face {
+  font-family: 'YapaW00-Regular';
+  src: url('/YapaW00-Regular.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-yapa {
+  font-family: 'YapaW00-Regular', 'Manrope', sans-serif !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.03em;
+}
+
 :root {
   /* Quora Business-inspired palette (flat, minimal) */
   --brand-red: #b32b2b;

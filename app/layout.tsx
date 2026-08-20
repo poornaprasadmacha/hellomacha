@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { FiBookOpen, FiCompass, FiCpu, FiSearch, FiHome, FiInfo } from 'react-icons/fi'
 import HelloMachaLogo from '../components/HelloMachaLogo'
 import ShareButtons from '../components/ShareButtons'
+import ReadingProgressBar from '../components/ReadingProgressBar'
 
 import type { Metadata } from 'next'
 
@@ -20,6 +21,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     // Added scroll-pt-24 here so if someone links to a specific heading, it doesn't hide under the fixed navbar
     <html lang="en" className="scroll-pt-24" suppressHydrationWarning>
       <body className="min-h-screen flex flex-col bg-[var(--page)] text-[var(--ink)]" suppressHydrationWarning>
+        <ReadingProgressBar />
         
         {/* CHANGED: Replaced "sticky" with "fixed w-full" */}
         <header className="fixed top-0 w-full z-50 bg-white border-b" role="banner">
