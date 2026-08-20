@@ -21,10 +21,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     // Added scroll-pt-24 here so if someone links to a specific heading, it doesn't hide under the fixed navbar
     <html lang="en" className="scroll-pt-24" suppressHydrationWarning>
       <body className="min-h-screen flex flex-col bg-[var(--page)] text-[var(--ink)]" suppressHydrationWarning>
-        <ReadingProgressBar />
         
         {/* CHANGED: Replaced "sticky" with "fixed w-full" */}
         <header className="fixed top-0 w-full z-50 bg-white border-b" role="banner">
+          <ReadingProgressBar />
           <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:px-5">
             <Link href="/" className="flex items-center gap-3 select-none">
               <HelloMachaLogo textOnly />
