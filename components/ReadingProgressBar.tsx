@@ -27,7 +27,7 @@ export default function ReadingProgressBar() {
   }, [])
 
   return (
-    <div className="w-full h-[1.5px] bg-black pointer-events-none overflow-hidden">
+    <div className="w-full h-[1.5px] bg-[#e6e6e6] pointer-events-none overflow-hidden">
       <div
         className="h-full bg-[var(--brand-red)] transition-all duration-75 ease-out"
         style={{ width: `${completion}%` }}
