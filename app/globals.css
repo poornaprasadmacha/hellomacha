@@ -131,9 +131,15 @@ img {
   background: var(--surface);
   border-radius: 9999px;
 }
-.search-pill.hidden,
-.hidden.search-pill {
-  display: none !important;
+@media (max-width: 767px) {
+  .header-desktop-search {
+    display: none !important;
+  }
+}
+@media (min-width: 768px) {
+  .header-desktop-search {
+    display: flex !important;
+  }
 }
 .search-pill .icon,
 .search-pill svg {

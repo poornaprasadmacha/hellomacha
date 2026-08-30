@@ -75,8 +75,8 @@ export default function Header() {
           </Link>
         </nav>
 
-        {/* Desktop Search Form ONLY (Strictly hidden on mobile < md) */}
-        <form action="/" method="get" className="hidden md:flex search-pill flex-1 max-w-[240px] lg:max-w-[360px]">
+        {/* Desktop Search Form ONLY */}
+        <form action="/" method="get" className="header-desktop-search search-pill w-[200px] lg:w-[280px]">
           <span className="icon"><FiSearch size={18} /></span>
           <input
             type="search"
