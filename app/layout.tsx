@@ -1,9 +1,9 @@
 import './globals.css'
 import Link from 'next/link'
-import { FiBookOpen, FiCompass, FiCpu, FiSearch, FiHome, FiInfo } from 'react-icons/fi'
+import { FiSearch } from 'react-icons/fi'
 import HelloMachaLogo from '../components/HelloMachaLogo'
 import ShareButtons from '../components/ShareButtons'
-import ReadingProgressBar from '../components/ReadingProgressBar'
+import Header from '../components/Header'
 
 import type { Metadata } from 'next'
 
@@ -22,40 +22,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en" className="scroll-pt-24" suppressHydrationWarning>
       <body className="min-h-screen flex flex-col bg-[var(--page)] text-[var(--ink)]" suppressHydrationWarning>
         
-        {/* CHANGED: Replaced "sticky" with "fixed w-full" */}
-        <header className="fixed top-0 w-full z-50 bg-white" role="banner">
-          <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:px-5">
-            <Link href="/" className="flex items-center gap-3 select-none">
-              <HelloMachaLogo textOnly />
-            </Link>
-
-            <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
-              <Link href="/" className="flex items-center gap-2 transition hover:text-[var(--brand-red)]">
-                <FiHome size={16} />
-                <span>Home</span>
-              </Link>
-              <Link href="/learn" className="flex items-center gap-2 transition hover:text-[var(--brand-red)]">
-                <FiBookOpen size={16} />
-                <span>Learn</span>
-              </Link>
-              <Link href="/about" className="flex items-center gap-2 transition hover:text-[var(--brand-red)]">
-                <FiInfo size={16} />
-                <span>About</span>
-              </Link>
-            </nav>
-
-            <form action="/" method="get" className="search-pill w-full max-w-[240px] sm:max-w-[360px]">
-              <span className="icon"><FiSearch size={18} /></span>
-              <input
-                type="search"
-                name="q"
-                placeholder="Search..."
-                aria-label="Search"
-              />
-            </form>
-          </div>
-          <ReadingProgressBar />
-        </header>
+        <Header />
 
         {/* CHANGED: pt-8 is now pt-24 (which is bigger than the h-16 header) */}
         <main className="mx-auto w-full max-w-6xl flex-grow px-4 pt-0 pb-6 sm:px-5 sm:pb-8">
