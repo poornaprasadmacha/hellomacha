@@ -13,7 +13,10 @@ export default function HelloMachaLogo({ compact = false, textOnly = false, inve
   if (textOnly) {
     return (
       <div className="select-none flex items-center">
-        <span className="font-yapa font-normal tracking-wide leading-none" style={{ color, fontSize: compact ? 20 : 25 }}>
+        <span
+          className="font-yapa font-normal tracking-wide leading-none text-xl md:text-2xl"
+          style={{ color }}
+        >
           HelloMacha!
         </span>
       </div>
@@ -23,7 +26,7 @@ export default function HelloMachaLogo({ compact = false, textOnly = false, inve
   // Compact icon + wordmark: show a small square icon then wordmark.
   return (
     <div className="flex items-center gap-2.5 select-none">
-      <div className={`${compact ? 'h-7 w-7 text-sm' : 'h-8 w-8 text-base'} flex items-center justify-center bg-[var(--brand-red)] text-white font-yapa font-normal`}>
+      <div className={`${compact ? 'h-6 w-6 text-xs sm:h-7 sm:w-7 sm:text-sm' : 'h-7 w-7 sm:h-8 sm:w-8 text-sm sm:text-base'} flex items-center justify-center bg-[var(--brand-red)] text-white font-yapa font-normal`}>
         H
       </div>
       <div className="flex items-center">

@@ -41,10 +41,10 @@ export default function Header() {
 
   return (
     <header className="fixed top-0 w-full z-50 bg-white border-b border-[var(--line)]" role="banner">
-      <div className="mx-auto flex h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:px-5">
+      <div className="mx-auto flex h-12 md:h-16 max-w-6xl items-center justify-between gap-3 px-4 sm:px-5">
         {/* Brand Logo */}
         <Link href="/" className="flex items-center gap-3 select-none flex-shrink-0">
-          <HelloMachaLogo textOnly />
+          <HelloMachaLogo textOnly compact />
         </Link>
 
         {/* Desktop Navigation - Names Only (No Icons) */}
@@ -75,8 +75,8 @@ export default function Header() {
           </Link>
         </nav>
 
-        {/* Header Search Form */}
-        <form action="/" method="get" className="search-pill flex-1 max-w-[180px] xs:max-w-[220px] sm:max-w-[320px] md:max-w-[280px] lg:max-w-[360px]">
+        {/* Desktop Search Form ONLY (Strictly hidden on mobile < md) */}
+        <form action="/" method="get" className="hidden md:flex search-pill flex-1 max-w-[240px] lg:max-w-[360px]">
           <span className="icon"><FiSearch size={18} /></span>
           <input
             type="search"
@@ -92,7 +92,7 @@ export default function Header() {
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-expanded={mobileMenuOpen}
           aria-label="Toggle navigation menu"
-          className="flex items-center justify-center p-2 text-[var(--ink)] hover:text-[var(--brand-red)] focus:outline-none md:hidden"
+          className="flex items-center justify-center p-1.5 text-[var(--ink)] hover:text-[var(--brand-red)] focus:outline-none md:hidden"
         >
           {mobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
         </button>
@@ -106,42 +106,56 @@ export default function Header() {
         <div className="md:hidden">
           {/* Overlay backdrop */}
           <div
-            className="fixed inset-0 top-16 bg-black/40 z-40 transition-opacity"
+            className="fixed inset-0 top-12 bg-black/40 z-40 transition-opacity"
             onClick={() => setMobileMenuOpen(false)}
             aria-hidden="true"
           />
 
           {/* Mobile Drawer */}
-          <div className="fixed top-16 left-0 right-0 z-50 bg-white border-b border-[var(--line)] shadow-lg">
-            <nav className="mx-auto max-w-6xl px-5 py-3 flex flex-col gap-1 text-base font-semibold">
-              <Link
-                href="/"
-                onClick={() => setMobileMenuOpen(false)}
-                className={`py-3 px-3 transition hover:bg-gray-50 hover:text-[var(--brand-red)] border-b border-gray-100 ${
-                  pathname === '/' ? 'text-[var(--brand-red)] font-bold bg-red-50/50' : 'text-[var(--ink)]'
-                }`}
-              >
-                Home
-              </Link>
-              <Link
-                href="/learn"
-                onClick={() => setMobileMenuOpen(false)}
-                className={`py-3 px-3 transition hover:bg-gray-50 hover:text-[var(--brand-red)] border-b border-gray-100 ${
-                  pathname?.startsWith('/learn') ? 'text-[var(--brand-red)] font-bold bg-red-50/50' : 'text-[var(--ink)]'
-                }`}
-              >
-                Learn
-              </Link>
-              <Link
-                href="/about"
-                onClick={() => setMobileMenuOpen(false)}
-                className={`py-3 px-3 transition hover:bg-gray-50 hover:text-[var(--brand-red)] ${
-                  pathname === '/about' ? 'text-[var(--brand-red)] font-bold bg-red-50/50' : 'text-[var(--ink)]'
-                }`}
-              >
-                About
-              </Link>
-            </nav>
+          <div className="fixed top-12 left-0 right-0 z-50 bg-white border-b border-[var(--line)] shadow-lg">
+            <div className="mx-auto max-w-6xl px-4 py-3 flex flex-col gap-3">
+              {/* Mobile Search Input - Search ONLY inside mobile menu */}
+              <form action="/" method="get" className="search-pill w-full">
+                <span className="icon"><FiSearch size={18} /></span>
+                <input
+                  type="search"
+                  name="q"
+                  placeholder="Search articles, guides..."
+                  aria-label="Search articles"
+                />
+              </form>
+
+              {/* Mobile Navigation Links - Names Only */}
+              <nav className="flex flex-col text-base font-semibold">
+                <Link
+                  href="/"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`py-2.5 px-3 transition hover:bg-gray-50 hover:text-[var(--brand-red)] border-b border-gray-100 ${
+                    pathname === '/' ? 'text-[var(--brand-red)] font-bold bg-red-50/50' : 'text-[var(--ink)]'
+                  }`}
+                >
+                  Home
+                </Link>
+                <Link
+                  href="/learn"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`py-2.5 px-3 transition hover:bg-gray-50 hover:text-[var(--brand-red)] border-b border-gray-100 ${
+                    pathname?.startsWith('/learn') ? 'text-[var(--brand-red)] font-bold bg-red-50/50' : 'text-[var(--ink)]'
+                  }`}
+                >
+                  Learn
+                </Link>
+                <Link
+                  href="/about"
+                  onClick={() => setMobileMenuOpen(false)}
+                  className={`py-2.5 px-3 transition hover:bg-gray-50 hover:text-[var(--brand-red)] ${
+                    pathname === '/about' ? 'text-[var(--brand-red)] font-bold bg-red-50/50' : 'text-[var(--ink)]'
+                  }`}
+                >
+                  About
+                </Link>
+              </nav>
+            </div>
           </div>
         </div>
       )}

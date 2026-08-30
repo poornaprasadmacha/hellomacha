@@ -79,7 +79,7 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
         </div>
       ) : null}
 
-      <section className="mb-8">
+      <section className="mb-8 -mt-12 md:-mt-16">
         <div
           style={{
             position: 'relative',
@@ -91,7 +91,7 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
           }}
           className="bg-[var(--brand-red)] text-white"
         >
-          <div className="mx-auto max-w-6xl px-6 pb-20 pt-28 md:pt-32">
+          <div className="mx-auto max-w-6xl px-6 pb-12 pt-20 sm:pt-24 md:pb-16 md:pt-28">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-widest">HelloMacha guides</p>

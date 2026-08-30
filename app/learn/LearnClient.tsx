@@ -92,7 +92,7 @@ export default function LearnClient({ articles }: LearnClientProps) {
   const categories = ['All', 'Finance', 'Real Estate', 'Business', 'Tech & Lifestyle']
 
   return (
-    <div className="mx-auto max-w-6xl pt-24 pb-16 px-4 sm:px-5">
+    <div className="mx-auto max-w-6xl pt-4 sm:pt-6 pb-16 px-4 sm:px-5">
       {/* --- HERO SECTION --- */}
       <section className="mb-12 border-b border-[#e6e6e6] pb-10">
         <div className="inline-flex items-center gap-2 border border-[var(--brand-red)]/30 bg-[var(--brand-red)]/5 px-3 py-1 text-xs font-semibold text-[var(--brand-red)] mb-4">

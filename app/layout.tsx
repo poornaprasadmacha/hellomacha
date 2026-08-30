@@ -24,8 +24,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         
         <Header />
 
-        {/* CHANGED: pt-8 is now pt-24 (which is bigger than the h-16 header) */}
-        <main className="mx-auto w-full max-w-6xl flex-grow px-4 pt-0 pb-6 sm:px-5 sm:pb-8">
+        {/* Top padding matches fixed header height (h-12 on mobile, h-16 on desktop) */}
+        <main className="mx-auto w-full max-w-6xl flex-grow px-4 pt-12 md:pt-16 pb-6 sm:px-5 sm:pb-8">
           {children}
         </main>
 

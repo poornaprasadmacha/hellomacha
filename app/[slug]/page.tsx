@@ -168,8 +168,8 @@ export default async function DynamicSlugPage({ params }: PageProps) {
 
   if (type === 'article') {
     return (
-      <article className="mx-auto max-w-5xl px-4 pt-24 pb-8 sm:px-6 sm:pt-28 sm:pb-10">
-        <header className="mt-4 mb-8 text-left sm:mt-6">
+      <article className="mx-auto max-w-5xl px-4 pt-4 pb-8 sm:px-6 sm:pt-6 sm:pb-10">
+        <header className="mt-2 mb-8 text-left">
           {data.date && (
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--muted)] text-left sm:text-sm">
               {data.date}
@@ -201,7 +201,7 @@ export default async function DynamicSlugPage({ params }: PageProps) {
   }
 
   return (
-    <div className="w-full pt-24 pb-8">
+    <div className="w-full pt-4 pb-8">
       <div className="prose prose-lg prose-blue max-w-none text-gray-800">
         <MDXRemote source={content} />
       </div>
