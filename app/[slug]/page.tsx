@@ -175,7 +175,7 @@ export default async function DynamicSlugPage({ params }: PageProps) {
               {data.date}
             </p>
           )}
-          <h1 className="mb-4 font-serif text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold leading-snug tracking-tight text-[#2c352d] text-left">
+          <h1 className="mb-4 font-serif !text-xl sm:!text-2xl md:!text-3xl lg:!text-4xl font-extrabold leading-snug tracking-tight text-[#2c352d] text-left">
             {data.title}
           </h1>
           <div className="mb-6 flex justify-start text-left">
