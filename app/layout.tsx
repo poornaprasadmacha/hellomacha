@@ -5,12 +5,26 @@ import HelloMachaLogo from '../components/HelloMachaLogo'
 import ShareButtons from '../components/ShareButtons'
 import Header from '../components/Header'
 
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#b32b2b' },
+    { media: '(prefers-color-scheme: dark)', color: '#b32b2b' },
+  ],
+  width: 'device-width',
+  initialScale: 1,
+}
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://hellomacha.com'),
   title: 'HelloMacha | Financial Tips & Tech Reviews',
   description: 'Your trusted source for tech reviews, financial tips, and home products.',
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: 'default',
+    title: 'HelloMacha',
+  },
   other: {
     'google-adsense-account': 'ca-pub-3202279426660861',
   },

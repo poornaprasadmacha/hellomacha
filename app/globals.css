@@ -125,6 +125,10 @@ img {
   background: var(--surface);
   border-radius: 9999px;
 }
+.search-pill.hidden,
+.hidden.search-pill {
+  display: none !important;
+}
 .search-pill .icon,
 .search-pill svg {
   color: var(--brand-red);
