@@ -38,7 +38,7 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
       <div className="min-h-[60vh] py-8">
         <div className="max-w-4xl">
           <p className="text-sm font-medium uppercase tracking-[0.18em] text-[var(--muted)]">No results found</p>
-          <h1 className="mt-3 font-serif text-4xl font-black tracking-tight text-[#2c352d]">
+          <h1 className="mt-3 font-serif text-2xl sm:text-3xl md:text-4xl font-black tracking-tight text-[#2c352d]">
             Nothing matches “{searchQuery}”
           </h1>
           <p className="mt-4 max-w-xl text-base text-[#4d5649]">
@@ -95,7 +95,7 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               <div>
                 <p className="text-sm font-semibold uppercase tracking-widest">HelloMacha guides</p>
-                <h1 className="mt-4 font-serif text-4xl font-extrabold leading-tight">Smart answers to everyday life decisions.</h1>
+                <h1 className="mt-3 font-serif text-2xl sm:text-3xl md:text-4xl font-extrabold leading-tight">Smart answers to everyday life decisions.</h1>
                 <p className="mt-6 text-lg max-w-xl">Practical insight for everyday decisions. Actionable guides, clear recommendations, and straightforward reviews to help you decide faster.</p>
 
                 <div className="mt-8">

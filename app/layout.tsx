@@ -9,8 +9,8 @@ import type { Metadata, Viewport } from 'next'
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: '(prefers-color-scheme: light)', color: '#b32b2b' },
-    { media: '(prefers-color-scheme: dark)', color: '#b32b2b' },
+    { media: '(prefers-color-scheme: light)', color: '#ffffff' },
+    { media: '(prefers-color-scheme: dark)', color: '#1b1b1b' },
   ],
   width: 'device-width',
   initialScale: 1,

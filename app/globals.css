@@ -29,6 +29,12 @@
   --shadow-soft: none;
 }
 
+html,
+body {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -54,9 +60,10 @@ h6 {
   letter-spacing: -0.02em;
 }
 
-/* Tighter typography to resemble Quora Business */
-h1 { font-size: 2.75rem; line-height: 1.04; font-weight: 800; letter-spacing: -0.02em }
-@media (min-width: 768px) { h1 { font-size: 3.25rem } }
+/* Responsive typography for clean mobile reading */
+h1 { font-size: 1.5rem; line-height: 1.2; font-weight: 800; letter-spacing: -0.02em }
+@media (min-width: 640px) { h1 { font-size: 2.25rem; line-height: 1.1 } }
+@media (min-width: 768px) { h1 { font-size: 2.75rem; line-height: 1.05 } }
 h2 { font-size: 1.875rem; line-height: 1.08; font-weight: 700; letter-spacing: -0.01em }
 h3 { font-size: 1.25rem; line-height: 1.12; font-weight: 700 }
 

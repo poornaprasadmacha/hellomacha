@@ -168,14 +168,14 @@ export default async function DynamicSlugPage({ params }: PageProps) {
 
   if (type === 'article') {
     return (
-      <article className="mx-auto max-w-5xl px-4 pt-4 pb-8 sm:px-6 sm:pt-6 sm:pb-10">
+      <article className="mx-auto max-w-5xl px-4 pt-4 pb-8 sm:px-6 sm:pt-6 sm:pb-10 overflow-x-hidden max-w-full">
         <header className="mt-2 mb-8 text-left">
           {data.date && (
             <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--muted)] text-left sm:text-sm">
               {data.date}
             </p>
           )}
-          <h1 className="mb-4 font-serif text-lg font-black leading-snug tracking-tight text-[#2c352d] text-left sm:text-2xl md:text-3xl lg:text-4xl">
+          <h1 className="mb-4 font-serif text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold leading-snug tracking-tight text-[#2c352d] text-left">
             {data.title}
           </h1>
           <div className="mb-6 flex justify-start text-left">
