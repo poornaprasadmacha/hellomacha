@@ -3,6 +3,7 @@ import path from 'path'
 import matter from 'gray-matter'
 import { Suspense } from 'react'
 import ArticleClient from './ArticleClient'
+import GooeyQuoteLoader from '@/components/GooeyQuoteLoader'
 
 export const dynamic = 'force-static'
 
@@ -48,7 +49,7 @@ export default function HomePage() {
   const articles = getArticles()
 
   return (
-    <Suspense fallback={<div className="min-h-[60vh] py-8 text-center text-[var(--muted)]">Loading guides...</div>}>
+    <Suspense fallback={<GooeyQuoteLoader />}>
       <ArticleClient articles={articles} />
     </Suspense>
   )
