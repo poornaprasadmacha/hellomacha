@@ -166,23 +166,91 @@ export default async function DynamicSlugPage({ params }: PageProps) {
 
   const { type, data, content } = item
 
+  // Calculate estimated reading time
+  const wordCount = content ? content.split(/\s+/).length : 0
+  const readingTime = Math.max(1, Math.ceil(wordCount / 225))
+
+  const articleSchema = type === 'article' ? {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    'headline': data.title,
+    'description': data.description,
+    'image': data.thumbnail ? [data.thumbnail] : [],
+    'datePublished': data.date,
+    'author': {
+      '@type': 'Person',
+      'name': data.author || 'HelloMacha Team',
+    },
+    'publisher': {
+      '@type': 'Organization',
+      'name': 'HelloMacha',
+      'logo': {
+        '@type': 'ImageObject',
+        'url': 'https://hellomacha.com/icon.png',
+      },
+    },
+    'mainEntityOfPage': {
+      '@type': 'WebPage',
+      '@id': `https://hellomacha.com/${slug}`,
+    },
+  } : null
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': [
+      {
+        '@type': 'ListItem',
+        'position': 1,
+        'name': 'Home',
+        'item': 'https://hellomacha.com',
+      },
+      {
+        '@type': 'ListItem',
+        'position': 2,
+        'name': data.title,
+        'item': `https://hellomacha.com/${slug}`,
+      },
+    ],
+  }
+
   if (type === 'article') {
     return (
       <article className="mx-auto max-w-5xl px-4 pt-4 pb-8 sm:px-6 sm:pt-6 sm:pb-10 overflow-x-hidden max-w-full">
+        {/* Rich SEO JSON-LD Schemas */}
+        {articleSchema && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+          />
+        )}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        />
+
         <header className="mt-2 mb-8 text-left">
-          {data.date && (
-            <p className="mb-3 text-xs font-semibold uppercase tracking-[0.24em] text-[var(--muted)] text-left sm:text-sm">
-              {data.date}
-            </p>
-          )}
-          <h1 className="mb-4 font-serif !text-xl sm:!text-2xl md:!text-3xl lg:!text-4xl font-extrabold leading-snug tracking-tight text-[#2c352d] text-left">
+          <div className="mb-3 flex flex-wrap items-center gap-3 text-xs sm:text-sm font-semibold text-[var(--muted)]">
+            {data.date && (
+              <span className="uppercase tracking-[0.2em]">{data.date}</span>
+            )}
+            {data.date && <span>•</span>}
+            <span>{readingTime} min read</span>
+            {data.author && (
+              <>
+                <span>•</span>
+                <span>By {data.author}</span>
+              </>
+            )}
+          </div>
+          <h1 className="mb-5 text-2xl sm:text-3xl md:text-4xl lg:text-[2.65rem] font-extrabold leading-snug tracking-tight text-gray-900 text-left">
             {data.title}
           </h1>
           <div className="mb-6 flex justify-start text-left">
             <ShareButtons title={data.title} />
           </div>
           {data.thumbnail && (
-            <div className="relative w-full overflow-hidden border border-[#dfe4d4]">
+            <div className="relative w-full overflow-hidden border border-[#dfe4d4] rounded-lg shadow-sm">
               <img
                 src={data.thumbnail}
                 alt={data.title}
@@ -191,7 +259,7 @@ export default async function DynamicSlugPage({ params }: PageProps) {
             </div>
           )}
         </header>
-        <div className="prose prose-lg prose-stone mx-auto max-w-none text-[#2c352d]">
+        <div className="prose prose-lg prose-stone mx-auto max-w-none text-gray-800 leading-relaxed">
           <MDXRemote source={content} />
         </div>
 
@@ -202,7 +270,11 @@ export default async function DynamicSlugPage({ params }: PageProps) {
 
   return (
     <div className="w-full pt-4 pb-8">
-      <div className="prose prose-lg prose-blue max-w-none text-gray-800">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <div className="prose prose-lg prose-blue max-w-none text-gray-800 leading-relaxed">
         <MDXRemote source={content} />
       </div>
     </div>
