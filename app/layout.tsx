@@ -16,17 +16,20 @@ export const viewport: Viewport = {
   initialScale: 1,
 }
 
+const FAVICON_URL = 'https://blogger.googleusercontent.com/img/a/AVvXsEi_qTT1QbSC9r3oXthk950ikDo1z6bBdeygo1iXS5TSQ8XOVWEz8gcNcbsXT1CJB75kYeSbv3Le3dfJ99rCDDa0THFlkdy0XS_cxhVCDNzKNb7aGrN3gFQ26kqV-3KCHpeOXH63ifxOrh-DSaFEb7gqStt_HtLnrnhGY38rEJJ469EoZOeGUwHQdYqTAhk'
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://hellomacha.com'),
   title: 'HelloMacha | Financial Tips & Tech Reviews',
   description: 'Your trusted source for tech reviews, financial tips, and home products.',
   icons: {
     icon: [
+      { url: FAVICON_URL },
       { url: '/favicon.ico' },
       { url: '/favicon.png', type: 'image/png' },
     ],
-    shortcut: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    shortcut: FAVICON_URL,
+    apple: FAVICON_URL,
   },
   appleWebApp: {
     capable: true,
