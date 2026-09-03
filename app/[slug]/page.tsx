@@ -251,8 +251,8 @@ export default async function DynamicSlugPage({ params }: PageProps) {
         />
 
         <header className="mt-2 mb-8 text-left">
-          {/* Article Title (H1) - Compact title sizing */}
-          <h1 className="mb-3 text-base sm:text-lg md:text-xl lg:text-2xl font-bold leading-snug tracking-tight text-gray-900 text-left">
+          {/* Article Title (H1) - Medium title sizing for best UI/UX */}
+          <h1 className="mb-3 text-xl sm:text-2xl md:text-3xl font-bold leading-snug tracking-tight text-gray-900 text-left">
             {data.title}
           </h1>
 
