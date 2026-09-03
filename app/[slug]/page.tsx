@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import ScrollToTop from '@/components/ScrollToTop'
 import ShareButtons from '@/components/ShareButtons'
+import Comments from '@/components/Comments'
 import { Metadata } from 'next'
 
 export const dynamic = 'force-static'
@@ -288,6 +289,8 @@ export default async function DynamicSlugPage({ params }: PageProps) {
         <div className="prose prose-lg prose-stone mx-auto max-w-none text-gray-800 leading-relaxed">
           <MDXRemote source={content} />
         </div>
+
+        <Comments title={data.title} slug={slug} />
 
         <ScrollToTop />
       </article>
