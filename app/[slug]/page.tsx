@@ -252,8 +252,7 @@ export default async function DynamicSlugPage({ params }: PageProps) {
         />
 
         <header className="mt-2 mb-8 text-left">
-          {/* Article Title (H1) - Medium title sizing for best UI/UX */}
-          <h1 className="mb-3 text-xl sm:text-2xl md:text-3xl font-bold leading-snug tracking-tight text-gray-900 text-left">
+          <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 leading-tight tracking-tight mb-6">
             {data.title}
           </h1>
 
@@ -274,9 +273,9 @@ export default async function DynamicSlugPage({ params }: PageProps) {
             <ShareButtons title={data.title} />
           </div>
 
-          {/* Croma Design 6: Featured Image with rounded-2xl corners */}
+          {/* Featured Image with rounded-2xl corners */}
           {data.thumbnail && (
-            <div className="relative w-full overflow-hidden rounded-2xl shadow-sm border border-gray-100 mb-8">
+            <div className="relative w-full overflow-hidden rounded-2xl border border-gray-100 mb-8">
               <img
                 src={data.thumbnail}
                 alt={data.title}
