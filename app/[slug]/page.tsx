@@ -251,25 +251,18 @@ export default async function DynamicSlugPage({ params }: PageProps) {
         />
 
         <header className="mt-2 mb-8 text-left">
-          {/* Croma Design 1: Article Title (H1) */}
-          <h1 className="mb-2 text-2xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-extrabold leading-tight tracking-tight text-gray-900 text-left">
+          {/* Article Title (H1) - Reduced size on mobile & reduced boldness */}
+          <h1 className="mb-3 text-lg sm:text-2xl md:text-3xl lg:text-[2.25rem] font-bold leading-snug tracking-tight text-gray-900 text-left">
             {data.title}
           </h1>
 
-          {/* Croma Design 2: Tagline / Description Subtitle if present */}
-          {data.description && (
-            <p className="mb-4 text-base sm:text-lg text-gray-600 font-normal leading-relaxed text-left">
-              {data.description}
-            </p>
-          )}
-
-          {/* Croma Design 3: Author Name in Bold */}
-          <div className="mb-1 text-sm sm:text-base font-bold text-gray-900">
+          {/* Author Name */}
+          <div className="mb-1 text-xs sm:text-sm font-semibold text-gray-900">
             {authorName}
           </div>
 
-          {/* Croma Design 4: Date & Reading Time with Pipe "|" */}
-          <div className="mb-5 flex flex-wrap items-center gap-2 text-xs sm:text-sm font-medium text-gray-600">
+          {/* Date & Reading Time with Pipe "|" */}
+          <div className="mb-5 flex flex-wrap items-center gap-2 text-xs sm:text-sm font-medium text-gray-500">
             {displayDate && <span>{displayDate}</span>}
             {displayDate && <span className="text-gray-300">|</span>}
             <span>{readingTime} min read</span>
