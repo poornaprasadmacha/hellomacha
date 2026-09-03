@@ -158,6 +158,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 }
 
+function formatDisplayDate(dateStr?: string): string {
+  if (!dateStr) return ''
+  const dateObj = new Date(dateStr)
+  if (isNaN(dateObj.getTime())) return dateStr
+  return dateObj.toLocaleDateString('en-US', {
+    month: 'long',
+    day: 'numeric',
+    year: 'numeric',
+  })
+}
+
 export default async function DynamicSlugPage({ params }: PageProps) {
   const { slug } = await params
   const item = getContent(slug)
@@ -170,6 +181,15 @@ export default async function DynamicSlugPage({ params }: PageProps) {
   const wordCount = content ? content.split(/\s+/).length : 0
   const readingTime = Math.max(1, Math.ceil(wordCount / 225))
 
+  const authorName = data.author === 'srkmacha' ? 'Sivarama Krishna' : (data.author || 'Sivarama Krishna')
+  
+  const rawUpdatedDate = data.updatedDate || data.updated || data.lastUpdated
+  const displayDate = rawUpdatedDate
+    ? `Updated on ${formatDisplayDate(rawUpdatedDate)}`
+    : data.date
+    ? formatDisplayDate(data.date)
+    : ''
+
   const articleSchema = type === 'article' ? {
     '@context': 'https://schema.org',
     '@type': 'Article',
@@ -177,9 +197,10 @@ export default async function DynamicSlugPage({ params }: PageProps) {
     'description': data.description,
     'image': data.thumbnail ? [data.thumbnail] : [],
     'datePublished': data.date,
+    'dateModified': rawUpdatedDate || data.date,
     'author': {
       '@type': 'Person',
-      'name': data.author || 'HelloMacha Team',
+      'name': authorName,
     },
     'publisher': {
       '@type': 'Organization',
@@ -230,22 +251,24 @@ export default async function DynamicSlugPage({ params }: PageProps) {
         />
 
         <header className="mt-2 mb-8 text-left">
-          <div className="mb-3 flex flex-wrap items-center gap-3 text-xs sm:text-sm font-semibold text-[var(--muted)]">
-            {data.date && (
-              <span className="uppercase tracking-[0.2em]">{data.date}</span>
-            )}
-            {data.date && <span>•</span>}
-            <span>{readingTime} min read</span>
-            {data.author && (
-              <>
-                <span>•</span>
-                <span>By {data.author}</span>
-              </>
-            )}
-          </div>
-          <h1 className="mb-5 text-2xl sm:text-3xl md:text-4xl lg:text-[2.65rem] font-extrabold leading-snug tracking-tight text-gray-900 text-left">
+          {/* Article Title (H1) - Decreased size on mobile (text-xl sm:text-2xl md:text-3xl lg:text-4xl) */}
+          <h1 className="mb-3 text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold leading-snug tracking-tight text-gray-900 text-left">
             {data.title}
           </h1>
+
+          {/* Metadata AFTER Title: Author, Date / Updated on Date, Reading Time */}
+          <div className="mb-5 flex flex-wrap items-center gap-2 text-xs sm:text-sm font-semibold text-[var(--muted)]">
+            <span>By {authorName}</span>
+            {displayDate && (
+              <>
+                <span>•</span>
+                <span>{displayDate}</span>
+              </>
+            )}
+            <span>•</span>
+            <span>{readingTime} min read</span>
+          </div>
+
           <div className="mb-6 flex justify-start text-left">
             <ShareButtons title={data.title} />
           </div>
