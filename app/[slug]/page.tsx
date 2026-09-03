@@ -163,7 +163,7 @@ function formatDisplayDate(dateStr?: string): string {
   const dateObj = new Date(dateStr)
   if (isNaN(dateObj.getTime())) return dateStr
   return dateObj.toLocaleDateString('en-US', {
-    month: 'long',
+    month: 'short',
     day: 'numeric',
     year: 'numeric',
   })
@@ -185,7 +185,7 @@ export default async function DynamicSlugPage({ params }: PageProps) {
   
   const rawUpdatedDate = data.updatedDate || data.updated || data.lastUpdated
   const displayDate = rawUpdatedDate
-    ? `Updated on ${formatDisplayDate(rawUpdatedDate)}`
+    ? `Last Updated on ${formatDisplayDate(rawUpdatedDate)}`
     : data.date
     ? formatDisplayDate(data.date)
     : ''
@@ -237,7 +237,7 @@ export default async function DynamicSlugPage({ params }: PageProps) {
 
   if (type === 'article') {
     return (
-      <article className="mx-auto max-w-5xl px-4 pt-4 pb-8 sm:px-6 sm:pt-6 sm:pb-10 overflow-x-hidden max-w-full">
+      <article className="mx-auto max-w-4xl px-4 pt-4 pb-12 sm:px-6 sm:pt-6 sm:pb-14 overflow-x-hidden max-w-full">
         {/* Rich SEO JSON-LD Schemas */}
         {articleSchema && (
           <script
@@ -251,29 +251,38 @@ export default async function DynamicSlugPage({ params }: PageProps) {
         />
 
         <header className="mt-2 mb-8 text-left">
-          {/* Article Title (H1) - Decreased size on mobile (text-xl sm:text-2xl md:text-3xl lg:text-4xl) */}
-          <h1 className="mb-3 text-xl sm:text-2xl md:text-3xl lg:text-4xl font-extrabold leading-snug tracking-tight text-gray-900 text-left">
+          {/* Croma Design 1: Article Title (H1) */}
+          <h1 className="mb-2 text-2xl sm:text-3xl md:text-4xl lg:text-[2.5rem] font-extrabold leading-tight tracking-tight text-gray-900 text-left">
             {data.title}
           </h1>
 
-          {/* Metadata AFTER Title: Author, Date / Updated on Date, Reading Time */}
-          <div className="mb-5 flex flex-wrap items-center gap-2 text-xs sm:text-sm font-semibold text-[var(--muted)]">
-            <span>By {authorName}</span>
-            {displayDate && (
-              <>
-                <span>•</span>
-                <span>{displayDate}</span>
-              </>
-            )}
-            <span>•</span>
+          {/* Croma Design 2: Tagline / Description Subtitle if present */}
+          {data.description && (
+            <p className="mb-4 text-base sm:text-lg text-gray-600 font-normal leading-relaxed text-left">
+              {data.description}
+            </p>
+          )}
+
+          {/* Croma Design 3: Author Name in Bold */}
+          <div className="mb-1 text-sm sm:text-base font-bold text-gray-900">
+            {authorName}
+          </div>
+
+          {/* Croma Design 4: Date & Reading Time with Pipe "|" */}
+          <div className="mb-5 flex flex-wrap items-center gap-2 text-xs sm:text-sm font-medium text-gray-600">
+            {displayDate && <span>{displayDate}</span>}
+            {displayDate && <span className="text-gray-300">|</span>}
             <span>{readingTime} min read</span>
           </div>
 
+          {/* Croma Design 5: Share Icons Bar */}
           <div className="mb-6 flex justify-start text-left">
             <ShareButtons title={data.title} />
           </div>
+
+          {/* Croma Design 6: Featured Image with rounded-2xl corners */}
           {data.thumbnail && (
-            <div className="relative w-full overflow-hidden border border-[#dfe4d4] rounded-lg shadow-sm">
+            <div className="relative w-full overflow-hidden rounded-2xl shadow-sm border border-gray-100 mb-8">
               <img
                 src={data.thumbnail}
                 alt={data.title}
@@ -282,6 +291,7 @@ export default async function DynamicSlugPage({ params }: PageProps) {
             </div>
           )}
         </header>
+
         <div className="prose prose-lg prose-stone mx-auto max-w-none text-gray-800 leading-relaxed">
           <MDXRemote source={content} />
         </div>
