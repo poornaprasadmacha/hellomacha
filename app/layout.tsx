@@ -20,6 +20,14 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://hellomacha.com'),
   title: 'HelloMacha | Financial Tips & Tech Reviews',
   description: 'Your trusted source for tech reviews, financial tips, and home products.',
+  icons: {
+    icon: [
+      { url: '/favicon.ico' },
+      { url: '/favicon.png', type: 'image/png' },
+    ],
+    shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
   appleWebApp: {
     capable: true,
     statusBarStyle: 'default',
