@@ -3,142 +3,185 @@ import path from 'path'
 import matter from 'gray-matter'
 import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
+import type { Metadata } from 'next'
+
 import ScrollToTop from '@/components/ScrollToTop'
 import ShareButtons from '@/components/ShareButtons'
 import Comments from '@/components/Comments'
-import { Metadata } from 'next'
 
 export const dynamic = 'force-static'
 export const dynamicParams = false
 
+type ContentData = {
+  title: string
+  description?: string
+  date?: string
+  updatedDate?: string
+  updated?: string
+  lastUpdated?: string
+  author?: string
+  thumbnail?: string
+  seoKeywords?: string[]
+  geoRegion?: string
+  geoPlacename?: string
+  geoPosition?: string
+  [key: string]: any
+}
+
 type ContentItem = {
   type: 'article' | 'page'
-  data: {
-    title: string
-    description?: string
-    date?: string
-    thumbnail?: string
-    seoKeywords?: string[]
-    geoRegion?: string
-    geoPlacename?: string
-    geoPosition?: string
-    [key: string]: any
-  }
+  data: ContentData
   content: string
 }
 
+/* -------------------------------------------------------
+   CONTENT DIRECTORIES
+------------------------------------------------------- */
+
+const articlesDir = path.join(process.cwd(), 'content', 'articles')
+const pagesDir = path.join(process.cwd(), 'content', 'pages')
+
+/* -------------------------------------------------------
+   GET ALL CONTENT SLUGS
+------------------------------------------------------- */
+
+function getSlugsFromDirectory(directory: string): string[] {
+  if (!fs.existsSync(directory)) {
+    return []
+  }
+
+  return fs
+    .readdirSync(directory)
+    .filter((file) => /\.(mdx|md)$/i.test(file))
+    .map((file) => file.replace(/\.(mdx|md)$/i, ''))
+}
+
+/* -------------------------------------------------------
+   GENERATE STATIC PARAMS
+------------------------------------------------------- */
+
+export function generateStaticParams(): { slug: string }[] {
+  const articleSlugs = getSlugsFromDirectory(articlesDir)
+  const pageSlugs = getSlugsFromDirectory(pagesDir)
+
+  const allSlugs = [...articleSlugs, ...pageSlugs]
+
+  const uniqueSlugs = Array.from(new Set(allSlugs))
+
+  return uniqueSlugs.map((slug) => ({
+    slug,
+  }))
+}
+
+/* -------------------------------------------------------
+   READ CONTENT FILE
+------------------------------------------------------- */
+
+function readContentFile(
+  directory: string,
+  slug: string,
+  type: 'article' | 'page'
+): ContentItem | null {
+  const mdxPath = path.join(directory, `${slug}.mdx`)
+  const mdPath = path.join(directory, `${slug}.md`)
+
+  let filePath: string | null = null
+
+  if (fs.existsSync(mdxPath)) {
+    filePath = mdxPath
+  } else if (fs.existsSync(mdPath)) {
+    filePath = mdPath
+  }
+
+  if (!filePath) {
+    return null
+  }
+
+  const fileContents = fs.readFileSync(filePath, 'utf8')
+  const { data, content } = matter(fileContents)
+
+  return {
+    type,
+    data: data as ContentData,
+    content,
+  }
+}
+
+/* -------------------------------------------------------
+   GET CONTENT
+------------------------------------------------------- */
+
 function getContent(slug: string): ContentItem | null {
-  // 1. Check articles
-  const articleMdx = path.join(process.cwd(), 'content/articles', `${slug}.mdx`)
-  const articleMd = path.join(process.cwd(), 'content/articles', `${slug}.md`)
+  const article = readContentFile(articlesDir, slug, 'article')
 
-  if (fs.existsSync(articleMdx)) {
-    const fileContents = fs.readFileSync(articleMdx, 'utf8')
-    const { data, content } = matter(fileContents)
-    return { type: 'article', data: data as ContentItem['data'], content }
+  if (article) {
+    return article
   }
 
-  if (fs.existsSync(articleMd)) {
-    const fileContents = fs.readFileSync(articleMd, 'utf8')
-    const { data, content } = matter(fileContents)
-    return { type: 'article', data: data as ContentItem['data'], content }
-  }
+  const page = readContentFile(pagesDir, slug, 'page')
 
-  // 2. Check standalone pages
-  const pageMdx = path.join(process.cwd(), 'content/pages', `${slug}.mdx`)
-  const pageMd = path.join(process.cwd(), 'content/pages', `${slug}.md`)
-
-  if (fs.existsSync(pageMdx)) {
-    const fileContents = fs.readFileSync(pageMdx, 'utf8')
-    const { data, content } = matter(fileContents)
-    return { type: 'page', data: data as ContentItem['data'], content }
-  }
-
-  if (fs.existsSync(pageMd)) {
-    const fileContents = fs.readFileSync(pageMd, 'utf8')
-    const { data, content } = matter(fileContents)
-    return { type: 'page', data: data as ContentItem['data'], content }
+  if (page) {
+    return page
   }
 
   return null
 }
 
-export async function generateStaticParams() {
-  const slugs: { slug: string }[] = []
+/* -------------------------------------------------------
+   DATE FORMAT
+------------------------------------------------------- */
 
-  const articlesDir = path.join(process.cwd(), 'content/articles')
-  if (fs.existsSync(articlesDir)) {
-    const files = fs.readdirSync(articlesDir)
-    files
-      .filter((f) => f.endsWith('.mdx') || f.endsWith('.md'))
-      .forEach((f) => slugs.push({ slug: f.replace(/\.mdx?$/, '') }))
+function formatDisplayDate(dateStr?: string): string {
+  if (!dateStr) {
+    return ''
   }
 
-  const pagesDir = path.join(process.cwd(), 'content/pages')
-  if (fs.existsSync(pagesDir)) {
-    const files = fs.readdirSync(pagesDir)
-    files
-      .filter((f) => f.endsWith('.mdx') || f.endsWith('.md'))
-      .forEach((f) => slugs.push({ slug: f.replace(/\.mdx?$/, '') }))
+  const dateObj = new Date(dateStr)
+
+  if (Number.isNaN(dateObj.getTime())) {
+    return dateStr
   }
 
-  return slugs.length > 0 ? slugs : [{ slug: 'placeholder' }]
+  return dateObj.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  })
 }
+
+/* -------------------------------------------------------
+   METADATA
+------------------------------------------------------- */
 
 type PageProps = {
-  params: Promise<{ slug: string }>
+  params: Promise<{
+    slug: string
+  }>
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PageProps): Promise<Metadata> {
   const { slug } = await params
+
   const item = getContent(slug)
 
-  if (!item) return { title: 'Page Not Found' }
-
-  const { type, data } = item
-  const canonicalUrl = `https://hellomacha.com/${slug}`
-  const imageUrl = data.thumbnail || '/placeholder-image.jpg'
-
-  if (type === 'article') {
-    const geoRegion = data.geoRegion || 'IN-AP'
-    const geoPlacename = data.geoPlacename || 'Andhra Pradesh, India'
-    const geoPosition = data.geoPosition || '14.4673;78.8242'
-
+  if (!item) {
     return {
-      title: `${data.title} | HelloMacha`,
-      description: data.description,
-      keywords: data.seoKeywords?.join(', '),
-      alternates: {
-        canonical: canonicalUrl,
-      },
-      other: {
-        'geo.region': geoRegion,
-        'geo.placename': geoPlacename,
-        'geo.position': geoPosition,
-        'ICBM': geoPosition,
-      },
-      openGraph: {
-        title: data.title,
-        description: data.description,
-        url: canonicalUrl,
-        siteName: 'HelloMacha',
-        images: [imageUrl],
-        type: 'article',
-        publishedTime: data.date,
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title: data.title,
-        description: data.description,
-        images: [imageUrl],
-      },
+      title: 'Page Not Found | HelloMacha',
     }
   }
 
-  return {
+  const { type, data } = item
+
+  const canonicalUrl = `https://hellomacha.com/${slug}`
+
+  const imageUrl = data.thumbnail || '/placeholder-image.jpg'
+
+  const baseMetadata: Metadata = {
     title: `${data.title} | HelloMacha`,
     description: data.description,
-    keywords: data.seoKeywords?.join(', '),
+    keywords: data.seoKeywords,
     alternates: {
       canonical: canonicalUrl,
     },
@@ -148,7 +191,12 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       url: canonicalUrl,
       siteName: 'HelloMacha',
       images: [imageUrl],
-      type: 'website',
+      type: type === 'article' ? 'article' : 'website',
+      ...(type === 'article' && data.date
+        ? {
+            publishedTime: data.date,
+          }
+        : {}),
     },
     twitter: {
       card: 'summary_large_image',
@@ -157,154 +205,260 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       images: [imageUrl],
     },
   }
+
+  if (type === 'article') {
+    const geoRegion = data.geoRegion || 'IN-AP'
+    const geoPlacename =
+      data.geoPlacename || 'Andhra Pradesh, India'
+    const geoPosition =
+      data.geoPosition || '14.4673;78.8242'
+
+    return {
+      ...baseMetadata,
+      other: {
+        'geo.region': geoRegion,
+        'geo.placename': geoPlacename,
+        'geo.position': geoPosition,
+        ICBM: geoPosition,
+      },
+    }
+  }
+
+  return baseMetadata
 }
 
-function formatDisplayDate(dateStr?: string): string {
-  if (!dateStr) return ''
-  const dateObj = new Date(dateStr)
-  if (isNaN(dateObj.getTime())) return dateStr
-  return dateObj.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  })
-}
+/* -------------------------------------------------------
+   ARTICLE PAGE
+------------------------------------------------------- */
 
-export default async function DynamicSlugPage({ params }: PageProps) {
+export default async function DynamicSlugPage({
+  params,
+}: PageProps) {
   const { slug } = await params
+
   const item = getContent(slug)
 
-  if (!item) return notFound()
+  if (!item) {
+    notFound()
+  }
 
   const { type, data, content } = item
 
-  // Calculate estimated reading time
-  const wordCount = content ? content.split(/\s+/).length : 0
-  const readingTime = Math.max(1, Math.ceil(wordCount / 225))
+  /* -------------------------------------------------------
+     READING TIME
+  ------------------------------------------------------- */
 
-  const authorName = data.author === 'srkmacha' ? 'Sivarama Krishna' : (data.author || 'Sivarama Krishna')
-  
-  const rawUpdatedDate = data.updatedDate || data.updated || data.lastUpdated
+  const wordCount = content
+    ? content.trim().split(/\s+/).length
+    : 0
+
+  const readingTime = Math.max(
+    1,
+    Math.ceil(wordCount / 225)
+  )
+
+  /* -------------------------------------------------------
+     AUTHOR
+  ------------------------------------------------------- */
+
+  const authorName =
+    data.author === 'srkmacha'
+      ? 'Sivarama Krishna'
+      : data.author || 'Sivarama Krishna'
+
+  /* -------------------------------------------------------
+     DATE
+  ------------------------------------------------------- */
+
+  const rawUpdatedDate =
+    data.updatedDate ||
+    data.updated ||
+    data.lastUpdated
+
   const displayDate = rawUpdatedDate
     ? `Last Updated on ${formatDisplayDate(rawUpdatedDate)}`
     : data.date
-    ? formatDisplayDate(data.date)
-    : ''
+      ? formatDisplayDate(data.date)
+      : ''
 
-  const articleSchema = type === 'article' ? {
-    '@context': 'https://schema.org',
-    '@type': 'Article',
-    'headline': data.title,
-    'description': data.description,
-    'image': data.thumbnail ? [data.thumbnail] : [],
-    'datePublished': data.date,
-    'dateModified': rawUpdatedDate || data.date,
-    'author': {
-      '@type': 'Person',
-      'name': authorName,
-    },
-    'publisher': {
-      '@type': 'Organization',
-      'name': 'HelloMacha',
-      'logo': {
-        '@type': 'ImageObject',
-        'url': 'https://hellomacha.com/icon.png',
-      },
-    },
-    'mainEntityOfPage': {
-      '@type': 'WebPage',
-      '@id': `https://hellomacha.com/${slug}`,
-    },
-  } : null
+  /* -------------------------------------------------------
+     CANONICAL URL
+  ------------------------------------------------------- */
+
+  const canonicalUrl =
+    `https://hellomacha.com/${slug}`
+
+  /* -------------------------------------------------------
+     ARTICLE SCHEMA
+  ------------------------------------------------------- */
+
+  const articleSchema =
+    type === 'article'
+      ? {
+          '@context': 'https://schema.org',
+          '@type': 'Article',
+          headline: data.title,
+          description: data.description || '',
+          image: data.thumbnail
+            ? [data.thumbnail]
+            : [],
+          datePublished: data.date,
+          dateModified:
+            rawUpdatedDate || data.date,
+          author: {
+            '@type': 'Person',
+            name: authorName,
+          },
+          publisher: {
+            '@type': 'Organization',
+            name: 'HelloMacha',
+            logo: {
+              '@type': 'ImageObject',
+              url: 'https://hellomacha.com/icon.png',
+            },
+          },
+          mainEntityOfPage: {
+            '@type': 'WebPage',
+            '@id': canonicalUrl,
+          },
+        }
+      : null
+
+  /* -------------------------------------------------------
+     BREADCRUMB SCHEMA
+  ------------------------------------------------------- */
 
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
-    'itemListElement': [
+    itemListElement: [
       {
         '@type': 'ListItem',
-        'position': 1,
-        'name': 'Home',
-        'item': 'https://hellomacha.com',
+        position: 1,
+        name: 'Home',
+        item: 'https://hellomacha.com',
       },
       {
         '@type': 'ListItem',
-        'position': 2,
-        'name': data.title,
-        'item': `https://hellomacha.com/${slug}`,
+        position: 2,
+        name: data.title,
+        item: canonicalUrl,
       },
     ],
   }
 
+  /* -------------------------------------------------------
+     ARTICLE
+  ------------------------------------------------------- */
+
   if (type === 'article') {
     return (
-      <article className="mx-auto max-w-4xl px-4 pt-4 pb-12 sm:px-6 sm:pt-6 sm:pb-14 overflow-x-hidden max-w-full">
-        {/* Rich SEO JSON-LD Schemas */}
+      <article className="mx-auto w-full max-w-4xl px-4 pb-12 pt-6 sm:px-6 sm:pt-8">
+
+        {/* Article Schema */}
         {articleSchema && (
           <script
             type="application/ld+json"
-            dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify(articleSchema),
+            }}
           />
         )}
+
+        {/* Breadcrumb Schema */}
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              breadcrumbSchema
+            ),
+          }}
         />
 
-        <header className="mt-2 mb-8 text-left">
-          <h1 className="text-3xl md:text-4xl lg:text-5xl font-extrabold text-gray-900 leading-tight tracking-tight mb-6">
+        {/* Article Header */}
+        <header className="mb-8">
+
+          <h1 className="mb-5 text-3xl font-extrabold leading-tight tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
             {data.title}
           </h1>
 
-          {/* Author Name */}
-          <div className="mb-1 text-xs sm:text-sm font-semibold text-gray-900">
+          <div className="mb-2 text-sm font-semibold text-gray-900">
             {authorName}
           </div>
 
-          {/* Date & Reading Time with Pipe "|" */}
-          <div className="mb-5 flex flex-wrap items-center gap-2 text-xs sm:text-sm font-medium text-gray-500">
-            {displayDate && <span>{displayDate}</span>}
-            {displayDate && <span className="text-gray-300">|</span>}
-            <span>{readingTime} min read</span>
+          <div className="mb-5 flex flex-wrap items-center gap-2 text-sm text-gray-500">
+            {displayDate && (
+              <span>{displayDate}</span>
+            )}
+
+            {displayDate && (
+              <span className="text-gray-300">
+                |
+              </span>
+            )}
+
+            <span>
+              {readingTime} min read
+            </span>
           </div>
 
-          {/* Croma Design 5: Share Icons Bar */}
-          <div className="mb-6 flex justify-start text-left">
+          {/* Share Buttons */}
+          <div className="mb-6">
             <ShareButtons title={data.title} />
           </div>
 
-          {/* Featured Image with rounded-2xl corners */}
+          {/* Featured Image */}
           {data.thumbnail && (
-            <div className="relative w-full overflow-hidden rounded-2xl border border-gray-100 mb-8">
+            <div className="mb-8 w-full overflow-hidden rounded-2xl">
               <img
                 src={data.thumbnail}
                 alt={data.title}
-                className="w-full h-auto object-cover block"
+                className="block h-auto w-full"
               />
             </div>
           )}
+
         </header>
 
-        <div className="prose prose-lg prose-stone mx-auto max-w-none text-gray-800 leading-relaxed">
+        {/* Article Content */}
+        <div className="article-content prose prose-lg prose-stone max-w-none text-gray-800">
           <MDXRemote source={content} />
         </div>
 
-        <Comments title={data.title} slug={slug} />
+        {/* Comments */}
+        <Comments
+          title={data.title}
+          slug={slug}
+        />
 
+        {/* Scroll To Top */}
         <ScrollToTop />
+
       </article>
     )
   }
 
+  /* -------------------------------------------------------
+     STANDALONE PAGE
+  ------------------------------------------------------- */
+
   return (
-    <div className="w-full pt-4 pb-8">
+    <main className="mx-auto w-full max-w-5xl px-4 pb-12 pt-6 sm:px-6">
+
+      {/* Breadcrumb Schema */}
       <script
         type="application/ld+json"
-        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify(
+            breadcrumbSchema
+          ),
+        }}
       />
-      <div className="prose prose-lg prose-blue max-w-none text-gray-800 leading-relaxed">
+
+      <div className="article-content prose prose-lg prose-stone max-w-none text-gray-800">
         <MDXRemote source={content} />
       </div>
-    </div>
+
+    </main>
   )
 }
