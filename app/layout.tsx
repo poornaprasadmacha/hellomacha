@@ -37,7 +37,7 @@ export const metadata: Metadata = {
     title: 'HelloMacha',
   },
   other: {
-    'google-adsense-account': 'ca-pub-3202279426660861',
+    'google-adsense-account': 'ca-pub-7224147187406212',
   },
 }
 
