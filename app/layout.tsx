@@ -84,6 +84,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <Link href="/privacy-policy" className="transition hover:text-[var(--brand-red)]">Privacy Policy</Link>
                     <Link href="/disclaimer" className="transition hover:text-[var(--brand-red)]">Disclaimer</Link>
                     <Link href="/terms-and-conditions" className="transition hover:text-[var(--brand-red)]">Terms</Link>
+                    <Link href="/disclaimer#affiliate-disclaimer" className="transition hover:text-[var(--brand-red)]">Affiliate Disclosure</Link>
                     <Link href="/sitemap" className="transition hover:text-[var(--brand-red)]">Sitemap</Link>
                     <a href="mailto:team.hellomacha@gmail.com" className="transition hover:text-[var(--brand-red)]">Contact</a>
                     <div className="ml-4">

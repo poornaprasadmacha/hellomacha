@@ -50,15 +50,12 @@ export default function SitemapPage() {
             <div className="sitemap-item text-sm text-gray-500 italic">No articles published yet.</div>
           ) : (
             <ul className="sitemap-list">
-              {articles.slice(0, 18).map((article, i) => (
+              {articles.map((article, i) => (
                 <li key={article.slug} className={`sitemap-item animate-fade-up`} style={{ animationDelay: `${i * 45}ms` }}>
                   <Link href={article.url} className="sitemap-link">{article.title}</Link>
                 </li>
               ))}
             </ul>
-          )}
-          {articles.length > 18 && (
-            <div className="mt-3 text-sm"><Link href="/" className="sitemap-link">View all articles</Link></div>
           )}
         </aside>
 
@@ -67,7 +64,7 @@ export default function SitemapPage() {
           <p className="sitemap-meta mb-4">Key site pages and legal resources.</p>
           <ul className="sitemap-list">
             <li className="sitemap-item" ><Link href="/" className="sitemap-link">Home</Link></li>
-            {pages.map((page, i) => (
+            {pages.map((page) => (
               <li key={page.slug} className="sitemap-item">
                 <Link href={page.url} className="sitemap-link">{page.title}</Link>
               </li>

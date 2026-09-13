@@ -16,7 +16,7 @@ export default function Comments({ title, slug }: CommentsProps) {
         data-host="https://cusdis.com"
         data-app-id="835a4c8a-32ab-437b-9d9e-7166ec526111"
         data-page-id={slug}
-        data-page-url={`https://hellomacha.com/articles/${slug}`}
+        data-page-url={`https://hellomacha.com/${slug}`}
         data-page-title={title}
       ></div>
       
