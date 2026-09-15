@@ -4,6 +4,8 @@ import { FiSearch } from 'react-icons/fi'
 import HelloMachaLogo from '../components/HelloMachaLogo'
 import ShareButtons from '../components/ShareButtons'
 import Header from '../components/Header'
+import CookieConsent from '../components/CookieConsent'
+import GoogleAnalytics from '../components/GoogleAnalytics'
 
 import type { Metadata, Viewport } from 'next'
 
@@ -18,10 +20,58 @@ export const viewport: Viewport = {
 
 const FAVICON_URL = 'https://blogger.googleusercontent.com/img/a/AVvXsEi_qTT1QbSC9r3oXthk950ikDo1z6bBdeygo1iXS5TSQ8XOVWEz8gcNcbsXT1CJB75kYeSbv3Le3dfJ99rCDDa0THFlkdy0XS_cxhVCDNzKNb7aGrN3gFQ26kqV-3KCHpeOXH63ifxOrh-DSaFEb7gqStt_HtLnrnhGY38rEJJ469EoZOeGUwHQdYqTAhk'
 
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'HelloMacha',
+  url: 'https://hellomacha.com',
+  description:
+    'Your trusted source for tech reviews, financial tips, and home products.',
+  potentialAction: {
+    '@type': 'SearchAction',
+    target: 'https://hellomacha.com/?q={search_term_string}',
+    'query-input': 'required name=search_term_string',
+  },
+}
+
+const organizationSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  name: 'HelloMacha',
+  url: 'https://hellomacha.com',
+  email: 'team.hellomacha@gmail.com',
+  sameAs: [],
+}
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://hellomacha.com'),
   title: 'HelloMacha | Financial Tips & Tech Reviews',
   description: 'Your trusted source for tech reviews, financial tips, and home products.',
+  applicationName: 'HelloMacha',
+  authors: [{ name: 'HelloMacha' }],
+  keywords: ['financial tips', 'tech reviews', 'money advice', 'product guides'],
+  robots: {
+    index: true,
+    follow: true,
+  },
+  alternates: {
+    canonical: 'https://hellomacha.com',
+  },
+  openGraph: {
+    title: 'HelloMacha | Financial Tips & Tech Reviews',
+    description: 'Your trusted source for tech reviews, financial tips, and home products.',
+    url: 'https://hellomacha.com',
+    siteName: 'HelloMacha',
+    images: [FAVICON_URL],
+    locale: 'en_IN',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'HelloMacha | Financial Tips & Tech Reviews',
+    description: 'Your trusted source for tech reviews, financial tips, and home products.',
+    images: [FAVICON_URL],
+  },
   icons: {
     icon: [
       { url: FAVICON_URL },
@@ -38,18 +88,31 @@ export const metadata: Metadata = {
   },
   other: {
     'google-adsense-account': 'ca-pub-7224147187406212',
+    'geo.region': 'IN-AP',
+    'geo.placename': 'Andhra Pradesh, India',
   },
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    // Added scroll-pt-24 here so if someone links to a specific heading, it doesn't hide under the fixed navbar
     <html lang="en" className="scroll-pt-24" suppressHydrationWarning>
       <body className="min-h-screen flex flex-col bg-[var(--page)] text-[var(--ink)]" suppressHydrationWarning>
-        
-        <Header />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(websiteSchema),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(organizationSchema),
+          }}
+        />
 
-        {/* Top padding matches fixed header height (h-12 on mobile, h-16 on desktop) */}
+        <Header />
+        <GoogleAnalytics />
+
         <main className="mx-auto w-full max-w-6xl flex-grow px-4 pt-12 md:pt-16 pb-6 sm:px-5 sm:pb-8">
           {children}
         </main>
@@ -80,17 +143,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </form>
 
                 <div className="flex flex-wrap gap-5 text-sm items-center">
-                    <Link href="/about" className="transition hover:text-[var(--brand-red)]">About</Link>
-                    <Link href="/privacy-policy" className="transition hover:text-[var(--brand-red)]">Privacy Policy</Link>
-                    <Link href="/disclaimer" className="transition hover:text-[var(--brand-red)]">Disclaimer</Link>
-                    <Link href="/terms-and-conditions" className="transition hover:text-[var(--brand-red)]">Terms</Link>
-                    <Link href="/disclaimer#affiliate-disclaimer" className="transition hover:text-[var(--brand-red)]">Affiliate Disclosure</Link>
-                    <Link href="/sitemap" className="transition hover:text-[var(--brand-red)]">Sitemap</Link>
-                    <a href="mailto:team.hellomacha@gmail.com" className="transition hover:text-[var(--brand-red)]">Contact</a>
-                    <div className="ml-4">
-                      <ShareButtons />
-                    </div>
+                  <Link href="/about" className="transition hover:text-[var(--brand-red)]">About</Link>
+                  <Link href="/contact" className="transition hover:text-[var(--brand-red)]">Contact</Link>
+                  <Link href="/privacy-policy" className="transition hover:text-[var(--brand-red)]">Privacy Policy</Link>
+                  <Link href="/disclaimer" className="transition hover:text-[var(--brand-red)]">Disclaimer</Link>
+                  <Link href="/terms-and-conditions" className="transition hover:text-[var(--brand-red)]">Terms</Link>
+                  <Link href="/disclaimer#affiliate-disclosure" className="transition hover:text-[var(--brand-red)]">Affiliate Disclosure</Link>
+                  <Link href="/sitemap" className="transition hover:text-[var(--brand-red)]">Sitemap</Link>
+                  <a href="mailto:team.hellomacha@gmail.com" className="transition hover:text-[var(--brand-red)]">Email</a>
+                  <div className="ml-4">
+                    <ShareButtons />
                   </div>
+                </div>
+
+                <div className="flex flex-wrap items-center gap-3 pt-2 text-xs uppercase tracking-[0.18em] text-[var(--muted)]">
+                  <span className="mr-1">Follow:</span>
+                  <a href="https://x.com/search?q=HelloMacha" target="_blank" rel="noopener noreferrer" className="transition hover:text-[var(--brand-red)]">X</a>
+                  <a href="https://www.instagram.com/explore/tags/hellomacha/" target="_blank" rel="noopener noreferrer" className="transition hover:text-[var(--brand-red)]">Instagram</a>
+                  <a href="https://www.facebook.com/search/top?q=HelloMacha" target="_blank" rel="noopener noreferrer" className="transition hover:text-[var(--brand-red)]">Facebook</a>
+                  <a href="https://www.youtube.com/results?search_query=HelloMacha" target="_blank" rel="noopener noreferrer" className="transition hover:text-[var(--brand-red)]">YouTube</a>
+                </div>
               </div>
             </div>
 
@@ -99,6 +171,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             </div>
           </div>
         </footer>
+
+        <CookieConsent />
       </body>
     </html>
   )
