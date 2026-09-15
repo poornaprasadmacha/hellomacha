@@ -184,7 +184,7 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
           <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
             {remaining.map((article, index) => (
               <article key={article.slug} className="group h-full">
-                <Link href={`/${article.slug}`} className="flex h-full flex-col border border-[#dfe4d4] bg-white p-3 transition-transform duration-200">
+                <Link href={`/${article.slug}`} className="block h-full border border-[#dfe4d4] bg-white p-3 transition-transform duration-200">
                   <div className="overflow-hidden">
                     <img
                       src={article.thumbnail}
@@ -193,18 +193,18 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
                     />
                   </div>
 
-                  <div className="flex flex-1 flex-col px-1 pb-1 pt-4">
+                  <div className="px-1 pb-1 pt-4">
                     <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--muted)]">{article.date}</p>
 
-                    <h3 className={`mt-3 min-h-[6.5rem] line-clamp-3 font-serif font-black leading-tight text-[var(--ink)] ${
+                    <h3 className={`mt-3 font-serif font-black text-[var(--ink)] ${
                       index % 3 === 0 ? 'text-2xl' : index % 3 === 1 ? 'text-[1.75rem]' : 'text-2xl'
                     }`}>
                       {article.title}
                     </h3>
 
-                    <p className="mt-3 min-h-[6rem] line-clamp-4 text-sm leading-6 text-[#4d5649]">{article.description}</p>
+                    <p className="mt-3 text-sm leading-6 text-[#4d5649]">{article.description}</p>
 
-                    <div className="mt-auto flex items-center justify-between border-t border-[#eef1ea] pt-3">
+                    <div className="mt-4 flex items-center justify-between border-t border-[#eef1ea] pt-3">
                       <span className="text-xs font-semibold uppercase tracking-[0.16em] text-[#62735d]">Read</span>
                       <FiArrowRight className="text-[#6a7d52]" size={16} />
                     </div>
