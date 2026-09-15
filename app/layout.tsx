@@ -127,6 +127,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <p className="max-w-md text-[var(--muted)]">
                   Practical insight for everyday decisions.
                 </p>
+                <p className="max-w-md text-[var(--muted)]">
+                  All content is written, reviewed, and edited by our editorial team for clarity, accuracy, and usefulness.
+                </p>
               </div>
 
               <div className="flex flex-col gap-4 md:min-w-[320px] md:items-end">
