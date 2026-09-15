@@ -35,6 +35,12 @@ body {
   overflow-x: hidden;
 }
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 html {
   scroll-behavior: smooth;
 }
@@ -80,6 +86,7 @@ img {
 
 .prose {
   color: var(--ink);
+  overflow-wrap: anywhere;
 }
 
 .prose h1,
@@ -187,6 +194,9 @@ img {
 }
 
 .prose table {
+  display: block;
+  max-width: 100%;
+  overflow-x: auto;
   overflow: hidden;
   border-radius: 0.75rem;
 }

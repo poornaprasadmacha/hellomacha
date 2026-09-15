@@ -92,7 +92,7 @@ export default function Header() {
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-expanded={mobileMenuOpen}
           aria-label="Toggle navigation menu"
-          className="flex items-center justify-center p-1.5 text-[var(--ink)] hover:text-[var(--brand-red)] focus:outline-none md:hidden"
+          className="flex h-12 w-12 items-center justify-center text-[var(--ink)] hover:text-[var(--brand-red)] focus:outline-none md:hidden"
         >
           {mobileMenuOpen ? <FiX size={24} /> : <FiMenu size={24} />}
         </button>
