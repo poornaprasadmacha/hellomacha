@@ -1,6 +1,7 @@
 import fs from 'fs'
 import path from 'path'
 import type { MetadataRoute } from 'next'
+import { calculators } from './calculators/calculatorData'
 
 export const dynamic = 'force-static'
 
@@ -49,5 +50,17 @@ export default function sitemap(): MetadataRoute.Sitemap {
     },
     ...pages,
     ...articles,
+    {
+      url: `${baseUrl}/calculators`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly',
+      priority: 0.8,
+    },
+    ...calculators.map(({ slug }) => ({
+      url: `${baseUrl}/calculators/${slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'monthly' as const,
+      priority: 0.7,
+    })),
   ]
 }

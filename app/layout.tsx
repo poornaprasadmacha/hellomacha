@@ -6,6 +6,7 @@ import ShareButtons from '../components/ShareButtons'
 import Header from '../components/Header'
 import CookieConsent from '../components/CookieConsent'
 import GoogleAnalytics from '../components/GoogleAnalytics'
+import { calculators } from './calculators/calculatorData'
 
 import type { Metadata, Viewport } from 'next'
 
@@ -117,60 +118,77 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {children}
         </main>
 
-        <footer className="mt-16 bg-[var(--page)] text-[var(--muted)]">
-          <div className="mx-auto max-w-6xl px-4 py-12 text-sm sm:px-5">
-            <div className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+        <footer className="mt-16 bg-[#fff6df] text-[#59606a]">
+          <div className="mx-auto max-w-6xl px-4 py-12 sm:px-5">
+            <div className="grid gap-10 lg:grid-cols-[1.25fr_1fr_1fr_1.2fr]">
               <div>
-                <div className="mb-2 flex items-center gap-2">
+                <div className="mb-4">
                   <HelloMachaLogo textOnly />
                 </div>
-                <p className="max-w-md text-[var(--muted)]">
-                  Practical insight for everyday decisions.
+                <p className="max-w-xs text-sm leading-relaxed">
+                  Practical insight for everyday decisions, from money and business to technology and home products.
                 </p>
-                <p className="max-w-md text-[var(--muted)]">
-                  All content is written, reviewed, and edited by our editorial team for clarity, accuracy, and usefulness.
-                </p>
+                <div className="mt-5">
+                  <p className="mb-2 text-xs font-bold uppercase tracking-[0.16em] text-[var(--ink)]">Follow HelloMacha</p>
+                  <ShareButtons />
+                </div>
+                <Link href="/learn" className="mt-5 inline-flex border border-[var(--brand-red)] px-4 py-2 text-xs font-bold uppercase tracking-[0.12em] text-[var(--brand-red)] transition hover:bg-[var(--brand-red)] hover:text-white">
+                  Explore our tools
+                </Link>
               </div>
 
-              <div className="flex flex-col gap-4 md:min-w-[320px] md:items-end">
-                <form action="/" method="get" className="w-full max-w-md">
-                  <div className="search-pill">
-                    <span className="icon"><FiSearch size={16} /></span>
-                    <input
-                      type="search"
-                      name="q"
-                      placeholder="Search articles, guides..."
-                      aria-label="Search articles"
-                    />
-                  </div>
-                </form>
-
-                <div className="flex flex-wrap gap-5 text-sm items-center">
+              <div>
+                <p className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-[var(--ink)]">Explore</p>
+                <nav className="flex flex-col items-start gap-3 text-sm" aria-label="Explore links">
+                  <Link href="/" className="transition hover:text-[var(--brand-red)]">Home</Link>
+                  <Link href="/learn" className="transition hover:text-[var(--brand-red)]">Learn</Link>
                   <Link href="/about" className="transition hover:text-[var(--brand-red)]">About</Link>
                   <Link href="/contact" className="transition hover:text-[var(--brand-red)]">Contact</Link>
-                  <Link href="/privacy-policy" className="transition hover:text-[var(--brand-red)]">Privacy Policy</Link>
-                  <Link href="/disclaimer" className="transition hover:text-[var(--brand-red)]">Disclaimer</Link>
-                  <Link href="/terms-and-conditions" className="transition hover:text-[var(--brand-red)]">Terms</Link>
-                  <Link href="/disclaimer#affiliate-disclosure" className="transition hover:text-[var(--brand-red)]">Affiliate Disclosure</Link>
-                  <Link href="/sitemap" className="transition hover:text-[var(--brand-red)]">Sitemap</Link>
-                  <a href="mailto:team.hellomacha@gmail.com" className="transition hover:text-[var(--brand-red)]">Email</a>
-                  <div className="ml-4">
-                    <ShareButtons />
-                  </div>
-                </div>
+                  <a href="mailto:team.hellomacha@gmail.com" className="transition hover:text-[var(--brand-red)]">Email us</a>
+                </nav>
+              </div>
 
-                <div className="flex flex-wrap items-center gap-3 pt-2 text-xs uppercase tracking-[0.18em] text-[var(--muted)]">
-                  <span className="mr-1">Follow:</span>
-                  <a href="https://x.com/search?q=HelloMacha" target="_blank" rel="noopener noreferrer" className="transition hover:text-[var(--brand-red)]">X</a>
-                  <a href="https://www.instagram.com/explore/tags/hellomacha/" target="_blank" rel="noopener noreferrer" className="transition hover:text-[var(--brand-red)]">Instagram</a>
-                  <a href="https://www.facebook.com/search/top?q=HelloMacha" target="_blank" rel="noopener noreferrer" className="transition hover:text-[var(--brand-red)]">Facebook</a>
-                  <a href="https://www.youtube.com/results?search_query=HelloMacha" target="_blank" rel="noopener noreferrer" className="transition hover:text-[var(--brand-red)]">YouTube</a>
+              <div>
+                <p className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-[var(--ink)]">Financial tools</p>
+                <nav className="flex flex-col items-start gap-3 text-sm" aria-label="Financial calculator links">
+                  <Link href="/calculators" className="font-semibold text-[var(--brand-red)] hover:underline">All calculators</Link>
+                  {calculators.slice(0, 6).map((calculator) => (
+                    <Link key={calculator.slug} href={`/calculators/${calculator.slug}`} className="transition hover:text-[var(--brand-red)]">
+                      {calculator.title}
+                    </Link>
+                  ))}
+                </nav>
+              </div>
+
+              <div>
+                <p className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-[var(--ink)]">More calculators</p>
+                <nav className="flex flex-col items-start gap-3 text-sm" aria-label="More calculator links">
+                  {calculators.slice(6).map((calculator) => (
+                    <Link key={calculator.slug} href={`/calculators/${calculator.slug}`} className="transition hover:text-[var(--brand-red)]">
+                      {calculator.title}
+                    </Link>
+                  ))}
+                </nav>
+                <p className="mb-3 mt-8 text-xs font-bold uppercase tracking-[0.16em] text-[var(--ink)]">Legal</p>
+                <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
+                  <Link href="/privacy-policy" className="transition hover:text-[var(--brand-red)]">Privacy</Link>
+                  <Link href="/terms-and-conditions" className="transition hover:text-[var(--brand-red)]">Terms</Link>
+                  <Link href="/disclaimer" className="transition hover:text-[var(--brand-red)]">Disclaimer</Link>
+                  <Link href="/sitemap" className="transition hover:text-[var(--brand-red)]">Sitemap</Link>
                 </div>
               </div>
             </div>
 
-            <div className="mt-8 border-t border-[#dfe4d4] pt-6 text-[10px] uppercase tracking-[0.22em] text-[var(--muted)]">
-              © {new Date().getFullYear()} HelloMacha
+            <form action="/" method="get" className="mt-12 max-w-xl">
+              <label htmlFor="footer-search" className="mb-2 block text-xs font-bold uppercase tracking-[0.16em] text-[var(--ink)]">Search HelloMacha</label>
+              <div className="search-pill border-[#b32b2b] bg-white">
+                <span className="icon"><FiSearch size={16} /></span>
+                <input id="footer-search" type="search" name="q" placeholder="Search articles, guides..." aria-label="Search articles" />
+              </div>
+            </form>
+
+            <div className="mt-10 border-t border-[#eadfbe] pt-6 text-[10px] uppercase tracking-[0.22em]">
+              © {new Date().getFullYear()} HelloMacha. All rights reserved.
             </div>
           </div>
         </footer>
