@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 
@@ -27,6 +27,8 @@
   --muted: #707070;
   --line: #e6e6e6;
   --shadow-soft: none;
+  --font-sans: 'Inter', 'Segoe UI', Tahoma, sans-serif;
+  --font-heading: 'Inter', 'Segoe UI', Tahoma, sans-serif;
 }
 
 html,
@@ -48,12 +50,18 @@ html {
 body {
   background: var(--page);
   color: var(--ink);
-  font-family: 'Manrope', Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans);
+  letter-spacing: 0.01em;
+  font-size: 16px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
 }
 
 /* Ensure any semantic 'font-serif' utilities use the site font for consistency */
 .font-serif {
-  font-family: 'Manrope', Arial, Helvetica, sans-serif !important;
+  font-family: var(--font-heading) !important;
 }
 
 h1,
@@ -62,9 +70,16 @@ h3,
 h4,
 h5,
 h6 {
-  font-family: 'Manrope', Arial, Helvetica, sans-serif;
-  letter-spacing: -0.02em;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
 }
+
+h1 { font-size: clamp(2.1rem, 3.4vw, 3.8rem); }
+h2 { font-size: clamp(1.65rem, 2.2vw, 2.6rem); }
+h3 { font-size: clamp(1.25rem, 1.7vw, 1.9rem); }
+h4 { font-size: clamp(1.08rem, 1.3vw, 1.45rem); }
 
 /* Tighter typography to resemble Quora Business */
 h1, h2, h3, h4, h5, h6 {
@@ -87,6 +102,78 @@ img {
 .prose {
   color: var(--ink);
   overflow-wrap: anywhere;
+  line-height: 1.8;
+}
+
+.article-content {
+  max-width: 72ch;
+  margin-inline: auto;
+  line-height: 1.85;
+  text-wrap: pretty;
+}
+
+.article-content > :first-child {
+  margin-top: 0;
+}
+
+.article-content > :last-child {
+  margin-bottom: 0;
+}
+
+.article-content p,
+.article-content li,
+.article-content blockquote,
+.article-content ol,
+.article-content ul {
+  line-height: 1.8;
+}
+
+.article-content p {
+  margin-top: 0;
+  margin-bottom: 1.4rem;
+}
+
+.article-content p + p {
+  margin-top: 0;
+}
+
+.article-content li {
+  margin-top: 0.35rem;
+  margin-bottom: 0.35rem;
+}
+
+.article-content ul,
+.article-content ol {
+  margin-top: 0.75rem;
+  margin-bottom: 1.2rem;
+  padding-left: 1.5rem;
+}
+
+.article-content h1,
+.article-content h2,
+.article-content h3,
+.article-content h4,
+.article-content h5,
+.article-content h6 {
+  color: var(--ink);
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  margin-top: 2.2rem;
+  margin-bottom: 1rem;
+}
+
+.article-content h1:first-child,
+.article-content h2:first-child,
+.article-content h3:first-child,
+.article-content h4:first-child {
+  margin-top: 0;
+}
+
+.article-content blockquote {
+  margin: 1.6rem 0;
+  padding-left: 1rem;
+  border-left: 3px solid rgba(177, 177, 177, 0.7);
+  color: var(--muted);
 }
 
 .prose h1,
@@ -94,6 +181,14 @@ img {
 .prose h3,
 .prose h4 {
   color: var(--ink);
+}
+
+.article-content hr,
+.prose hr {
+  display: none !important;
+  border: 0 !important;
+  height: 0 !important;
+  margin: 0 !important;
 }
 
 .prose a {

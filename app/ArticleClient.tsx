@@ -14,6 +14,20 @@ import {
 import ScrollToTop from '@/components/ScrollToTop'
 import type { ArticleMeta } from './page'
 
+function getTitleClass(title: string, featured = false) {
+  const length = title.length
+
+  if (featured) {
+    if (length > 70) return 'text-[clamp(1.55rem,1.45vw,2.2rem)]'
+    if (length > 45) return 'text-[clamp(1.7rem,1.7vw,2.5rem)]'
+    return 'text-[clamp(1.9rem,2vw,2.8rem)]'
+  }
+
+  if (length > 62) return 'text-[clamp(1.15rem,1.3vw,1.7rem)]'
+  if (length > 42) return 'text-[clamp(1.25rem,1.5vw,1.9rem)]'
+  return 'text-[clamp(1.35rem,1.7vw,2.05rem)]'
+}
+
 export default function ArticleClient({ articles }: { articles: ArticleMeta[] }) {
   const [searchQuery, setSearchQuery] = useState('')
   const [isMounted, setIsMounted] = useState(false)
@@ -142,19 +156,19 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
                 </div>
               </div>
 
-              <div className="px-2 pb-2 sm:px-4 sm:pb-4">
+              <div className="flex flex-col px-2 pb-2 sm:px-4 sm:pb-4">
                 <div className="mb-4 flex items-center gap-2 text-[10px] font-bold uppercase tracking-[0.22em] text-[var(--muted)]">
                   <FiBookOpen size={12} />
                   <span>Step-by-step</span>
                 </div>
 
-                <h2 className="font-serif text-3xl font-black leading-[0.95] tracking-[-0.05em] text-[#2c352d] sm:text-4xl lg:text-[2.85rem]">
+                <h2 className={`font-serif ${getTitleClass(featured.title, true)} font-extrabold leading-[1.02] tracking-[-0.04em] text-[#2c352d] text-balance`}>
                   {featured.title}
                 </h2>
 
                 <p className="mt-4 text-sm leading-7 text-[#4d5649] sm:text-base">{featured.description}</p>
 
-                <div className="mt-6 flex items-center justify-between border-t border-[#eef1ea] pt-4">
+                <div className="mt-auto flex items-center justify-between border-t border-[#eef1ea] pt-4">
                   <div className="flex items-center gap-3 text-xs font-medium text-[#62735d]">
                     <span className="inline-flex items-center gap-1.5"><FiCalendar size={12} /> {featured.date}</span>
                     <span className="inline-flex items-center gap-1.5"><FiClock size={12} /> 6 min read</span>
@@ -182,29 +196,27 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
 
         {remaining.length > 0 ? (
           <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-            {remaining.map((article, index) => (
+            {remaining.map((article) => (
               <article key={article.slug} className="group h-full">
-                <Link href={`/${article.slug}`} className="block h-full border border-[#dfe4d4] bg-white p-3 transition-transform duration-200">
+                <Link href={`/${article.slug}`} className="flex h-full flex-col border border-[#dfe4d4] bg-white p-3 transition-transform duration-200 hover:-translate-y-0.5">
                   <div className="overflow-hidden">
                     <img
                       src={article.thumbnail}
                       alt={article.title}
-                      className="h-48 w-full object-cover sm:h-52"
+                      className="aspect-[16/9] w-full object-cover"
                     />
                   </div>
 
-                  <div className="px-1 pb-1 pt-4">
+                  <div className="flex flex-1 flex-col px-1 pb-1 pt-4">
                     <p className="text-[10px] font-bold uppercase tracking-[0.2em] text-[var(--muted)]">{article.date}</p>
 
-                    <h3 className={`mt-3 font-serif font-black text-[var(--ink)] ${
-                      index % 3 === 0 ? 'text-2xl' : index % 3 === 1 ? 'text-[1.75rem]' : 'text-2xl'
-                    }`}>
+                    <h3 className={`mt-3 font-serif ${getTitleClass(article.title)} font-extrabold leading-[1.08] tracking-[-0.03em] text-[var(--ink)] text-balance`}>
                       {article.title}
                     </h3>
 
                     <p className="mt-3 text-sm leading-6 text-[#4d5649]">{article.description}</p>
 
-                    <div className="mt-4 flex items-center justify-between border-t border-[#eef1ea] pt-3">
+                    <div className="mt-auto flex items-center justify-between border-t border-[#eef1ea] pt-3">
                       <span className="text-xs font-semibold uppercase tracking-[0.16em] text-[#62735d]">Read</span>
                       <FiArrowRight className="text-[#6a7d52]" size={16} />
                     </div>
