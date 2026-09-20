@@ -11,7 +11,6 @@ import {
   FiSearch,
   FiDollarSign,
   FiArrowRight,
-  FiCheckCircle,
   FiPieChart,
 } from 'react-icons/fi'
 
@@ -372,6 +371,7 @@ export default function LearnClient({ articles }: LearnClientProps) {
                       <img
                         src={article.thumbnail}
                         alt={article.title}
+                        loading="lazy"
                         className="w-full h-full object-cover group-hover:scale-105 transition duration-300"
                       />
                     </div>

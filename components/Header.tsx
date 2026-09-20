@@ -13,7 +13,8 @@ export default function Header() {
 
   // Close mobile menu when pathname changes
   useEffect(() => {
-    setMobileMenuOpen(false)
+    const timer = window.setTimeout(() => setMobileMenuOpen(false), 0)
+    return () => window.clearTimeout(timer)
   }, [pathname])
 
   // Close mobile menu on Escape key press

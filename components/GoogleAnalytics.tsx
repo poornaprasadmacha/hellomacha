@@ -1,20 +1,16 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 
 const COOKIE_KEY = 'hellomacha-cookie-consent'
 const GA_ID = 'G-33PLLZZW52'
 
 export default function GoogleAnalytics() {
-  const [isReady, setIsReady] = useState(false)
-
   useEffect(() => {
     const consent = localStorage.getItem(COOKIE_KEY)
     if (consent !== 'accepted') {
       return
     }
-
-    setIsReady(true)
 
     const scriptId = 'gtag-script'
     if (document.getElementById(scriptId)) {
@@ -37,10 +33,6 @@ export default function GoogleAnalytics() {
     `
     document.head.appendChild(inlineScript)
   }, [])
-
-  if (!isReady) {
-    return null
-  }
 
   return null
 }

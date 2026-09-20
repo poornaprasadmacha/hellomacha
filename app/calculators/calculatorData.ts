@@ -155,6 +155,78 @@ export const calculators: CalculatorDefinition[] = [
       { key: 'years', label: 'Time period', defaultValue: 10, min: 1, max: 40, step: 1, suffix: 'years' },
     ],
   },
+  {
+    slug: 'cagr',
+    title: 'CAGR Calculator',
+    description: 'Calculate the annualized growth rate of an investment over time.',
+    seoDescription: 'Calculate CAGR from your initial value, final value, and investment period with this free CAGR calculator.',
+    keywords: ['CAGR calculator', 'compound annual growth rate calculator', 'investment growth calculator'],
+    fields: [
+      { key: 'initial', label: 'Initial value', defaultValue: 100000, min: 1000, max: 100000000, step: 1000, suffix: '₹' },
+      { key: 'final', label: 'Final value', defaultValue: 200000, min: 1000, max: 200000000, step: 1000, suffix: '₹' },
+      { key: 'years', label: 'Investment period', defaultValue: 5, min: 1, max: 50, step: 1, suffix: 'years' },
+    ],
+  },
+  {
+    slug: 'fixed-deposit',
+    title: 'Fixed Deposit Calculator',
+    description: 'Estimate maturity value and interest earned on a fixed deposit.',
+    seoDescription: 'Estimate fixed deposit maturity value and interest earned using principal, interest rate, and tenure.',
+    keywords: ['FD calculator', 'fixed deposit calculator India', 'FD maturity calculator'],
+    fields: [
+      { key: 'principal', label: 'Deposit amount', defaultValue: 100000, min: 1000, max: 100000000, step: 1000, suffix: '₹' },
+      { key: 'rate', label: 'Annual interest rate', defaultValue: 7, min: 1, max: 20, step: 0.1, suffix: '%' },
+      { key: 'years', label: 'Tenure', defaultValue: 5, min: 1, max: 20, step: 1, suffix: 'years' },
+    ],
+  },
+  {
+    slug: 'ppf',
+    title: 'PPF Calculator',
+    description: 'Estimate PPF maturity value from annual contributions and the interest rate.',
+    seoDescription: 'Estimate Public Provident Fund maturity value using annual investment, interest rate, and investment period.',
+    keywords: ['PPF calculator', 'PPF maturity calculator', 'Public Provident Fund calculator'],
+    fields: [
+      { key: 'annual', label: 'Annual investment', defaultValue: 150000, min: 500, max: 150000, step: 500, suffix: '₹' },
+      { key: 'rate', label: 'Annual interest rate', defaultValue: 7.1, min: 1, max: 15, step: 0.1, suffix: '%' },
+      { key: 'years', label: 'Investment period', defaultValue: 15, min: 1, max: 25, step: 1, suffix: 'years' },
+    ],
+  },
+  {
+    slug: 'nps',
+    title: 'NPS Calculator',
+    description: 'Estimate the retirement corpus from regular NPS contributions.',
+    seoDescription: 'Estimate NPS retirement corpus from monthly contribution, expected return, and investment period.',
+    keywords: ['NPS calculator', 'National Pension System calculator', 'NPS retirement calculator'],
+    fields: [
+      { key: 'monthly', label: 'Monthly contribution', defaultValue: 5000, min: 500, max: 200000, step: 500, suffix: '₹' },
+      { key: 'rate', label: 'Expected annual return', defaultValue: 10, min: 1, max: 20, step: 0.5, suffix: '%' },
+      { key: 'years', label: 'Investment period', defaultValue: 20, min: 1, max: 40, step: 1, suffix: 'years' },
+    ],
+  },
+  {
+    slug: 'epf',
+    title: 'EPF Calculator',
+    description: 'Estimate employee provident fund growth from monthly contributions.',
+    seoDescription: 'Estimate EPF corpus from employee contribution, employer contribution, interest rate, and investment period.',
+    keywords: ['EPF calculator', 'EPF balance calculator', 'provident fund calculator India'],
+    fields: [
+      { key: 'monthly', label: 'Monthly contribution', defaultValue: 5000, min: 500, max: 200000, step: 500, suffix: '₹' },
+      { key: 'rate', label: 'Annual interest rate', defaultValue: 8.25, min: 1, max: 15, step: 0.05, suffix: '%' },
+      { key: 'years', label: 'Investment period', defaultValue: 20, min: 1, max: 40, step: 1, suffix: 'years' },
+    ],
+  },
+  {
+    slug: 'home-loan-emi',
+    title: 'Home Loan EMI Calculator',
+    description: 'Calculate monthly EMI, total interest, and total repayment on a home loan.',
+    seoDescription: 'Calculate home loan EMI, total interest payable, and total repayment using loan amount, interest rate, and tenure.',
+    keywords: ['home loan EMI calculator', 'home loan calculator India', 'housing loan EMI calculator'],
+    fields: [
+      { key: 'principal', label: 'Loan amount', defaultValue: 3000000, min: 100000, max: 100000000, step: 10000, suffix: '₹' },
+      { key: 'rate', label: 'Annual interest rate', defaultValue: 8.5, min: 1, max: 20, step: 0.1, suffix: '%' },
+      { key: 'years', label: 'Loan tenure', defaultValue: 20, min: 1, max: 40, step: 1, suffix: 'years' },
+    ],
+  },
 ]
 
 export const calculatorBySlug = Object.fromEntries(

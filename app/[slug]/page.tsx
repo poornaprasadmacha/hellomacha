@@ -3,6 +3,7 @@ import path from 'path'
 import matter from 'gray-matter'
 import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
+import Link from 'next/link'
 import type { Metadata } from 'next'
 
 import ScrollToTop from '@/components/ScrollToTop'
@@ -25,13 +26,20 @@ type ContentData = {
   geoRegion?: string
   geoPlacename?: string
   geoPosition?: string
-  [key: string]: any
+  sources?: { name: string; url: string }[]
 }
 
 type ContentItem = {
   type: 'article' | 'page'
   data: ContentData
   content: string
+}
+
+function authorSlug(author?: string) {
+  const normalized = (author || '').toLowerCase()
+  if (normalized.includes('poorna')) return 'poorna-prasad'
+  if (normalized.includes('chaitanya')) return 'chaitanya'
+  return 'sivarama-krishna'
 }
 
 /* -------------------------------------------------------
@@ -173,15 +181,19 @@ export async function generateMetadata({
   }
 
   const { type, data } = item
-
+  const metadataAuthorName =
+    data.author === 'srkmacha'
+      ? 'Sivarama Krishna'
+      : data.author || 'Sivarama Krishna'
   const canonicalUrl = `https://hellomacha.com/${slug}`
 
-  const imageUrl = data.thumbnail || '/placeholder-image.jpg'
+  const imageUrl = data.thumbnail || 'https://hellomacha.com/og-image.svg'
 
   const baseMetadata: Metadata = {
     title: `${data.title} | HelloMacha`,
     description: data.description,
     keywords: data.seoKeywords,
+    authors: [{ name: metadataAuthorName, url: `https://hellomacha.com/authors/${authorSlug(data.author)}` }],
     alternates: {
       canonical: canonicalUrl,
     },
@@ -355,6 +367,12 @@ export default async function DynamicSlugPage({
     return (
       <article className="mx-auto w-full max-w-4xl px-4 pb-12 pt-6 sm:px-6 sm:pt-8">
 
+        <nav className="mb-6 text-xs text-[var(--muted)]" aria-label="Breadcrumb">
+          <Link href="/" className="hover:text-[var(--brand-red)]">Home</Link>
+          <span className="px-2">/</span>
+          <span>{data.title}</span>
+        </nav>
+
         {/* Article Schema */}
         {articleSchema && (
           <script
@@ -383,7 +401,9 @@ export default async function DynamicSlugPage({
           </h1>
 
           <div className="mb-2 text-sm font-semibold text-gray-900">
-            {authorName}
+            <Link href={`/authors/${authorSlug(data.author)}`} className="hover:text-[var(--brand-red)] hover:underline">
+              {authorName}
+            </Link>
           </div>
 
           <div className="mb-5 flex flex-wrap items-center gap-2 text-sm text-gray-500">
@@ -413,6 +433,7 @@ export default async function DynamicSlugPage({
               <img
                 src={data.thumbnail}
                 alt={data.title}
+                loading="lazy"
                 className="block h-auto w-full"
               />
             </div>
@@ -424,6 +445,21 @@ export default async function DynamicSlugPage({
         <div className="article-content prose prose-lg prose-stone max-w-none text-gray-800">
           <MDXRemote source={content} />
         </div>
+
+        {data.sources && data.sources.length > 0 && (
+          <section className="mt-10 border-t border-[var(--line)] pt-6">
+            <h2 className="text-xl font-bold text-[var(--ink)]">Sources and references</h2>
+            <ul className="mt-3 space-y-2 text-sm text-[var(--muted)]">
+              {data.sources.map((source) => (
+                <li key={source.url}>
+                  <a href={source.url} target="_blank" rel="noopener noreferrer" className="text-[var(--brand-red)] underline-offset-2 hover:underline">
+                    {source.name}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </section>
+        )}
 
         {/* Comments */}
         <Comments

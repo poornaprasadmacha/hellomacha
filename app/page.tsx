@@ -23,14 +23,14 @@ export const metadata: Metadata = {
     siteName: 'HelloMacha',
     type: 'website',
     locale: 'en_IN',
-    images: ['https://hellomacha.com/og-image.jpg'],
+    images: [{ url: 'https://hellomacha.com/og-image.svg', width: 1200, height: 630, alt: 'HelloMacha practical guides and financial tools' }],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'HelloMacha | Financial Tips & Tech Reviews',
     description:
       'Practical insight for everyday decisions. Actionable guides, clear recommendations, and straightforward reviews to help you decide faster.',
-    images: ['https://hellomacha.com/og-image.jpg'],
+    images: [{ url: 'https://hellomacha.com/og-image.svg', width: 1200, height: 630, alt: 'HelloMacha practical guides and financial tools' }],
     site: '@hellomacha',
     creator: '@hellomacha',
   },
@@ -67,7 +67,7 @@ function getArticles(): ArticleMeta[] {
       return {
         slug,
         title: data.title || 'Untitled Article',
-        thumbnail: data.thumbnail || '/placeholder-image.jpg',
+        thumbnail: data.thumbnail || '/icon.png',
         date: data.date || 'No Date',
         description: data.description || '',
       }

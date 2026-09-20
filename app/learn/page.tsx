@@ -43,7 +43,7 @@ function getArticles(): ArticleMeta[] {
       return {
         slug,
         title: data.title || 'Untitled Guide',
-        thumbnail: data.thumbnail || '/placeholder-image.jpg',
+        thumbnail: data.thumbnail || '/icon.png',
         date: data.date || 'No Date',
         description: data.description || '',
       }

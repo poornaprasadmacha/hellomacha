@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
 import {
   FiArrowRight,
   FiBookOpen,
@@ -29,18 +29,10 @@ function getTitleClass(title: string, featured = false) {
 }
 
 export default function ArticleClient({ articles }: { articles: ArticleMeta[] }) {
-  const [searchQuery, setSearchQuery] = useState('')
-  const [isMounted, setIsMounted] = useState(false)
+  const searchParams = useSearchParams()
+  const searchQuery = searchParams.get('q')?.trim() || ''
 
-  // Wait for the browser to load, then read the URL. 
-  // This completely bypasses the Next.js server routing.
-  useEffect(() => {
-    setIsMounted(true)
-    const params = new URLSearchParams(window.location.search)
-    setSearchQuery(params.get('q')?.trim() || '')
-  }, [])
-
-  const filteredArticles = isMounted && searchQuery
+  const filteredArticles = searchQuery
     ? articles.filter((article) => {
         const haystack = `${article.title} ${article.description}`.toLowerCase()
         return haystack.includes(searchQuery.toLowerCase())
@@ -87,7 +79,7 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
 
   return (
     <div className="pb-16">
-      {isMounted && searchQuery ? (
+      {searchQuery ? (
         <div className="mb-6 text-sm font-medium text-[#62735d]">
           Showing results for <span className="font-bold text-[#2c352d]">“{searchQuery}”</span>
         </div>
@@ -127,6 +119,7 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
                 <img
                   src="https://www.savemyexams.com/cdn-cgi/image/f=auto,width=256/https://cdn.savemyexams.com/images/illustrations/no-results-found-outline-dark.svg"
                   alt="Hero illustration"
+                  loading="lazy"
                   className="w-full h-64 object-contain"
                   style={{ filter: 'invert(1) brightness(1.4)', opacity: 0.95 }}
                 />
@@ -144,6 +137,7 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
                 <img
                   src={featured.thumbnail}
                   alt={featured.title}
+                  loading="lazy"
                   className="h-full w-full object-cover"
                 />
                 <div className="absolute inset-0 bg-[rgba(0,0,0,0.15)]" />
@@ -203,6 +197,7 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
                     <img
                       src={article.thumbnail}
                       alt={article.title}
+                      loading="lazy"
                       className="aspect-[16/9] w-full object-cover"
                     />
                   </div>

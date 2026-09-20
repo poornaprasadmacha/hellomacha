@@ -20,6 +20,7 @@ export const viewport: Viewport = {
 }
 
 const FAVICON_URL = 'https://blogger.googleusercontent.com/img/a/AVvXsEi_qTT1QbSC9r3oXthk950ikDo1z6bBdeygo1iXS5TSQ8XOVWEz8gcNcbsXT1CJB75kYeSbv3Le3dfJ99rCDDa0THFlkdy0XS_cxhVCDNzKNb7aGrN3gFQ26kqV-3KCHpeOXH63ifxOrh-DSaFEb7gqStt_HtLnrnhGY38rEJJ469EoZOeGUwHQdYqTAhk'
+const OG_IMAGE_URL = 'https://hellomacha.com/og-image.svg'
 
 const websiteSchema = {
   '@context': 'https://schema.org',
@@ -41,7 +42,12 @@ const organizationSchema = {
   name: 'HelloMacha',
   url: 'https://hellomacha.com',
   email: 'team.hellomacha@gmail.com',
-  sameAs: [],
+  sameAs: [
+    'https://x.com/search?q=HelloMacha',
+    'https://www.instagram.com/explore/tags/hellomacha/',
+    'https://www.facebook.com/search/top?q=HelloMacha',
+    'https://www.youtube.com/results?search_query=HelloMacha',
+  ],
 }
 
 export const metadata: Metadata = {
@@ -57,13 +63,16 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: 'https://hellomacha.com',
+    types: {
+      'application/rss+xml': 'https://hellomacha.com/feed.xml',
+    },
   },
   openGraph: {
     title: 'HelloMacha | Financial Tips & Tech Reviews',
     description: 'Your trusted source for tech reviews, financial tips, and home products.',
     url: 'https://hellomacha.com',
     siteName: 'HelloMacha',
-    images: [FAVICON_URL],
+    images: [{ url: OG_IMAGE_URL, width: 1200, height: 630, alt: 'HelloMacha practical guides and financial tools' }],
     locale: 'en_IN',
     type: 'website',
   },
@@ -71,7 +80,7 @@ export const metadata: Metadata = {
     card: 'summary_large_image',
     title: 'HelloMacha | Financial Tips & Tech Reviews',
     description: 'Your trusted source for tech reviews, financial tips, and home products.',
-    images: [FAVICON_URL],
+    images: [{ url: OG_IMAGE_URL, width: 1200, height: 630, alt: 'HelloMacha practical guides and financial tools' }],
   },
   icons: {
     icon: [
@@ -142,9 +151,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <nav className="flex flex-col items-start gap-3 text-sm" aria-label="Explore links">
                   <Link href="/" className="transition hover:text-[var(--brand-red)]">Home</Link>
                   <Link href="/learn" className="transition hover:text-[var(--brand-red)]">Learn</Link>
+                  <Link href="/topics" className="transition hover:text-[var(--brand-red)]">Finance topics</Link>
                   <Link href="/about" className="transition hover:text-[var(--brand-red)]">About</Link>
+                  <Link href="/authors/sivarama-krishna" className="transition hover:text-[var(--brand-red)]">Authors</Link>
+                  <Link href="/editorial-policy" className="transition hover:text-[var(--brand-red)]">Editorial policy</Link>
                   <Link href="/contact" className="transition hover:text-[var(--brand-red)]">Contact</Link>
                   <a href="mailto:team.hellomacha@gmail.com" className="transition hover:text-[var(--brand-red)]">Email us</a>
+                  <a href="/feed.xml" className="transition hover:text-[var(--brand-red)]">RSS feed</a>
                 </nav>
               </div>
 
@@ -172,6 +185,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <p className="mb-3 mt-8 text-xs font-bold uppercase tracking-[0.16em] text-[var(--ink)]">Legal</p>
                 <div className="flex flex-wrap gap-x-4 gap-y-2 text-sm">
                   <Link href="/privacy-policy" className="transition hover:text-[var(--brand-red)]">Privacy</Link>
+                  <Link href="/cookie-policy" className="transition hover:text-[var(--brand-red)]">Cookies</Link>
                   <Link href="/terms-and-conditions" className="transition hover:text-[var(--brand-red)]">Terms</Link>
                   <Link href="/disclaimer" className="transition hover:text-[var(--brand-red)]">Disclaimer</Link>
                   <Link href="/sitemap" className="transition hover:text-[var(--brand-red)]">Sitemap</Link>
@@ -186,6 +200,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <input id="footer-search" type="search" name="q" placeholder="Search articles, guides..." aria-label="Search articles" />
               </div>
             </form>
+
+            <div className="mt-8 max-w-xl border-l-2 border-[var(--brand-red)] pl-4">
+              <p className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--ink)]">Get practical updates</p>
+              <p className="mt-2 text-sm leading-relaxed">Email <a href="mailto:team.hellomacha@gmail.com?subject=HelloMacha%20updates" className="font-semibold text-[var(--brand-red)] hover:underline">team.hellomacha@gmail.com</a> to request new article and calculator updates.</p>
+            </div>
 
             <div className="mt-10 border-t border-[#eadfbe] pt-6 text-[10px] uppercase tracking-[0.22em]">
               © {new Date().getFullYear()} HelloMacha. All rights reserved.

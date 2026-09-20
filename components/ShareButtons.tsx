@@ -26,14 +26,14 @@ export default function ShareButtons({ title, url }: ShareButtonsProps) {
     const shareUrl = getShareUrl()
     const shareTitle = getShareTitle()
 
-    if (typeof navigator !== 'undefined' && (navigator as any).share) {
+    if (typeof navigator !== 'undefined' && navigator.share) {
       try {
-        await (navigator as any).share({
+        await navigator.share({
           title: shareTitle,
           url: shareUrl,
         })
         return
-      } catch (e) {
+      } catch {
         // User cancelled or share failed, fallback to copy link
       }
     }
@@ -48,7 +48,7 @@ export default function ShareButtons({ title, url }: ShareButtonsProps) {
       }
       setCopied(true)
       setTimeout(() => setCopied(false), 2500)
-    } catch (e) {
+    } catch {
       setCopied(true)
       setTimeout(() => setCopied(false), 2500)
     }

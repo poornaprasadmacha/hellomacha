@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title id="title">HelloMacha</title>
+  <desc id="desc">Financial tips, practical guides, calculators, and technology reviews.</desc>
+  <rect width="1200" height="630" fill="#fbfbfb"/>
+  <rect x="0" y="0" width="22" height="630" fill="#b32b2b"/>
+  <rect x="22" y="0" width="1178" height="630" fill="#fff6df"/>
+  <circle cx="1030" cy="120" r="190" fill="#b32b2b" opacity="0.08"/>
+  <circle cx="1080" cy="540" r="260" fill="#1b1b1b" opacity="0.05"/>
+  <text x="110" y="230" fill="#b32b2b" font-family="Georgia, serif" font-size="76" font-weight="700">HelloMacha</text>
+  <text x="114" y="315" fill="#1b1b1b" font-family="Arial, sans-serif" font-size="36" font-weight="700">Smart answers for everyday decisions.</text>
+  <text x="114" y="380" fill="#707070" font-family="Arial, sans-serif" font-size="25">Personal finance  ·  Calculators  ·  Tech reviews  ·  Buying guides</text>
+  <line x1="114" y1="448" x2="1086" y2="448" stroke="#dfe4d4" stroke-width="3"/>
+  <text x="114" y="510" fill="#707070" font-family="Arial, sans-serif" font-size="20" letter-spacing="3">HELLOMACHA.COM</text>
+</svg>

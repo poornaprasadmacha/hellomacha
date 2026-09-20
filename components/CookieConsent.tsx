@@ -9,11 +9,12 @@ export default function CookieConsent() {
   const [isMounted, setIsMounted] = useState(false)
 
   useEffect(() => {
-    setIsMounted(true)
-    const consent = localStorage.getItem(COOKIE_KEY)
-    if (!consent) {
-      setIsVisible(true)
-    }
+    const timer = window.setTimeout(() => {
+      setIsMounted(true)
+      const consent = localStorage.getItem(COOKIE_KEY)
+      if (!consent) setIsVisible(true)
+    }, 0)
+    return () => window.clearTimeout(timer)
   }, [])
 
   const saveConsent = (value: 'accepted' | 'rejected') => {

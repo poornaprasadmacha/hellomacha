@@ -21,7 +21,7 @@ export default function NotFound() {
         </h2>
         
         <p className="text-lg text-gray-600 mb-12 font-serif italic leading-relaxed max-w-lg mx-auto">
-          The page you are looking for might have been removed, had its name changed, or is temporarily unavailable. Let's get you back to the facts.
+          The page you are looking for might have been removed, had its name changed, or is temporarily unavailable. Let&apos;s get you back to the facts.
         </p>
 
         {/* Action Buttons (Flat, Pill-shaped, Zero Shadows) */}
