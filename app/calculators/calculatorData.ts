@@ -206,11 +206,12 @@ export const calculators: CalculatorDefinition[] = [
   {
     slug: 'epf',
     title: 'EPF Calculator',
-    description: 'Estimate employee provident fund growth from monthly contributions.',
+    description: 'Estimate employee provident fund growth from employee and employer monthly contributions.',
     seoDescription: 'Estimate EPF corpus from employee contribution, employer contribution, interest rate, and investment period.',
     keywords: ['EPF calculator', 'EPF balance calculator', 'provident fund calculator India'],
     fields: [
-      { key: 'monthly', label: 'Monthly contribution', defaultValue: 5000, min: 500, max: 200000, step: 500, suffix: '₹' },
+      { key: 'employeeMonthly', label: 'Monthly employee contribution', defaultValue: 5000, min: 500, max: 200000, step: 500, suffix: '₹' },
+      { key: 'employerMonthly', label: 'Monthly employer contribution', defaultValue: 5000, min: 500, max: 200000, step: 500, suffix: '₹' },
       { key: 'rate', label: 'Annual interest rate', defaultValue: 8.25, min: 1, max: 15, step: 0.05, suffix: '%' },
       { key: 'years', label: 'Investment period', defaultValue: 20, min: 1, max: 40, step: 1, suffix: 'years' },
     ],

@@ -13,7 +13,11 @@ function monthlyFutureValue(monthly: number, annualRate: number, years: number) 
 }
 
 function formatCurrency(value: number) {
-  return `₹${Math.max(0, Math.round(value)).toLocaleString('en-IN')}`
+  return `₹${formatIndianNumber(value)}`
+}
+
+function formatIndianNumber(value: number) {
+  return Math.max(0, Math.round(value)).toLocaleString('en-IN')
 }
 
 function calculateEmi(principal: number, annualRate: number, years: number) {
@@ -21,6 +25,14 @@ function calculateEmi(principal: number, annualRate: number, years: number) {
   const months = years * 12
   if (monthlyRate === 0) return principal / months
   return principal * monthlyRate * Math.pow(1 + monthlyRate, months) / (Math.pow(1 + monthlyRate, months) - 1)
+}
+
+function getMinimum(field: CalculatorDefinition['fields'][number]) {
+  return field.suffix === '₹' || field.suffix === '%' ? 0 : field.min
+}
+
+function clampValue(value: number, minimum: number, maximum: number) {
+  return Math.min(maximum, Math.max(minimum, value))
 }
 
 function getMethodology(slug: string) {
@@ -50,7 +62,7 @@ function getMethodology(slug: string) {
     case 'nps':
       return 'Uses monthly compounding on regular contributions. NPS returns are market-linked and the final withdrawal, annuity, tax, and allocation rules are not modeled here.'
     case 'epf':
-      return 'Uses regular monthly contributions and the selected annual rate. Actual EPF balances depend on eligible wages, contribution rules, interest declarations, and employment history.'
+      return 'Uses the employee and employer contributions entered by the user with monthly compounding. This is a simplified estimate: actual EPF balances depend on eligible wages, EPS allocation, contribution rules, interest declarations, and employment history.'
     case 'home-loan-emi':
       return 'Uses the standard reducing-balance EMI formula. It excludes processing fees, insurance, floating-rate changes, taxes, prepayments, and other lender charges.'
     default:
@@ -62,6 +74,7 @@ export default function CalculatorClient({ calculator }: { calculator: Calculato
   const [values, setValues] = useState<Record<string, number>>(
     Object.fromEntries(calculator.fields.map((field) => [field.key, field.defaultValue])),
   )
+  const [draftValues, setDraftValues] = useState<Record<string, string>>({})
 
   const result = useMemo(() => {
     const value = (key: string) => values[key] ?? 0
@@ -120,17 +133,25 @@ export default function CalculatorClient({ calculator }: { calculator: Calculato
       }
       case 'swp': {
         const monthlyRate = rate / 12 / 100
-        const remaining = value('corpus') * Math.pow(1 + monthlyRate, years * 12) - monthly * ((Math.pow(1 + monthlyRate, years * 12) - 1) / (monthlyRate || 1))
+        const months = years * 12
+        const remaining = monthlyRate === 0
+          ? value('corpus') - monthly * months
+          : value('corpus') * Math.pow(1 + monthlyRate, months) - monthly * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate)
         primary = remaining
         label = 'Estimated remaining corpus'
         secondary = `Total withdrawals: ${formatCurrency(monthly * years * 12)}`
         break
       }
-      case 'fixed-monthly-withdrawal':
-        primary = value('corpus') / (((1 - Math.pow(1 + rate / 12 / 100, -(years * 12))) / (rate / 12 / 100 || 1)))
+      case 'fixed-monthly-withdrawal': {
+        const monthlyRate = rate / 12 / 100
+        const months = years * 12
+        primary = monthlyRate === 0
+          ? value('corpus') / months
+          : value('corpus') / ((1 - Math.pow(1 + monthlyRate, -months)) / monthlyRate)
         label = 'Estimated monthly withdrawal'
         secondary = `Starting corpus: ${formatCurrency(value('corpus'))}`
         break
+      }
       case 'lumpsum':
         primary = value('principal') * Math.pow(1 + rate / 100, years)
         secondary = `Estimated gain: ${formatCurrency(primary - value('principal'))}`
@@ -153,15 +174,22 @@ export default function CalculatorClient({ calculator }: { calculator: Calculato
       }
       case 'ppf': {
         const annualRate = value('rate') / 100
-        primary = value('annual') * ((Math.pow(1 + annualRate, years) - 1) / (annualRate || 1))
+        primary = annualRate === 0
+          ? value('annual') * years
+          : value('annual') * ((Math.pow(1 + annualRate, years) - 1) / annualRate)
         secondary = `Total contributions: ${formatCurrency(value('annual') * years)}`
         break
       }
       case 'nps':
-      case 'epf':
         primary = monthlyFutureValue(value('monthly'), value('rate'), years)
         secondary = `Total contributions: ${formatCurrency(value('monthly') * years * 12)}`
         break
+      case 'epf': {
+        const monthlyContribution = value('employeeMonthly') + value('employerMonthly')
+        primary = monthlyFutureValue(monthlyContribution, value('rate'), years)
+        secondary = `Total contributions: ${formatCurrency(monthlyContribution * years * 12)}`
+        break
+      }
       case 'home-loan-emi': {
         const emi = calculateEmi(value('principal'), value('rate'), years)
         const totalRepayment = emi * years * 12
@@ -197,48 +225,79 @@ export default function CalculatorClient({ calculator }: { calculator: Calculato
       <section className="grid gap-8 lg:grid-cols-[1fr_0.8fr]">
         <div className="border border-[var(--line)] bg-white p-6 sm:p-8">
           <div className="space-y-7">
-            {calculator.fields.map((field) => (
-              <div key={field.key}>
-                <div className="mb-2 flex items-center justify-between gap-4 text-sm font-medium">
-                  <label htmlFor={field.key} className="text-[var(--ink)]">{field.label}</label>
-                  <div className="flex items-center gap-2">
-                    <input
-                      aria-label={`${field.label} value`}
-                      type="number"
-                      min={field.min}
-                      max={field.max}
-                      step={field.step}
-                      value={values[field.key]}
-                      onChange={(event) => {
-                        const nextValue = Number(event.target.value)
-                        if (!Number.isNaN(nextValue)) {
-                          setValues((current) => ({
-                            ...current,
-                            [field.key]: Math.min(field.max, Math.max(field.min, nextValue)),
-                          }))
-                        }
-                      }}
-                      className="w-28 border border-[var(--line)] bg-white px-2 py-1 text-right font-mono text-sm font-bold text-[var(--brand-red)] outline-none focus:border-[var(--brand-red)]"
-                    />
-                    {field.suffix !== '₹' && <span className="font-mono text-xs text-[var(--muted)]">{field.suffix}</span>}
+            {calculator.fields.map((field) => {
+              const minimum = getMinimum(field)
+
+              return (
+                <div key={field.key}>
+                  <div className="mb-2 flex items-center justify-between gap-4 text-sm font-medium">
+                    <label htmlFor={field.key} className="text-[var(--ink)]">{field.label}</label>
+                    <div className="flex items-center gap-2">
+                      <input
+                        aria-label={`${field.label} value`}
+                        type="text"
+                        inputMode="decimal"
+                        value={draftValues[field.key] ?? (field.suffix === '₹' ? formatIndianNumber(values[field.key]) : String(values[field.key]))}
+                        onFocus={() => setDraftValues((current) => ({ ...current, [field.key]: String(values[field.key]) }))}
+                        onBlur={() => {
+                          const rawValue = draftValues[field.key] ?? String(values[field.key])
+                          const parsedValue = Number(rawValue.replace(/,/g, ''))
+                          const nextValue = rawValue === '' || rawValue === '.' || !Number.isFinite(parsedValue)
+                            ? minimum
+                            : clampValue(parsedValue, minimum, field.max)
+
+                          setValues((current) => ({ ...current, [field.key]: nextValue }))
+                          setDraftValues((current) => {
+                            const next = { ...current }
+                            delete next[field.key]
+                            return next
+                          })
+                        }}
+                        onChange={(event) => {
+                          const nextDraft = event.target.value.replace(/,/g, '')
+                          if (!/^\d*\.?\d*$/.test(nextDraft)) return
+
+                          setDraftValues((current) => ({ ...current, [field.key]: nextDraft }))
+                          if (nextDraft !== '' && nextDraft !== '.') {
+                            const parsedValue = Number(nextDraft)
+                            if (Number.isFinite(parsedValue)) {
+                              setValues((current) => ({
+                                ...current,
+                                [field.key]: clampValue(parsedValue, minimum, field.max),
+                              }))
+                            }
+                          }
+                        }}
+                        className="w-28 border border-[var(--line)] bg-white px-2 py-1 text-right font-mono text-sm font-bold text-[var(--brand-red)] outline-none focus:border-[var(--brand-red)]"
+                      />
+                      {field.suffix !== '₹' && <span className="font-mono text-xs text-[var(--muted)]">{field.suffix}</span>}
+                    </div>
+                  </div>
+                  <input
+                    id={field.key}
+                    type="range"
+                    min={minimum}
+                    max={field.max}
+                    step={field.step}
+                    value={values[field.key]}
+                    onChange={(event) => {
+                      const nextValue = Number(event.target.value)
+                      setValues((current) => ({ ...current, [field.key]: nextValue }))
+                      setDraftValues((current) => {
+                        const next = { ...current }
+                        delete next[field.key]
+                        return next
+                      })
+                    }}
+                    className="w-full accent-[var(--brand-red)]"
+                  />
+                  <div className="mt-1 flex justify-between text-[10px] text-[var(--muted)]">
+                    <span>{field.suffix === '₹' ? formatCurrency(minimum) : `${minimum}${field.suffix}`}</span>
+                    <span>{field.suffix === '₹' ? formatCurrency(field.max) : `${field.max} ${field.suffix}`}</span>
                   </div>
                 </div>
-                <input
-                  id={field.key}
-                  type="range"
-                  min={field.min}
-                  max={field.max}
-                  step={field.step}
-                  value={values[field.key]}
-                  onChange={(event) => setValues((current) => ({ ...current, [field.key]: Number(event.target.value) }))}
-                  className="w-full accent-[var(--brand-red)]"
-                />
-                <div className="mt-1 flex justify-between text-[10px] text-[var(--muted)]">
-                  <span>{field.suffix === '₹' ? formatCurrency(field.min) : `${field.min} ${field.suffix}`}</span>
-                  <span>{field.suffix === '₹' ? formatCurrency(field.max) : `${field.max} ${field.suffix}`}</span>
-                </div>
-              </div>
-            ))}
+              )
+            })}
           </div>
         </div>
 

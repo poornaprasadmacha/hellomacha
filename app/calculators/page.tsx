@@ -43,6 +43,16 @@ export default function CalculatorsPage() {
       </section>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <Link
+          href="/calculators/emergency-fund"
+          className="group border border-[var(--brand-red)]/40 bg-[#fffaf4] p-5 transition hover:border-[var(--brand-red)]"
+        >
+          <h2 className="text-lg font-bold text-[var(--ink)] group-hover:text-[var(--brand-red)]">Emergency Fund Calculator</h2>
+          <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">Plan a cash buffer from essential expenses, income stability, dependants, health costs, and current savings.</p>
+          <span className="mt-5 inline-flex items-center gap-2 text-xs font-semibold text-[var(--brand-red)]">
+            Open calculator <FiArrowRight size={13} />
+          </span>
+        </Link>
         {calculators.map((calculator) => (
           <Link
             key={calculator.slug}

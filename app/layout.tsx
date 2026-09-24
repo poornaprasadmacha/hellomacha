@@ -165,6 +165,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 <p className="mb-4 text-xs font-bold uppercase tracking-[0.16em] text-[var(--ink)]">Financial tools</p>
                 <nav className="flex flex-col items-start gap-3 text-sm" aria-label="Financial calculator links">
                   <Link href="/calculators" className="font-semibold text-[var(--brand-red)] hover:underline">All calculators</Link>
+                  <Link href="/calculators/emergency-fund" className="transition hover:text-[var(--brand-red)]">Emergency Fund Calculator</Link>
                   {calculators.slice(0, 6).map((calculator) => (
                     <Link key={calculator.slug} href={`/calculators/${calculator.slug}`} className="transition hover:text-[var(--brand-red)]">
                       {calculator.title}
