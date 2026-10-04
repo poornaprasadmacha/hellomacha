@@ -19,6 +19,7 @@ export default function CookieConsent() {
 
   const saveConsent = (value: 'accepted' | 'rejected') => {
     localStorage.setItem(COOKIE_KEY, value)
+    window.dispatchEvent(new Event('hellomacha:cookie-consent'))
     setIsVisible(false)
   }
 

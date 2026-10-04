@@ -1,4 +1,5 @@
 import './globals.css'
+import { Suspense } from 'react'
 import Link from 'next/link'
 import { FiSearch } from 'react-icons/fi'
 import HelloMachaLogo from '../components/HelloMachaLogo'
@@ -121,7 +122,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
 
         <Header />
-        <GoogleAnalytics />
+        <Suspense fallback={null}>
+          <GoogleAnalytics />
+        </Suspense>
 
         <main className="mx-auto w-full max-w-6xl flex-grow px-4 pt-12 md:pt-16 pb-6 sm:px-5 sm:pb-8">
           {children}

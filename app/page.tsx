@@ -1,10 +1,8 @@
 import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
-import { Suspense } from 'react'
 import type { Metadata } from 'next'
 import ArticleClient from './ArticleClient'
-import GooeyQuoteLoader from '@/components/GooeyQuoteLoader'
 
 export const dynamic = 'force-static'
 
@@ -80,9 +78,5 @@ export default function HomePage() {
   // This now runs securely at build-time, safely extracting your articles
   const articles = getArticles()
 
-  return (
-    <Suspense fallback={<GooeyQuoteLoader />}>
-      <ArticleClient articles={articles} />
-    </Suspense>
-  )
+  return <ArticleClient articles={articles} />
 }

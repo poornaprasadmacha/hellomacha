@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { useSearchParams } from 'next/navigation'
+import { startTransition, useEffect, useState } from 'react'
 import {
   FiArrowRight,
   FiBookOpen,
@@ -29,8 +29,13 @@ function getTitleClass(title: string, featured = false) {
 }
 
 export default function ArticleClient({ articles }: { articles: ArticleMeta[] }) {
-  const searchParams = useSearchParams()
-  const searchQuery = searchParams.get('q')?.trim() || ''
+  const [searchQuery, setSearchQuery] = useState('')
+
+  useEffect(() => {
+    startTransition(() => {
+      setSearchQuery(new URLSearchParams(window.location.search).get('q')?.trim() || '')
+    })
+  }, [])
 
   const filteredArticles = searchQuery
     ? articles.filter((article) => {
@@ -62,7 +67,8 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
               <input
                 type="search"
                 name="q"
-                defaultValue={searchQuery}
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
                 placeholder="Search guides..."
                 className=""
               />
@@ -109,7 +115,14 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
                     <label htmlFor="hero-search" className="sr-only">Search guides</label>
                     <div className="search-pill">
                       <span className="icon"><FiSearch size={18} /></span>
-                      <input id="hero-search" name="q" placeholder="Search guides, topics, or reviews" aria-label="Search guides" />
+                      <input
+                        id="hero-search"
+                        name="q"
+                        value={searchQuery}
+                        onChange={(event) => setSearchQuery(event.target.value)}
+                        placeholder="Search guides, topics, or reviews"
+                        aria-label="Search guides"
+                      />
                     </div>
                   </form>
                 </div>
