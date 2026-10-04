@@ -1,5 +1,6 @@
 import fs from 'fs'
 import path from 'path'
+import matter from 'gray-matter'
 import type { MetadataRoute } from 'next'
 import { calculators } from './calculators/calculatorData'
 import { topics } from './topics/topicData'
@@ -17,12 +18,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
     const fileNames = fs.readdirSync(articlesDir)
     articles = fileNames
       .filter((file) => file.endsWith('.mdx') || file.endsWith('.md'))
-      .map((file) => ({
-        url: `${baseUrl}/${file.replace(/\.mdx?$/, '')}`,
-        lastModified: new Date(),
-        changeFrequency: 'weekly',
-        priority: 0.8,
-      }))
+      .map((file) => {
+        const filePath = path.join(articlesDir, file)
+        const { data } = matter(fs.readFileSync(filePath, 'utf8'))
+        const contentDate =
+          data.updatedDate || data.updated || data.lastUpdated || data.date
+        const parsedDate = contentDate ? new Date(contentDate) : null
+        const lastModified =
+          parsedDate && !Number.isNaN(parsedDate.getTime())
+            ? parsedDate
+            : fs.statSync(filePath).mtime
+
+        return {
+          url: `${baseUrl}/${file.replace(/\.mdx?$/, '')}`,
+          lastModified,
+          changeFrequency: 'weekly' as const,
+          priority: 0.8,
+        }
+      })
   }
 
   // 2. Get all standalone pages (About, Terms, etc.)

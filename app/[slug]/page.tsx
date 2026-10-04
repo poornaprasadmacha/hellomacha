@@ -5,6 +5,7 @@ import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import Link from 'next/link'
 import type { Metadata } from 'next'
+import { articleSeoMetadata } from '../../content/articles/seoMetadata'
 
 import ScrollToTop from '@/components/ScrollToTop'
 import ShareButtons from '@/components/ShareButtons'
@@ -16,6 +17,7 @@ export const dynamicParams = false
 type ContentData = {
   title: string
   description?: string
+  primaryKeyword?: string
   date?: string
   updatedDate?: string
   updated?: string
@@ -34,6 +36,71 @@ type ContentItem = {
   data: ContentData
   content: string
 }
+
+const relatedArticleGroups = [
+  [
+    '21-powerful-business-strategies',
+    'pricing-strategy-in-business',
+    'free-pitch-deck-download',
+    'quit-job-to-start-business',
+    'vdumpling-dynasty-success-story',
+  ],
+  [
+    'personal-finance-tips',
+    'financial-freedom-low-salary',
+    'how-to-reduce-monthly-expenses-india',
+    'emergency-fund-how-much-do-you-need',
+    'middle-class-20000-salary-40-lakh-debt-financial-freedom',
+    'become-rich-15-money-lessons',
+    'build-wealth-7-proven-money-laws',
+    'earn-1-crore-real-story-plan',
+  ],
+  [
+    'how-rich-people-use-debt-to-build-wealth',
+    'is-debt-good-rich-people-use-debt',
+    'home-loan-interest-reduction',
+    'how-to-buy-land-with-low-salary',
+    'land-vs-mutual-funds',
+    'middle-class-20000-salary-40-lakh-debt-financial-freedom',
+  ],
+  [
+    'best-mutual-fund-5-4-3-2-1-rule',
+    'Dividend-Reinvestment-Strategy-Turn-Dividend-Income-Into-Long-Term-Wealth',
+    'digital-gold-savings-vs-gold-etf',
+    'land-vs-mutual-funds',
+    'build-wealth-7-proven-money-laws',
+    'personal-finance-tips',
+  ],
+  [
+    'file-itr-self-own',
+    'PM-Shram-Yogi-Maandhan-Yojana',
+    'upi-charges-2026',
+    'personal-finance-tips',
+  ],
+  [
+    'slice-bank-review',
+    'tide-bank',
+    'personal-finance-tips',
+    'emergency-fund-how-much-do-you-need',
+  ],
+  [
+    'tv-buying-guide-india',
+    'best-4k-tvs-india',
+    'best-oled-tvs-india',
+    'best-qled-tvs-india',
+    'most-power-efficient-tvs-india',
+  ],
+  [
+    'best-laptops-under-50000',
+    'best-i7-13th-gen-laptops-india',
+    'best-i7-14th-gen-laptops-india',
+  ],
+  [
+    'best-dishwashers-india',
+    'best-cold-pressed-oils-india',
+    'cold-pressed-groundnut-oil',
+  ],
+]
 
 function authorSlug(author?: string) {
   const normalized = (author || '').toLowerCase()
@@ -135,6 +202,19 @@ function getContent(slug: string): ContentItem | null {
   return null
 }
 
+function getRelatedArticles(slug: string) {
+  const group = relatedArticleGroups.find((articles) => articles.includes(slug)) || []
+
+  return group
+    .filter((relatedSlug) => relatedSlug !== slug)
+    .slice(0, 3)
+    .flatMap((relatedSlug) => {
+      const item = readContentFile(articlesDir, relatedSlug, 'article')
+
+      return item ? [{ slug: relatedSlug, title: item.data.title }] : []
+    })
+}
+
 /* -------------------------------------------------------
    DATE FORMAT
 ------------------------------------------------------- */
@@ -181,6 +261,7 @@ export async function generateMetadata({
   }
 
   const { type, data } = item
+  const articleSeo = type === 'article' ? articleSeoMetadata[slug] : undefined
   const metadataAuthorName =
     data.author === 'srkmacha'
       ? 'Sivarama Krishna'
@@ -190,19 +271,21 @@ export async function generateMetadata({
   const imageUrl = data.thumbnail || 'https://hellomacha.com/og-image.svg'
 
   const baseMetadata: Metadata = {
-    title: `${data.title} | HelloMacha`,
-    description: data.description,
-    keywords: data.seoKeywords,
+    title: articleSeo?.title || `${data.title} | HelloMacha`,
+    description: articleSeo?.description || data.description,
+    keywords: articleSeo
+      ? [articleSeo.primaryKeyword]
+      : data.seoKeywords,
     authors: [{ name: metadataAuthorName, url: `https://hellomacha.com/authors/${authorSlug(data.author)}` }],
     alternates: {
       canonical: canonicalUrl,
     },
     openGraph: {
-      title: data.title,
-      description: data.description,
+      title: articleSeo?.title || data.title,
+      description: articleSeo?.description || data.description,
       url: canonicalUrl,
       siteName: 'HelloMacha',
-      images: [imageUrl],
+      images: [{ url: imageUrl, alt: data.title }],
       type: type === 'article' ? 'article' : 'website',
       ...(type === 'article' && data.date
         ? {
@@ -212,8 +295,8 @@ export async function generateMetadata({
     },
     twitter: {
       card: 'summary_large_image',
-      title: data.title,
-      description: data.description,
+      title: articleSeo?.title || data.title,
+      description: articleSeo?.description || data.description,
       images: [imageUrl],
     },
   }
@@ -255,6 +338,9 @@ export default async function DynamicSlugPage({
   }
 
   const { type, data, content } = item
+  const articleSeo = type === 'article' ? articleSeoMetadata[slug] : undefined
+  const relatedArticles =
+    type === 'article' ? getRelatedArticles(slug) : []
 
   /* -------------------------------------------------------
      READING TIME
@@ -310,9 +396,10 @@ export default async function DynamicSlugPage({
           '@context': 'https://schema.org',
           '@type': 'Article',
           headline: data.title,
-          description: data.description || '',
+          description: articleSeo?.description || data.description || '',
+          keywords: articleSeo?.primaryKeyword || data.primaryKeyword,
           image: data.thumbnail
-            ? [data.thumbnail]
+            ? [new URL(data.thumbnail, 'https://hellomacha.com').toString()]
             : [],
           datePublished: data.date,
           dateModified:
@@ -459,6 +546,21 @@ export default async function DynamicSlugPage({
               ))}
             </ul>
           </section>
+        )}
+
+        {relatedArticles.length > 0 && (
+          <nav className="mt-10 border-t border-[var(--line)] pt-6" aria-label="Related guides">
+            <h2 className="text-xl font-bold text-[var(--ink)]">Related guides</h2>
+            <ul className="mt-3 space-y-2 text-sm">
+              {relatedArticles.map((article) => (
+                <li key={article.slug}>
+                  <Link href={`/${article.slug}`} className="text-[var(--brand-red)] underline-offset-2 hover:underline">
+                    {article.title}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
         )}
 
         {/* Comments */}

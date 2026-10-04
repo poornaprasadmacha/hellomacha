@@ -32,9 +32,6 @@ export const metadata: Metadata = {
     site: '@hellomacha',
     creator: '@hellomacha',
   },
-  other: {
-    'article:published_time': '2026-09-15T00:00:00+05:30',
-  },
 }
 
 export interface ArticleMeta {
