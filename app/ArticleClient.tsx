@@ -133,8 +133,7 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
                   src="/hero.svg"
                   alt="Hero illustration"
                   loading="lazy"
-                  className="w-full h-64 object-contain"
-                  style={{ filter: 'invert(1) brightness(1.4)', opacity: 0.95 }}
+                  className="w-full h-64 object-contain opacity-0.95"
                 />
               </div>
             </div>
