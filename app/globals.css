@@ -26,6 +26,7 @@
   --ink: #1b1b1b;
   --muted: #707070;
   --line: #e6e6e6;
+  --olive-deep: #5a6b3f;
   --shadow-soft: none;
   --font-sans: 'Inter', 'Segoe UI', Tahoma, sans-serif;
   --font-heading: 'Inter', 'Segoe UI', Tahoma, sans-serif;
@@ -197,12 +198,7 @@ img {
   text-underline-offset: 0.12em;
 }
 
-/* Remove default rounded corners and shadows used elsewhere to match flat design */
-* {
-  border-radius: 0 !important;
-}
-
-/* Allow specific elements to have rounded corners (hero search) */
+/* Allow specific elements to have rounded corners */
 .rounded-hero {
   border-radius: 9999px !important;
 }
@@ -231,61 +227,6 @@ img {
   border: 2px solid var(--brand-red);
   background: var(--surface);
   border-radius: 9999px;
-}
-@media (max-width: 767px) {
-  .header-desktop-search {
-    display: none !important;
-  }
-}
-@media (min-width: 768px) {
-  .header-desktop-search {
-    display: flex !important;
-  }
-}
-.search-pill .icon,
-.search-pill svg {
-  color: var(--brand-red);
-  flex: 0 0 auto;
-}
-.search-pill input {
-  border: 0;
-  outline: none;
-  background: transparent;
-  padding: 0;
-  font-size: 0.95rem;
-  color: var(--ink);
-  width: 100%;
-}
-.search-pill input::placeholder { color: var(--muted); }
-
-.about-hero-pattern {
-  position: absolute;
-  inset: 0;
-  background-image:
-    radial-gradient(circle at 18% 20%, rgba(255,255,255,0.18), transparent 24%),
-    radial-gradient(circle at 82% 14%, rgba(255,255,255,0.12), transparent 20%),
-    linear-gradient(90deg, rgba(255,255,255,0.06) 1px, transparent 1px);
-  background-size: 220px 220px, 180px 180px, 14px 14px;
-  opacity: 0.56;
-  pointer-events: none;
-}
-
-.about-hero-panel,
-.about-card-soft,
-.about-grid-card {
-  background: rgba(255,255,255,0.92);
-}
-
-.about-hero-panel {
-  border: 1px solid rgba(255,255,255,0.22);
-}
-
-.about-card-soft {
-  border: 1px solid #e6e6e6;
-}
-
-.about-grid-card {
-  border: 1px solid #e6d7d7;
 }
 
 .prose table {

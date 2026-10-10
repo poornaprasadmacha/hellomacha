@@ -5,6 +5,11 @@ type ArticleSeoMetadata = {
 }
 
 export const articleSeoMetadata: Record<string, ArticleSeoMetadata> = {
+  'new-epf-rules-2026': {
+    title: 'New EPF Rules 2026: ₹25,000 wage ceiling impact | HelloMacha',
+    description: 'Understand the new EPF rules 2026 with the ₹25,000 wage ceiling. Learn how PF contributions, take-home salary, EPS, and coverage change for employees.',
+    primaryKeyword: 'new EPF rules 2026',
+  },
   '21-powerful-business-strategies': {
     title: 'Business strategies: 21 practical ideas | HelloMacha',
     description: 'Explore business strategies for small companies. Learn to price, market and manage cash flow, then choose a practical next step.',

@@ -287,7 +287,7 @@ export default function EmergencyFundClient() {
 
           <div className="mt-7 border-t border-[var(--line)] pt-5">
             <p className="text-sm font-bold text-[var(--ink)]">Gap plan</p>
-            {result.gap === 0 ? <p className="mt-2 text-sm text-[var(--muted)]">You have reached the calculated target. Review it after major changes to your income or essential costs.</p> : <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">To close the gap in {values.targetMonths} months, plan about <strong className="text-[var(--ink)]">{formatCurrency(result.monthlyToTarget)} per month</strong>. Your current plan would take about <strong className="text-[var(--ink)]">{values.monthlySaving > 0 ? Math.ceil(result.gap / values.monthlySaving) : 'an undefined number of'} months</strong>.</p>}
+            {result.gap === 0 ? <p className="mt-2 text-sm text-[var(--muted)]">You have reached the calculated target. Review it after major changes to your income or essential costs.</p> : <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">To close the gap in {values.targetMonths} months, plan about <strong className="text-[var(--ink)]">{formatCurrency(result.monthlyToTarget)} per month</strong>. Your current plan would take about <strong className="text-[var(--ink)]">{values.monthlySaving > 0 ? Math.ceil(result.gap / values.monthlySaving) : 'an indefinite'} months</strong>.</p>}
           </div>
 
           <div className="mt-7 flex items-start gap-2 border-t border-[var(--line)] pt-5 text-xs leading-relaxed text-[var(--muted)]"><FiInfo className="mt-0.5 shrink-0 text-[var(--brand-red)]" size={15} />This is an educational estimate. Coverage needs vary with job security, dependants, insurance, debt, and access to other support.</div>

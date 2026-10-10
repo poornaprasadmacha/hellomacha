@@ -130,7 +130,7 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
 
               <div className="hidden lg:block">
                 <img
-                  src="https://www.savemyexams.com/cdn-cgi/image/f=auto,width=256/https://cdn.savemyexams.com/images/illustrations/no-results-found-outline-dark.svg"
+                  src="/hero.svg"
                   alt="Hero illustration"
                   loading="lazy"
                   className="w-full h-64 object-contain"
@@ -178,7 +178,7 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
                 <div className="mt-auto flex items-center justify-between border-t border-[#eef1ea] pt-4">
                   <div className="flex items-center gap-3 text-xs font-medium text-[#62735d]">
                     <span className="inline-flex items-center gap-1.5"><FiCalendar size={12} /> {featured.date}</span>
-                    <span className="inline-flex items-center gap-1.5"><FiClock size={12} /> 6 min read</span>
+                    <span className="inline-flex items-center gap-1.5"><FiClock size={12} /> {featured.readingTime || 6} min read</span>
                   </div>
 
                   <span className="inline-flex items-center gap-1.5 text-sm font-bold text-[var(--brand-red)]">

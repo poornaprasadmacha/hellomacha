@@ -44,6 +44,59 @@ export default function NotFound() {
           </Link>
           
         </div>
+
+        <div className="mt-14 border-t border-[var(--line)] pt-10">
+          <p className="mx-auto max-w-xl text-sm leading-relaxed text-[var(--muted)]">
+            HelloMacha publishes practical guides on personal finance, mutual funds, retirement planning, loans, tax, and Indian government schemes, alongside technology reviews, home-product research, and free financial calculators built for everyday decisions.
+          </p>
+
+          <h2 className="mt-8 text-xs font-bold uppercase tracking-[0.2em] text-[var(--muted)]">Popular sections</h2>
+          <nav className="mt-4 grid gap-3 sm:grid-cols-2" aria-label="Popular sections">
+            <Link
+              href="/topics"
+              className="border border-[var(--line)] bg-white p-4 text-left transition hover:border-[var(--brand-red)]"
+            >
+              <span className="text-sm font-bold text-[var(--ink)]">Finance topics</span>
+              <span className="mt-1 block text-xs leading-relaxed text-[var(--muted)]">Guides on money, investing, retirement, loans, and tax.</span>
+            </Link>
+            <Link
+              href="/calculators"
+              className="border border-[var(--line)] bg-white p-4 text-left transition hover:border-[var(--brand-red)]"
+            >
+              <span className="text-sm font-bold text-[var(--ink)]">Financial calculators</span>
+              <span className="mt-1 block text-xs leading-relaxed text-[var(--muted)]">Free SIP, EMI, inflation, and retirement tools.</span>
+            </Link>
+            <Link
+              href="/learn"
+              className="border border-[var(--line)] bg-white p-4 text-left transition hover:border-[var(--brand-red)]"
+            >
+              <span className="text-sm font-bold text-[var(--ink)]">Learn hub</span>
+              <span className="mt-1 block text-xs leading-relaxed text-[var(--muted)]">Step-by-step guides on money, business, and technology.</span>
+            </Link>
+            <Link
+              href="/authors/sivarama-krishna"
+              className="border border-[var(--line)] bg-white p-4 text-left transition hover:border-[var(--brand-red)]"
+            >
+              <span className="text-sm font-bold text-[var(--ink)]">Our authors</span>
+              <span className="mt-1 block text-xs leading-relaxed text-[var(--muted)]">Meet the researchers behind the guides.</span>
+            </Link>
+            <Link
+              href="/editorial-policy"
+              className="border border-[var(--line)] bg-white p-4 text-left transition hover:border-[var(--brand-red)]"
+            >
+              <span className="text-sm font-bold text-[var(--ink)]">Editorial policy</span>
+              <span className="mt-1 block text-xs leading-relaxed text-[var(--muted)]">How we source, verify, and update every article.</span>
+            </Link>
+            <Link
+              href="/contact"
+              className="border border-[var(--line)] bg-white p-4 text-left transition hover:border-[var(--brand-red)]"
+            >
+              <span className="text-sm font-bold text-[var(--ink)]">Contact</span>
+              <span className="mt-1 block text-xs leading-relaxed text-[var(--muted)]">Send questions, corrections, or topic requests.</span>
+            </Link>
+          </nav>
+        </div>
+        
       </div>
       
     </div>

@@ -144,7 +144,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   <p className="mb-2 text-xs font-bold uppercase tracking-[0.16em] text-[var(--ink)]">Follow HelloMacha</p>
                   <ShareButtons />
                 </div>
-                <Link href="/learn" className="mt-5 inline-flex border border-[var(--brand-red)] px-4 py-2 text-xs font-bold uppercase tracking-[0.12em] text-[var(--brand-red)] transition hover:bg-[var(--brand-red)] hover:text-white">
+                <Link href="/calculators" className="mt-5 inline-flex border border-[var(--brand-red)] px-4 py-2 text-xs font-bold uppercase tracking-[0.12em] text-[var(--brand-red)] transition hover:bg-[var(--brand-red)] hover:text-white">
                   Explore our tools
                 </Link>
               </div>

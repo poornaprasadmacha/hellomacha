@@ -39,6 +39,13 @@ type ContentItem = {
 
 const relatedArticleGroups = [
   [
+    'new-epf-rules-2026',
+    'PM-Shram-Yogi-Maandhan-Yojana',
+    'personal-finance-tips',
+    'financial-freedom-low-salary',
+    'build-wealth-7-proven-money-laws',
+  ],
+  [
     '21-powerful-business-strategies',
     'pricing-strategy-in-business',
     'free-pitch-deck-download',
@@ -262,13 +269,19 @@ export async function generateMetadata({
 
   const { type, data } = item
   const articleSeo = type === 'article' ? articleSeoMetadata[slug] : undefined
-  const metadataAuthorName =
-    data.author === 'srkmacha'
-      ? 'Sivarama Krishna'
-      : data.author || 'Sivarama Krishna'
+  const metadataAuthorName = data.author || 'Sivarama Krishna'
   const canonicalUrl = `https://hellomacha.com/${slug}`
 
-  const imageUrl = data.thumbnail || 'https://hellomacha.com/og-image.svg'
+  const resolveImageUrl = (url?: string) => {
+    if (!url) return 'https://hellomacha.com/og-image.svg'
+    try {
+      return new URL(url, 'https://hellomacha.com').toString()
+    } catch {
+      return 'https://hellomacha.com/og-image.svg'
+    }
+  }
+
+  const imageUrl = resolveImageUrl(data.thumbnail)
 
   const baseMetadata: Metadata = {
     title: articleSeo?.title || `${data.title} | HelloMacha`,
@@ -342,6 +355,15 @@ export default async function DynamicSlugPage({
   const relatedArticles =
     type === 'article' ? getRelatedArticles(slug) : []
 
+  const resolveImageUrl = (url?: string) => {
+    if (!url) return 'https://hellomacha.com/og-image.svg'
+    try {
+      return new URL(url, 'https://hellomacha.com').toString()
+    } catch {
+      return 'https://hellomacha.com/og-image.svg'
+    }
+  }
+
   /* -------------------------------------------------------
      READING TIME
   ------------------------------------------------------- */
@@ -359,10 +381,7 @@ export default async function DynamicSlugPage({
      AUTHOR
   ------------------------------------------------------- */
 
-  const authorName =
-    data.author === 'srkmacha'
-      ? 'Sivarama Krishna'
-      : data.author || 'Sivarama Krishna'
+  const authorName = data.author || 'Sivarama Krishna'
 
   /* -------------------------------------------------------
      DATE
@@ -399,7 +418,7 @@ export default async function DynamicSlugPage({
           description: articleSeo?.description || data.description || '',
           keywords: articleSeo?.primaryKeyword || data.primaryKeyword,
           image: data.thumbnail
-            ? [new URL(data.thumbnail, 'https://hellomacha.com').toString()]
+            ? [resolveImageUrl(data.thumbnail)]
             : [],
           datePublished: data.date,
           dateModified:

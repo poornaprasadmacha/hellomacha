@@ -42,6 +42,45 @@ export default function CalculatorsPage() {
         </p>
       </section>
 
+      <section className="mb-12 border border-[var(--line)] bg-white p-6 sm:p-8">
+        <h2 className="text-xl font-bold text-[var(--ink)]">Why use financial calculators?</h2>
+        <div className="mt-4 prose prose-sm max-w-none text-[var(--muted)]">
+          <p>Financial calculators turn vague goals into concrete numbers. They help you answer questions like: How much should I invest monthly to reach ₹1 crore in 15 years? What will my expenses look like after 20 years of inflation? How long will my retirement corpus last if I withdraw ₹50,000 monthly?</p>
+          <p>Each calculator on this page uses transparent, standard financial formulas — compound interest, future value of annuities, EMI calculations, and inflation adjustments. You can adjust every input to model different scenarios: conservative vs. optimistic returns, early vs. delayed start, higher vs. lower inflation.</p>
+          <p><strong>How to use them:</strong> Enter your numbers, observe the result, then change one variable at a time to see the sensitivity. Use the output to set realistic targets, compare options, and have informed conversations with a qualified financial advisor. Results are educational estimates — they do not include taxes, fees, or market volatility unless noted.</p>
+        </div>
+      </section>
+
+      <section className="mb-10">
+        <h2 className="mb-5 text-2xl font-bold text-[var(--ink)]">Popular calculators</h2>
+        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <article className="border border-[var(--line)] bg-white p-5">
+            <h3 className="font-bold text-[var(--ink)]">SIP Calculator</h3>
+            <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">Estimate the future value of monthly mutual fund investments. See how compounding grows your wealth over time.</p>
+          </article>
+          <article className="border border-[var(--line)] bg-white p-5">
+            <h3 className="font-bold text-[var(--ink)]">Retirement Planner</h3>
+            <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">Calculate the corpus you need and the monthly SIP required to fund your retirement lifestyle.</p>
+          </article>
+          <article className="border border-[var(--line)] bg-white p-5">
+            <h3 className="font-bold text-[var(--ink)]">Step-Up SIP Calculator</h3>
+            <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">See how increasing your SIP annually (with salary hikes) dramatically accelerates corpus growth.</p>
+          </article>
+          <article className="border border-[var(--line)] bg-white p-5">
+            <h3 className="font-bold text-[var(--ink)]">Cost of Delaying SIP</h3>
+            <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">Quantify the wealth lost by postponing your investment start date — the most powerful argument for starting today.</p>
+          </article>
+          <article className="border border-[var(--line)] bg-white p-5">
+            <h3 className="font-bold text-[var(--ink)]">SWP / Withdrawal Planner</h3>
+            <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">Plan systematic withdrawals in retirement. Estimate how long your corpus lasts with monthly drawdowns.</p>
+          </article>
+          <article className="border border-[var(--line)] bg-white p-5">
+            <h3 className="font-bold text-[var(--ink)]">Home Loan EMI Calculator</h3>
+            <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">Calculate EMI, total interest, and total repayment. Model prepayment scenarios to save lakhs in interest.</p>
+          </article>
+        </div>
+      </section>
+
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Link
           href="/calculators/emergency-fund"
