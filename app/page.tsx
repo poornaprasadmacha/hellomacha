@@ -83,7 +83,8 @@ export default function HomePage() {
 
   return (
     <div className="pb-16">
-      <section className="mb-12 border-b border-[var(--line)] pb-12">
+      <ArticleClient articles={articles} />
+      <section className="mt-12 border-t border-[var(--line)] pt-12">
         <div className="mx-auto max-w-5xl px-4 sm:px-5">
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--brand-red)]">HelloMacha</p>
           <h2 className="mt-3 font-yapa text-3xl font-normal text-[var(--ink)] sm:text-4xl">Why HelloMacha</h2>
@@ -127,7 +128,6 @@ export default function HomePage() {
           </div>
         </div>
       </section>
-      <ArticleClient articles={articles} />
     </div>
   )
 }

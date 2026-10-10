@@ -81,7 +81,7 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
   }
 
   const featured = filteredArticles[0]
-  const remaining = filteredArticles.slice(1)
+  const remaining = filteredArticles
 
   return (
     <div className="pb-16">
@@ -191,19 +191,19 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
         </article>
       </section>
 
-      <section className="mb-10">
+<section className="mb-10">
         <div className="mb-6 flex items-center justify-between gap-3">
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-[#62735d]">Latest guides</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-[#62735d]">All guides</p>
           </div>
           <span className="hidden items-center gap-1 text-sm font-semibold text-[var(--brand-red)] sm:inline-flex">
-            Explore all <FiChevronRight size={14} />
+            {filteredArticles.length} {filteredArticles.length === 1 ? 'guide' : 'guides'} <FiChevronRight size={14} />
           </span>
         </div>
 
-        {remaining.length > 0 ? (
+        {filteredArticles.length > 1 ? (
           <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
-            {remaining.map((article) => (
+            {filteredArticles.map((article) => (
               <article key={article.slug} className="group h-full">
                 <Link href={`/${article.slug}`} className="flex h-full flex-col border border-[#dfe4d4] bg-white p-3 transition-transform duration-200 hover:-translate-y-0.5">
                   <div className="overflow-hidden">
