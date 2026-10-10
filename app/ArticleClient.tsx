@@ -128,13 +128,19 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
                 </div>
               </div>
 
-              <div className="hidden lg:block">
-                <img
-                  src="/hero.svg"
-                  alt="Hero illustration"
-                  loading="lazy"
-                  className="w-full h-64 object-contain opacity-0.95"
-                />
+              <div className="hidden lg:flex lg:justify-end">
+                <div className="w-full max-w-md rounded-2xl border border-white/20 bg-white/5 p-8 backdrop-blur-sm">
+                  <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.2em] text-white">
+                    <FiStar size={12} /> Trusted by Indian readers
+                  </div>
+                  <p className="text-lg font-bold leading-relaxed text-white">Practical guides that help you make better money decisions.</p>
+                  <p className="mt-3 text-sm leading-relaxed text-white/70">From EPF rules to mutual funds, tax filing to product reviews — every guide is sourced, verified, and written for everyday Indian households.</p>
+                  <div className="mt-6 flex items-center gap-4 text-xs text-white/60">
+                    <span>✓ Primary sources</span>
+                    <span>✓ Updated regularly</span>
+                    <span>✓ No jargon</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

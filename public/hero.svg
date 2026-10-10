@@ -1,17 +1,29 @@
 <svg width="1200" height="600" viewBox="0 0 1200 600" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="heroTitle">
   <title id="heroTitle">Illustration: HelloMacha guides</title>
+  <defs>
+    <linearGradient id="cardGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0.04"/>
+    </linearGradient>
+  </defs>
   <g transform="translate(80,100)">
     <!-- stylized tablet -->
-    <rect x="0" y="0" width="520" height="320" fill="#ffffff" stroke="#e6e6e6" />
-    <rect x="18" y="18" width="484" height="40" rx="4" fill="#b32b2b" />
-    <rect x="18" y="72" width="220" height="16" fill="#1b1b1b" fill-opacity="0.9" />
-    <rect x="18" y="100" width="448" height="160" fill="#ffffff" stroke="#e6e6e6" />
+    <rect x="0" y="0" width="520" height="320" rx="12" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+    <rect x="18" y="18" width="484" height="40" rx="6" fill="#ffffff" fill-opacity="0.9"/>
+    <rect x="18" y="72" width="220" height="14" rx="3" fill="#ffffff" fill-opacity="0.75"/>
+    <rect x="18" y="100" width="448" height="160" rx="6" fill="url(#cardGrad)" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+    <rect x="38" y="120" width="180" height="12" rx="3" fill="#ffffff" fill-opacity="0.6"/>
+    <rect x="38" y="144" width="400" height="10" rx="3" fill="#ffffff" fill-opacity="0.35"/>
+    <rect x="38" y="164" width="360" height="10" rx="3" fill="#ffffff" fill-opacity="0.35"/>
+    <rect x="38" y="184" width="300" height="10" rx="3" fill="#ffffff" fill-opacity="0.35"/>
+    <rect x="38" y="204" width="380" height="10" rx="3" fill="#ffffff" fill-opacity="0.35"/>
+    <rect x="38" y="224" width="340" height="10" rx="3" fill="#ffffff" fill-opacity="0.35"/>
 
     <!-- stacked cards on right -->
     <g transform="translate(560,8)">
-      <rect x="0" y="24" width="420" height="120" fill="#ffffff" stroke="#e6e6e6" />
-      <text x="24" y="64" font-family="Manrope, Arial" font-weight="700" font-size="28" fill="#1b1b1b">Top guides for everyday decisions</text>
-      <text x="24" y="100" font-family="Manrope, Arial" font-size="16" fill="#707070">Actionable guides and straightforward reviews.</text>
+      <rect x="0" y="24" width="420" height="120" rx="10" fill="rgba(255,255,255,0.12)" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+      <text x="24" y="64" font-family="Manrope, Arial" font-weight="700" font-size="28" fill="#ffffff">Top guides for everyday decisions</text>
+      <text x="24" y="100" font-family="Manrope, Arial" font-size="16" fill="rgba(255,255,255,0.8)">Actionable guides and straightforward reviews.</text>
     </g>
   </g>
 </svg>
