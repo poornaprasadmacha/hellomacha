@@ -100,6 +100,8 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
             marginLeft: '-50vw',
             marginRight: '-50vw',
             width: '100vw',
+            maxWidth: '100vw',
+            overflowX: 'hidden',
           }}
           className="bg-[var(--brand-red)] text-white"
         >
@@ -151,7 +153,7 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
         <article className="group border border-[#e6e6e6] bg-white p-3 sm:p-4">
           <Link href={`/${featured.slug}`} className="block">
             <div className="grid gap-5 lg:grid-cols-[1.25fr_0.75fr] lg:items-center">
-              <div className="relative h-[260px] overflow-hidden sm:h-[340px] lg:h-[420px]">
+              <div className="relative h-[220px] overflow-hidden sm:h-[280px] md:h-[340px] lg:h-[420px]">
                 <img
                   src={featured.thumbnail}
                   alt={featured.title}

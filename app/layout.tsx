@@ -132,7 +132,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         <footer className="mt-16 bg-[#fff6df] text-[#59606a]">
           <div className="mx-auto max-w-6xl px-4 py-12 sm:px-5">
-            <div className="grid gap-10 lg:grid-cols-[1.25fr_1fr_1fr_1.2fr]">
+            <div className="grid gap-8 md:gap-10 sm:grid-cols-2 lg:grid-cols-[1.25fr_1fr_1fr_1.2fr]">
               <div>
                 <div className="mb-4">
                   <HelloMachaLogo textOnly />

@@ -502,23 +502,23 @@ export default async function DynamicSlugPage({
         {/* Article Header */}
         <header className="mb-8">
 
-          <h1 className="mb-5 text-3xl font-extrabold leading-tight tracking-tight text-gray-900 sm:text-4xl lg:text-5xl">
+          <h1 className="mb-5 text-3xl font-extrabold leading-tight tracking-tight text-[var(--ink)] sm:text-4xl lg:text-5xl">
             {data.title}
           </h1>
 
-          <div className="mb-2 text-sm font-semibold text-gray-900">
+          <div className="mb-2 text-sm font-semibold text-[var(--ink)]">
             <Link href={`/authors/${authorSlug(data.author)}`} className="hover:text-[var(--brand-red)] hover:underline">
               {authorName}
             </Link>
           </div>
 
-          <div className="mb-5 flex flex-wrap items-center gap-2 text-sm text-gray-500">
+          <div className="mb-5 flex flex-wrap items-center gap-2 text-sm text-[var(--muted)]">
             {displayDate && (
               <span>{displayDate}</span>
             )}
 
             {displayDate && (
-              <span className="text-gray-300">
+              <span className="text-[var(--line)]">
                 |
               </span>
             )}
@@ -535,7 +535,7 @@ export default async function DynamicSlugPage({
 
           {/* Featured Image */}
           {data.thumbnail && (
-            <div className="mb-8 w-full overflow-hidden rounded-2xl">
+            <div className="mb-8 w-full overflow-hidden">
               <img
                 src={data.thumbnail}
                 alt={data.title}
@@ -548,7 +548,7 @@ export default async function DynamicSlugPage({
         </header>
 
         {/* Article Content */}
-        <div className="article-content prose prose-lg prose-stone max-w-none text-gray-800">
+        <div className="article-content prose prose-lg max-w-none text-[var(--ink)]">
           <MDXRemote source={content} />
         </div>
 
