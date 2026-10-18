@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap');
-@import "tailwindcss";
+@import "tailwindcss/index.css";
 @plugin "@tailwindcss/typography";
 
 @font-face {
@@ -227,6 +227,20 @@ img {
   border: 2px solid var(--brand-red);
   background: var(--surface);
   border-radius: 9999px;
+  min-width: 0;
+}
+
+.search-pill input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+}
+
+.search-pill input::placeholder {
+  color: #9ca3af;
 }
 
 .prose table {

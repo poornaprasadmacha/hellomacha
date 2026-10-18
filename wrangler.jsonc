@@ -1,0 +1,10 @@
+{
+  "$schema": "https://schemas.wrangler.dev/v3/json.json",
+  "name": "hellomacha",
+  "main": "dist/server/index.js",
+  "compatibility_date": "2026-10-17",
+  "compatibility_flags": ["nodejs_compat"],
+  "observability": {
+    "enabled": true
+  }
+}

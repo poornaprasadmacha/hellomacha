@@ -1,56 +1,50 @@
 import { NextRequest, NextResponse } from 'next/server'
-import fs from 'fs'
-import path from 'path'
-import matter from 'gray-matter'
-import { isAuthenticated } from '@/lib/admin-auth'
-
-const articlesDir = path.join(process.cwd(), 'content', 'articles')
+import { createSupabaseServerClient } from '@/lib/supabase/server'
 
 interface ArticleData {
   slug: string
-  frontmatter: Record<string, unknown>
+  frontmatter: {
+    title: string
+    description: string
+    date: string
+    thumbnail: string
+    author: string
+    type: string
+  }
   content: string
-}
-
-function readArticle(slug: string): ArticleData | null {
-  const mdxPath = path.join(articlesDir, `${slug}.mdx`)
-  const mdPath = path.join(articlesDir, `${slug}.md`)
-
-  let filePath: string | null = null
-
-  if (fs.existsSync(mdxPath)) {
-    filePath = mdxPath
-  } else if (fs.existsSync(mdPath)) {
-    filePath = mdPath
-  }
-
-  if (!filePath) {
-    return null
-  }
-
-  const fileContents = fs.readFileSync(filePath, 'utf8')
-  const { data, content } = matter(fileContents)
-
-  return {
-    slug,
-    frontmatter: data,
-    content,
-  }
+  reading_time: number
 }
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-  if (!(await isAuthenticated())) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  const supabase = createSupabaseServerClient()
 
   const { slug } = await params
-  const article = readArticle(slug)
 
-  if (!article) {
+  const { data, error } = await supabase
+    .from('articles')
+    .select('slug, title, description, date, thumbnail, author, type, content, reading_time')
+    .eq('slug', slug)
+    .single()
+
+  if (error || !data) {
     return NextResponse.json({ error: 'Article not found' }, { status: 404 })
+  }
+
+  const article: ArticleData = {
+    slug: data.slug,
+    frontmatter: {
+      title: data.title,
+      description: data.description,
+      date: data.date,
+      thumbnail: data.thumbnail,
+      author: data.author,
+      type: data.type,
+    },
+    content: data.content,
+    reading_time: data.reading_time,
   }
 
   return NextResponse.json(article)
@@ -60,44 +54,42 @@ export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-  if (!(await isAuthenticated())) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  const supabase = createSupabaseServerClient()
 
   try {
     const { slug } = await params
     const { title, description, date, thumbnail, author, content, type } = await request.json()
 
-    const mdxPath = path.join(articlesDir, `${slug}.mdx`)
-    const mdPath = path.join(articlesDir, `${slug}.md`)
+    const { data: existing } = await supabase
+      .from('articles')
+      .select('slug')
+      .eq('slug', slug)
+      .single()
 
-    let filePath: string | null = null
-
-    if (fs.existsSync(mdxPath)) {
-      filePath = mdxPath
-    } else if (fs.existsSync(mdPath)) {
-      filePath = mdPath
-    }
-
-    if (!filePath) {
+    if (!existing) {
       return NextResponse.json({ error: 'Article not found' }, { status: 404 })
     }
 
-    const fileContents = fs.readFileSync(filePath, 'utf8')
-    const { data } = matter(fileContents)
+    const wordCount = content ? content.trim().split(/\s+/).length : 0
+    const readingTime = Math.max(1, Math.ceil(wordCount / 225))
 
-    const frontmatter = {
-      ...data,
-      title: title || data.title,
-      description: description !== undefined ? description : data.description,
-      date: date || data.date,
-      thumbnail: thumbnail !== undefined ? thumbnail : data.thumbnail,
-      author: author || data.author,
-      type: type || data.type || 'article',
+    const { error } = await supabase
+      .from('articles')
+      .update({
+        title: title || undefined,
+        description: description !== undefined ? description : undefined,
+        date: date || undefined,
+        thumbnail: thumbnail !== undefined ? thumbnail : undefined,
+        author: author || undefined,
+        type: type || undefined,
+        content: content !== undefined ? content : undefined,
+        reading_time: readingTime,
+      })
+      .eq('slug', slug)
+
+    if (error) {
+      return NextResponse.json({ error: 'Failed to update article' }, { status: 500 })
     }
-
-    const mdxContent = matter.stringify(content || '', frontmatter)
-    fs.writeFileSync(filePath, mdxContent, 'utf8')
 
     return NextResponse.json({ success: true })
   } catch {
@@ -109,28 +101,26 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-  if (!(await isAuthenticated())) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  const supabase = createSupabaseServerClient()
 
   try {
     const { slug } = await params
-    const mdxPath = path.join(articlesDir, `${slug}.mdx`)
-    const mdPath = path.join(articlesDir, `${slug}.md`)
 
-    let filePath: string | null = null
+    const { data: existing } = await supabase
+      .from('articles')
+      .select('slug')
+      .eq('slug', slug)
+      .single()
 
-    if (fs.existsSync(mdxPath)) {
-      filePath = mdxPath
-    } else if (fs.existsSync(mdPath)) {
-      filePath = mdPath
-    }
-
-    if (!filePath) {
+    if (!existing) {
       return NextResponse.json({ error: 'Article not found' }, { status: 404 })
     }
 
-    fs.unlinkSync(filePath)
+    const { error } = await supabase.from('articles').delete().eq('slug', slug)
+
+    if (error) {
+      return NextResponse.json({ error: 'Failed to delete article' }, { status: 500 })
+    }
 
     return NextResponse.json({ success: true })
   } catch {

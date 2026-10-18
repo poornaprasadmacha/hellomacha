@@ -77,7 +77,7 @@ export default function Header() {
         </nav>
 
         {/* Desktop Search Form ONLY */}
-        <form action="/" method="get" className="header-desktop-search search-pill w-[200px] lg:w-[280px]">
+        <form action="/" method="get" className="header-desktop-search search-pill w-[180px] sm:w-[220px] lg:w-[280px]">
           <span className="icon"><FiSearch size={18} /></span>
           <input
             type="search"

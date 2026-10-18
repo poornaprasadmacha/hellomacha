@@ -90,7 +90,9 @@ export default function Comments({ title, slug }: CommentsProps) {
         }
       })
       .catch((error: unknown) => {
-        console.error('Unable to load approved article comments.', error)
+        if (!(error instanceof TypeError && error.message === 'Failed to fetch')) {
+          console.error('Unable to load approved article comments.', error)
+        }
         if (isCurrent) {
           setLoadError(
             error instanceof Error
@@ -176,7 +178,9 @@ export default function Comments({ title, slug }: CommentsProps) {
       setContent('')
       setFormMessage('Thanks for sharing. Your comment will appear after review.')
     } catch (error) {
-      console.error('Unable to submit article comment.', error)
+      if (!(error instanceof TypeError && error.message === 'Failed to fetch')) {
+        console.error('Unable to submit article comment.', error)
+      }
       setFormMessage(
         error instanceof Error
           ? error.message

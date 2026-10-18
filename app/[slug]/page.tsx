@@ -1,6 +1,3 @@
-import fs from 'fs'
-import path from 'path'
-import matter from 'gray-matter'
 import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import Link from 'next/link'
@@ -10,8 +7,10 @@ import { articleSeoMetadata } from '../../content/articles/seoMetadata'
 import ScrollToTop from '@/components/ScrollToTop'
 import ShareButtons from '@/components/ShareButtons'
 import Comments from '@/components/Comments'
+import { createSupabaseServerClient } from '@/lib/supabase/server'
 
-export const dynamic = 'force-static'
+export const dynamic = 'force-dynamic'
+
 export const dynamicParams = false
 
 type ContentData = {
@@ -29,6 +28,7 @@ type ContentData = {
   geoPlacename?: string
   geoPosition?: string
   sources?: { name: string; url: string }[]
+  type?: string
 }
 
 type ContentItem = {
@@ -37,7 +37,7 @@ type ContentItem = {
   content: string
 }
 
-const relatedArticleGroups = [
+const relatedArticleGroups: string[][] = [
   [
     'new-epf-rules-2026',
     'PM-Shram-Yogi-Maandhan-Yojana',
@@ -116,126 +116,23 @@ function authorSlug(author?: string) {
   return 'sivarama-krishna'
 }
 
-/* -------------------------------------------------------
-   CONTENT DIRECTORIES
-------------------------------------------------------- */
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
+  const supabase = createSupabaseServerClient()
 
-const articlesDir = path.join(process.cwd(), 'content', 'articles')
-const pagesDir = path.join(process.cwd(), 'content', 'pages')
+  const { data, error } = await supabase.from('articles').select('slug')
 
-/* -------------------------------------------------------
-   GET ALL CONTENT SLUGS
-------------------------------------------------------- */
-
-function getSlugsFromDirectory(directory: string): string[] {
-  if (!fs.existsSync(directory)) {
+  if (error || !data) {
     return []
   }
 
-  return fs
-    .readdirSync(directory)
-    .filter((file) => /\.(mdx|md)$/i.test(file))
-    .map((file) => file.replace(/\.(mdx|md)$/i, ''))
+  return data.map(({ slug }) => ({ slug }))
 }
-
-/* -------------------------------------------------------
-   GENERATE STATIC PARAMS
-------------------------------------------------------- */
-
-export function generateStaticParams(): { slug: string }[] {
-  const articleSlugs = getSlugsFromDirectory(articlesDir)
-  const pageSlugs = getSlugsFromDirectory(pagesDir)
-
-  const allSlugs = [...articleSlugs, ...pageSlugs]
-
-  const uniqueSlugs = Array.from(new Set(allSlugs))
-
-  return uniqueSlugs.map((slug) => ({
-    slug,
-  }))
-}
-
-/* -------------------------------------------------------
-   READ CONTENT FILE
-------------------------------------------------------- */
-
-function readContentFile(
-  directory: string,
-  slug: string,
-  type: 'article' | 'page'
-): ContentItem | null {
-  const mdxPath = path.join(directory, `${slug}.mdx`)
-  const mdPath = path.join(directory, `${slug}.md`)
-
-  let filePath: string | null = null
-
-  if (fs.existsSync(mdxPath)) {
-    filePath = mdxPath
-  } else if (fs.existsSync(mdPath)) {
-    filePath = mdPath
-  }
-
-  if (!filePath) {
-    return null
-  }
-
-  const fileContents = fs.readFileSync(filePath, 'utf8')
-  const { data, content } = matter(fileContents)
-
-  return {
-    type,
-    data: data as ContentData,
-    content,
-  }
-}
-
-/* -------------------------------------------------------
-   GET CONTENT
-------------------------------------------------------- */
-
-function getContent(slug: string): ContentItem | null {
-  const article = readContentFile(articlesDir, slug, 'article')
-
-  if (article) {
-    return article
-  }
-
-  const page = readContentFile(pagesDir, slug, 'page')
-
-  if (page) {
-    return page
-  }
-
-  return null
-}
-
-function getRelatedArticles(slug: string) {
-  const group = relatedArticleGroups.find((articles) => articles.includes(slug)) || []
-
-  return group
-    .filter((relatedSlug) => relatedSlug !== slug)
-    .slice(0, 3)
-    .flatMap((relatedSlug) => {
-      const item = readContentFile(articlesDir, relatedSlug, 'article')
-
-      return item ? [{ slug: relatedSlug, title: item.data.title }] : []
-    })
-}
-
-/* -------------------------------------------------------
-   DATE FORMAT
-------------------------------------------------------- */
 
 function formatDisplayDate(dateStr?: string): string {
-  if (!dateStr) {
-    return ''
-  }
+  if (!dateStr) return ''
 
   const dateObj = new Date(dateStr)
-
-  if (Number.isNaN(dateObj.getTime())) {
-    return dateStr
-  }
+  if (Number.isNaN(dateObj.getTime())) return dateStr
 
   return dateObj.toLocaleDateString('en-US', {
     month: 'short',
@@ -244,9 +141,48 @@ function formatDisplayDate(dateStr?: string): string {
   })
 }
 
-/* -------------------------------------------------------
-   METADATA
-------------------------------------------------------- */
+async function getContent(slug: string): Promise<ContentItem | null> {
+  const supabase = createSupabaseServerClient()
+
+  const { data, error } = await supabase
+    .from('articles')
+    .select('slug, title, description, date, thumbnail, author, type, content, geo_region, geo_placename, geo_position, seo_keywords, sources')
+    .eq('slug', slug)
+    .single()
+
+  if (error || !data) {
+    return null
+  }
+
+  const wordCount = data.content ? data.content.trim().split(/\s+/).length : 0
+  const readingTime = Math.max(1, Math.ceil(wordCount / 225))
+
+  return {
+    type: (data.type as 'article' | 'page') || 'article',
+    data: {
+      title: data.title,
+      description: data.description,
+      date: data.date,
+      thumbnail: data.thumbnail,
+      author: data.author,
+      type: data.type,
+      geoRegion: data.geo_region,
+      geoPlacename: data.geo_placename,
+      geoPosition: data.geo_position,
+      seoKeywords: data.seo_keywords as string[] | undefined,
+      sources: data.sources as { name: string; url: string }[] | undefined,
+    },
+    content: data.content,
+  }
+}
+
+function getRelatedArticles(slug: string) {
+  const group = relatedArticleGroups.find((articles) => articles.includes(slug)) || []
+
+  return group
+    .filter((relatedSlug) => relatedSlug !== slug)
+    .slice(0, 3)
+}
 
 type PageProps = {
   params: Promise<{
@@ -259,7 +195,7 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { slug } = await params
 
-  const item = getContent(slug)
+  const item = await getContent(slug)
 
   if (!item) {
     return {
@@ -335,16 +271,12 @@ export async function generateMetadata({
   return baseMetadata
 }
 
-/* -------------------------------------------------------
-   ARTICLE PAGE
-------------------------------------------------------- */
-
 export default async function DynamicSlugPage({
   params,
 }: PageProps) {
   const { slug } = await params
 
-  const item = getContent(slug)
+  const item = await getContent(slug)
 
   if (!item) {
     notFound()
@@ -352,8 +284,7 @@ export default async function DynamicSlugPage({
 
   const { type, data, content } = item
   const articleSeo = type === 'article' ? articleSeoMetadata[slug] : undefined
-  const relatedArticles =
-    type === 'article' ? getRelatedArticles(slug) : []
+  const relatedSlugs = getRelatedArticles(slug)
 
   const resolveImageUrl = (url?: string) => {
     if (!url) return 'https://hellomacha.com/og-image.svg'
@@ -364,28 +295,14 @@ export default async function DynamicSlugPage({
     }
   }
 
-  /* -------------------------------------------------------
-     READING TIME
-  ------------------------------------------------------- */
-
-  const wordCount = content
-    ? content.trim().split(/\s+/).length
-    : 0
+  const wordCount = content ? content.trim().split(/\s+/).length : 0
 
   const readingTime = Math.max(
     1,
     Math.ceil(wordCount / 225)
   )
 
-  /* -------------------------------------------------------
-     AUTHOR
-  ------------------------------------------------------- */
-
   const authorName = data.author || 'Sivarama Krishna'
-
-  /* -------------------------------------------------------
-     DATE
-  ------------------------------------------------------- */
 
   const rawUpdatedDate =
     data.updatedDate ||
@@ -398,16 +315,8 @@ export default async function DynamicSlugPage({
       ? formatDisplayDate(data.date)
       : ''
 
-  /* -------------------------------------------------------
-     CANONICAL URL
-  ------------------------------------------------------- */
-
   const canonicalUrl =
     `https://hellomacha.com/${slug}`
-
-  /* -------------------------------------------------------
-     ARTICLE SCHEMA
-  ------------------------------------------------------- */
 
   const articleSchema =
     type === 'article'
@@ -442,10 +351,6 @@ export default async function DynamicSlugPage({
         }
       : null
 
-  /* -------------------------------------------------------
-     BREADCRUMB SCHEMA
-  ------------------------------------------------------- */
-
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -465,11 +370,14 @@ export default async function DynamicSlugPage({
     ],
   }
 
-  /* -------------------------------------------------------
-     ARTICLE
-  ------------------------------------------------------- */
-
   if (type === 'article') {
+    const relatedArticles = await Promise.all(
+      relatedSlugs.map(async (relatedSlug) => {
+        const item = await getContent(relatedSlug)
+        return item ? { slug: relatedSlug, title: item.data.title } : null
+      })
+    ).then((results) => results.filter(Boolean) as { slug: string; title: string }[])
+
     return (
       <article className="mx-auto w-full max-w-4xl px-4 pb-12 pt-6 sm:px-6 sm:pt-8">
 
@@ -594,10 +502,6 @@ export default async function DynamicSlugPage({
       </article>
     )
   }
-
-  /* -------------------------------------------------------
-     STANDALONE PAGE
-  ------------------------------------------------------- */
 
   return (
     <main className="mx-auto w-full max-w-5xl px-4 pb-12 pt-6 sm:px-6">

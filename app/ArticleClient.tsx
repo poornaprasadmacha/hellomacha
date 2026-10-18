@@ -108,14 +108,13 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
           <div className="mx-auto max-w-6xl px-6 pb-12 pt-20 sm:pt-24 md:pb-16 md:pt-28">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center">
               <div>
-                <p className="text-sm font-semibold uppercase tracking-widest">HelloMacha guides</p>
-                <h1 className="mt-4 font-serif text-4xl font-extrabold leading-tight">Smart answers to everyday life decisions.</h1>
+                <h1 className="mt-0 font-serif text-4xl font-extrabold leading-tight">Smart answers to everyday life decisions.</h1>
                 <p className="mt-6 text-lg max-w-xl">Practical insight for everyday decisions. Actionable guides, clear recommendations, and straightforward reviews to help you decide faster.</p>
 
                 <div className="mt-8">
-                  <form action="/" method="get" className="max-w-md">
+                  <form action="/" method="get" className="w-full max-w-sm sm:max-w-md">
                     <label htmlFor="hero-search" className="sr-only">Search guides</label>
-                    <div className="search-pill">
+                    <div className="search-pill w-full">
                       <span className="icon"><FiSearch size={18} /></span>
                       <input
                         id="hero-search"
@@ -124,6 +123,7 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
                         onChange={(event) => setSearchQuery(event.target.value)}
                         placeholder="Search guides, topics, or reviews"
                         aria-label="Search guides"
+                        className="w-full"
                       />
                     </div>
                   </form>
