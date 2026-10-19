@@ -1,5 +1,9 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createSupabaseServerClient } from '@/lib/supabase/server'
+import {
+  fetchAllArticles,
+  createArticle,
+  isGoogleSheetsConfigured,
+} from '@/lib/google-sheets'
 
 interface ArticleMeta {
   slug: string
@@ -13,83 +17,63 @@ interface ArticleMeta {
 }
 
 export async function GET() {
-  const supabase = createSupabaseServerClient()
-
-  const { data, error } = await supabase
-    .from('articles')
-    .select('slug, title, description, date, thumbnail, author, type')
-    .order('date', { ascending: false })
-
-  if (error) {
-    return NextResponse.json({ error: 'Failed to load articles' }, { status: 500 })
+  if (!isGoogleSheetsConfigured()) {
+    return NextResponse.json({ error: 'Articles service is not configured.' }, { status: 503 })
   }
 
-  const articles: ArticleMeta[] = (data || []).map((article) => ({
-    slug: article.slug,
-    title: article.title,
-    description: article.description,
-    date: article.date,
-    thumbnail: article.thumbnail,
-    author: article.author,
-    type: article.type,
-    readingTime: Math.max(1, Math.ceil((article.description?.length || 0) / 225)),
-  }))
+  try {
+    const articles = await fetchAllArticles()
 
-  return NextResponse.json(articles)
+    const meta: ArticleMeta[] = articles.map((article) => ({
+      slug: article.slug,
+      title: article.title,
+      description: article.description,
+      date: article.date,
+      thumbnail: article.thumbnail,
+      author: article.author,
+      type: article.type,
+      readingTime: article.reading_time,
+    }))
+
+    return NextResponse.json(meta)
+  } catch {
+    return NextResponse.json({ error: 'Failed to load articles' }, { status: 500 })
+  }
 }
 
 export async function POST(request: NextRequest) {
-  const supabase = createSupabaseServerClient()
+  if (!isGoogleSheetsConfigured()) {
+    return NextResponse.json({ error: 'Articles service is not configured.' }, { status: 503 })
+  }
 
   try {
-    const { slug, title, description, date, thumbnail, author, content, type } = await request.json()
+    const body = await request.json()
+    const { slug, title, description, date, thumbnail, author, content, type } = body
 
     if (!slug || !title || !content) {
       return NextResponse.json({ error: 'Slug, title, and content are required' }, { status: 400 })
     }
 
-    const { data: existing } = await supabase
-      .from('articles')
-      .select('slug')
-      .eq('slug', slug)
-      .single()
-
-    if (existing) {
-      return NextResponse.json({ error: 'Article with this slug already exists' }, { status: 409 })
-    }
-
-    const wordCount = content ? content.trim().split(/\s+/).length : 0
-    const readingTime = Math.max(1, Math.ceil(wordCount / 225))
-
-    const { data, error } = await supabase
-      .from('articles')
-      .insert({
-        slug,
-        title,
-        description: description || '',
-        content,
-        date: date || new Date().toISOString().split('T')[0],
-        thumbnail: thumbnail || '/icon.png',
-        author: author || 'Sivarama Krishna',
-        type: type || 'article',
-        reading_time: readingTime,
-      })
-      .select()
-      .single()
-
-    if (error) {
-      return NextResponse.json({ error: 'Failed to create article' }, { status: 500 })
-    }
+    const article = await createArticle({
+      slug,
+      title,
+      description: description || '',
+      date: date || new Date().toISOString().split('T')[0],
+      thumbnail: thumbnail || '/icon.png',
+      author: author || 'Sivarama Krishna',
+      type: type || 'article',
+      content,
+    })
 
     return NextResponse.json({
-      slug: data.slug,
-      title: data.title,
-      description: data.description,
-      date: data.date,
-      thumbnail: data.thumbnail,
-      author: data.author,
-      type: data.type,
-      readingTime: data.reading_time,
+      slug: article.slug,
+      title: article.title,
+      description: article.description,
+      date: article.date,
+      thumbnail: article.thumbnail,
+      author: article.author,
+      type: article.type,
+      readingTime: article.reading_time,
     })
   } catch {
     return NextResponse.json({ error: 'Failed to create article' }, { status: 500 })

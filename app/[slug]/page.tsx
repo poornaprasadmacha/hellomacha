@@ -7,7 +7,11 @@ import { articleSeoMetadata } from '../../content/articles/seoMetadata'
 import ScrollToTop from '@/components/ScrollToTop'
 import ShareButtons from '@/components/ShareButtons'
 import Comments from '@/components/Comments'
-import { createSupabaseServerClient } from '@/lib/supabase/server'
+import {
+  fetchAllArticles,
+  fetchArticleBySlug,
+  isGoogleSheetsConfigured,
+} from '@/lib/google-sheets'
 
 export const dynamic = 'force-dynamic'
 
@@ -117,15 +121,16 @@ function authorSlug(author?: string) {
 }
 
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  const supabase = createSupabaseServerClient()
-
-  const { data, error } = await supabase.from('articles').select('slug')
-
-  if (error || !data) {
+  if (!isGoogleSheetsConfigured()) {
     return []
   }
 
-  return data.map(({ slug }) => ({ slug }))
+  try {
+    const articles = await fetchAllArticles()
+    return articles.map(({ slug }) => ({ slug }))
+  } catch {
+    return []
+  }
 }
 
 function formatDisplayDate(dateStr?: string): string {
@@ -142,37 +147,39 @@ function formatDisplayDate(dateStr?: string): string {
 }
 
 async function getContent(slug: string): Promise<ContentItem | null> {
-  const supabase = createSupabaseServerClient()
-
-  const { data, error } = await supabase
-    .from('articles')
-    .select('slug, title, description, date, thumbnail, author, type, content, geo_region, geo_placename, geo_position, seo_keywords, sources')
-    .eq('slug', slug)
-    .single()
-
-  if (error || !data) {
+  if (!isGoogleSheetsConfigured()) {
     return null
   }
 
-  const wordCount = data.content ? data.content.trim().split(/\s+/).length : 0
-  const readingTime = Math.max(1, Math.ceil(wordCount / 225))
+  try {
+    const article = await fetchArticleBySlug(slug)
 
-  return {
-    type: (data.type as 'article' | 'page') || 'article',
-    data: {
-      title: data.title,
-      description: data.description,
-      date: data.date,
-      thumbnail: data.thumbnail,
-      author: data.author,
-      type: data.type,
-      geoRegion: data.geo_region,
-      geoPlacename: data.geo_placename,
-      geoPosition: data.geo_position,
-      seoKeywords: data.seo_keywords as string[] | undefined,
-      sources: data.sources as { name: string; url: string }[] | undefined,
-    },
-    content: data.content,
+    if (!article) {
+      return null
+    }
+
+    const wordCount = article.content ? article.content.trim().split(/\s+/).length : 0
+    const readingTime = Math.max(1, Math.ceil(wordCount / 225))
+
+    return {
+      type: (article.type as 'article' | 'page') || 'article',
+      data: {
+        title: article.title,
+        description: article.description,
+        date: article.date,
+        thumbnail: article.thumbnail,
+        author: article.author,
+        type: article.type,
+        geoRegion: article.geo_region,
+        geoPlacename: article.geo_placename,
+        geoPosition: article.geo_position,
+        seoKeywords: article.seo_keywords as string[] | undefined,
+        sources: article.sources as { name: string; url: string }[] | undefined,
+      },
+      content: article.content,
+    }
+  } catch {
+    return null
   }
 }
 

@@ -1,11 +1,11 @@
 'use client'
 
 import { FormEvent, useCallback, useEffect, useState } from 'react'
-
-interface CommentsProps {
-  title?: string
-  slug: string
-}
+import {
+  fetchComments,
+  submitComment,
+  isGoogleSheetsConfigured,
+} from '@/lib/google-sheets'
 
 interface ArticleComment {
   id: string
@@ -14,31 +14,11 @@ interface ArticleComment {
   created_at: string
 }
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL?.replace(/\/$/, '')
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY
-const COMMENTS_ENDPOINT = SUPABASE_URL
-  ? `${SUPABASE_URL}/rest/v1/article_comments`
-  : null
-
-function isArticleComment(value: unknown): value is ArticleComment {
-  if (!value || typeof value !== 'object') {
-    return false
-  }
-
-  const comment = value as Record<string, unknown>
-  return (
-    typeof comment.id === 'string' &&
-    typeof comment.display_name === 'string' &&
-    typeof comment.content === 'string' &&
-    typeof comment.created_at === 'string'
-  )
-}
-
 function getResponseError(response: Response) {
   return `Comment service error (${response.status}). Please try again later.`
 }
 
-export default function Comments({ title, slug }: CommentsProps) {
+export default function Comments({ title, slug }: { title?: string; slug: string }) {
   const [comments, setComments] = useState<ArticleComment[]>([])
   const [displayName, setDisplayName] = useState('')
   const [content, setContent] = useState('')
@@ -48,42 +28,20 @@ export default function Comments({ title, slug }: CommentsProps) {
   const [loadError, setLoadError] = useState('')
   const [formMessage, setFormMessage] = useState('')
 
-  const isConfigured = Boolean(COMMENTS_ENDPOINT && SUPABASE_ANON_KEY)
+  const isConfigured = isGoogleSheetsConfigured()
 
-  const fetchComments = useCallback(async (): Promise<ArticleComment[]> => {
-    if (!COMMENTS_ENDPOINT || !SUPABASE_ANON_KEY) {
+  const fetchCommentsFromSheets = useCallback(async (): Promise<ArticleComment[]> => {
+    if (!isConfigured) {
       return []
     }
 
-    const query = new URLSearchParams({
-      select: 'id,display_name,content,created_at',
-      article_slug: `eq.${slug}`,
-      status: 'eq.approved',
-      order: 'created_at.desc',
-    })
-    const response = await fetch(`${COMMENTS_ENDPOINT}?${query}`, {
-      headers: {
-        apikey: SUPABASE_ANON_KEY,
-        Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-      },
-    })
-
-    if (!response.ok) {
-      throw new Error(getResponseError(response))
-    }
-
-    const result: unknown = await response.json()
-    if (!Array.isArray(result) || !result.every(isArticleComment)) {
-      throw new Error('The comment service returned an unexpected response.')
-    }
-
-    return result
-  }, [slug])
+    return fetchComments(slug)
+  }, [slug, isConfigured])
 
   useEffect(() => {
     let isCurrent = true
 
-    void fetchComments()
+    void fetchCommentsFromSheets()
       .then((result) => {
         if (isCurrent) {
           setComments(result)
@@ -110,12 +68,12 @@ export default function Comments({ title, slug }: CommentsProps) {
     return () => {
       isCurrent = false
     }
-  }, [fetchComments])
+  }, [fetchCommentsFromSheets])
 
   const retryLoadComments = () => {
     setIsLoading(true)
     setLoadError('')
-    void fetchComments()
+    void fetchCommentsFromSheets()
       .then(setComments)
       .catch((error: unknown) => {
         console.error('Unable to load approved article comments.', error)
@@ -128,11 +86,11 @@ export default function Comments({ title, slug }: CommentsProps) {
       .finally(() => setIsLoading(false))
   }
 
-  const submitComment = async (event: FormEvent<HTMLFormElement>) => {
+  const submitCommentToSheets = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     setFormMessage('')
 
-    if (!COMMENTS_ENDPOINT || !SUPABASE_ANON_KEY) {
+    if (!isConfigured) {
       setFormMessage('Comments are not configured yet. Please try again later.')
       return
     }
@@ -155,24 +113,11 @@ export default function Comments({ title, slug }: CommentsProps) {
 
     setIsSubmitting(true)
     try {
-      const response = await fetch(COMMENTS_ENDPOINT, {
-        method: 'POST',
-        headers: {
-          apikey: SUPABASE_ANON_KEY,
-          Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
-          'Content-Type': 'application/json',
-          Prefer: 'return=minimal',
-        },
-        body: JSON.stringify({
-          article_slug: slug,
-          display_name: trimmedName,
-          content: trimmedContent,
-        }),
+      await submitComment({
+        slug,
+        displayName: trimmedName,
+        content: trimmedContent,
       })
-
-      if (!response.ok) {
-        throw new Error(getResponseError(response))
-      }
 
       setDisplayName('')
       setContent('')
@@ -205,7 +150,7 @@ export default function Comments({ title, slug }: CommentsProps) {
         </p>
       ) : null}
 
-      <form onSubmit={submitComment} className="mb-10 space-y-5">
+      <form onSubmit={submitCommentToSheets} className="mb-10 space-y-5">
         <div>
           <label htmlFor="comment-name" className="mb-2 block text-sm font-semibold text-gray-900">
             Display name
@@ -272,7 +217,7 @@ export default function Comments({ title, slug }: CommentsProps) {
         ) : null}
         {!isConfigured ? (
           <p className="text-sm text-amber-800">
-            Guest comments are not configured yet. The site owner needs to finish the Supabase setup.
+            Guest comments are not configured yet. Set up Google Sheets to enable comments.
           </p>
         ) : null}
       </form>

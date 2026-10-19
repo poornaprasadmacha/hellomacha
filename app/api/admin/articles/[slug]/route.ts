@@ -1,95 +1,73 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { createSupabaseServerClient } from '@/lib/supabase/server'
-
-interface ArticleData {
-  slug: string
-  frontmatter: {
-    title: string
-    description: string
-    date: string
-    thumbnail: string
-    author: string
-    type: string
-  }
-  content: string
-  reading_time: number
-}
+import {
+  fetchArticleBySlug,
+  updateArticle,
+  deleteArticle,
+  isGoogleSheetsConfigured,
+} from '@/lib/google-sheets'
 
 export async function GET(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-  const supabase = createSupabaseServerClient()
+  if (!isGoogleSheetsConfigured()) {
+    return NextResponse.json({ error: 'Articles service is not configured.' }, { status: 503 })
+  }
 
   const { slug } = await params
 
-  const { data, error } = await supabase
-    .from('articles')
-    .select('slug, title, description, date, thumbnail, author, type, content, reading_time')
-    .eq('slug', slug)
-    .single()
+  try {
+    const article = await fetchArticleBySlug(slug)
 
-  if (error || !data) {
-    return NextResponse.json({ error: 'Article not found' }, { status: 404 })
+    if (!article) {
+      return NextResponse.json({ error: 'Article not found' }, { status: 404 })
+    }
+
+    return NextResponse.json({
+      slug: article.slug,
+      frontmatter: {
+        title: article.title,
+        description: article.description,
+        date: article.date,
+        thumbnail: article.thumbnail,
+        author: article.author,
+        type: article.type,
+      },
+      content: article.content,
+      reading_time: article.reading_time,
+    })
+  } catch {
+    return NextResponse.json({ error: 'Failed to load article' }, { status: 500 })
   }
-
-  const article: ArticleData = {
-    slug: data.slug,
-    frontmatter: {
-      title: data.title,
-      description: data.description,
-      date: data.date,
-      thumbnail: data.thumbnail,
-      author: data.author,
-      type: data.type,
-    },
-    content: data.content,
-    reading_time: data.reading_time,
-  }
-
-  return NextResponse.json(article)
 }
 
 export async function PUT(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-  const supabase = createSupabaseServerClient()
+  if (!isGoogleSheetsConfigured()) {
+    return NextResponse.json({ error: 'Articles service is not configured.' }, { status: 503 })
+  }
 
   try {
     const { slug } = await params
-    const { title, description, date, thumbnail, author, content, type } = await request.json()
+    const body = await request.json()
+    const { title, description, date, thumbnail, author, content, type } = body
 
-    const { data: existing } = await supabase
-      .from('articles')
-      .select('slug')
-      .eq('slug', slug)
-      .single()
-
+    const existing = await fetchArticleBySlug(slug)
     if (!existing) {
       return NextResponse.json({ error: 'Article not found' }, { status: 404 })
     }
 
-    const wordCount = content ? content.trim().split(/\s+/).length : 0
-    const readingTime = Math.max(1, Math.ceil(wordCount / 225))
-
-    const { error } = await supabase
-      .from('articles')
-      .update({
-        title: title || undefined,
-        description: description !== undefined ? description : undefined,
-        date: date || undefined,
-        thumbnail: thumbnail !== undefined ? thumbnail : undefined,
-        author: author || undefined,
-        type: type || undefined,
-        content: content !== undefined ? content : undefined,
-        reading_time: readingTime,
-      })
-      .eq('slug', slug)
-
-    if (error) {
-      return NextResponse.json({ error: 'Failed to update article' }, { status: 500 })
-    }
+    await updateArticle(slug, {
+      title,
+      description,
+      date,
+      thumbnail,
+      author,
+      type,
+      content,
+    })
 
     return NextResponse.json({ success: true })
   } catch {
@@ -101,26 +79,19 @@ export async function DELETE(
   request: NextRequest,
   { params }: { params: Promise<{ slug: string }> }
 ) {
-  const supabase = createSupabaseServerClient()
+  if (!isGoogleSheetsConfigured()) {
+    return NextResponse.json({ error: 'Articles service is not configured.' }, { status: 503 })
+  }
 
   try {
     const { slug } = await params
 
-    const { data: existing } = await supabase
-      .from('articles')
-      .select('slug')
-      .eq('slug', slug)
-      .single()
-
+    const existing = await fetchArticleBySlug(slug)
     if (!existing) {
       return NextResponse.json({ error: 'Article not found' }, { status: 404 })
     }
 
-    const { error } = await supabase.from('articles').delete().eq('slug', slug)
-
-    if (error) {
-      return NextResponse.json({ error: 'Failed to delete article' }, { status: 500 })
-    }
+    await deleteArticle(slug)
 
     return NextResponse.json({ success: true })
   } catch {
