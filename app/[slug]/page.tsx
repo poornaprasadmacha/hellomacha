@@ -1,3 +1,6 @@
+﻿import fs from 'fs'
+import path from 'path'
+import matter from 'gray-matter'
 import { notFound } from 'next/navigation'
 import { MDXRemote } from 'next-mdx-remote/rsc'
 import Link from 'next/link'
@@ -7,14 +10,8 @@ import { articleSeoMetadata } from '../../content/articles/seoMetadata'
 import ScrollToTop from '@/components/ScrollToTop'
 import ShareButtons from '@/components/ShareButtons'
 import Comments from '@/components/Comments'
-import {
-  fetchAllArticles,
-  fetchArticleBySlug,
-  isGoogleSheetsConfigured,
-} from '@/lib/google-sheets'
 
-export const dynamic = 'force-dynamic'
-
+export const dynamic = 'force-static'
 export const dynamicParams = false
 
 type ContentData = {
@@ -32,7 +29,6 @@ type ContentData = {
   geoPlacename?: string
   geoPosition?: string
   sources?: { name: string; url: string }[]
-  type?: string
 }
 
 type ContentItem = {
@@ -41,7 +37,7 @@ type ContentItem = {
   content: string
 }
 
-const relatedArticleGroups: string[][] = [
+const relatedArticleGroups = [
   [
     'new-epf-rules-2026',
     'PM-Shram-Yogi-Maandhan-Yojana',
@@ -120,67 +116,97 @@ function authorSlug(author?: string) {
   return 'sivarama-krishna'
 }
 
-export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  if (!isGoogleSheetsConfigured()) {
+/* -------------------------------------------------------
+   CONTENT DIRECTORIES
+------------------------------------------------------- */
+
+const articlesDir = path.join(process.cwd(), 'content', 'articles')
+const pagesDir = path.join(process.cwd(), 'content', 'pages')
+
+/* -------------------------------------------------------
+   GET ALL CONTENT SLUGS
+------------------------------------------------------- */
+
+function getSlugsFromDirectory(directory: string): string[] {
+  if (!fs.existsSync(directory)) {
     return []
   }
 
-  try {
-    const articles = await fetchAllArticles()
-    return articles.map(({ slug }) => ({ slug }))
-  } catch {
-    return []
+  return fs
+    .readdirSync(directory)
+    .filter((file) => /\.(mdx|md)$/i.test(file))
+    .map((file) => file.replace(/\.(mdx|md)$/i, ''))
+}
+
+/* -------------------------------------------------------
+   GENERATE STATIC PARAMS
+------------------------------------------------------- */
+
+export function generateStaticParams(): { slug: string }[] {
+  const articleSlugs = getSlugsFromDirectory(articlesDir)
+  const pageSlugs = getSlugsFromDirectory(pagesDir)
+
+  const allSlugs = [...articleSlugs, ...pageSlugs]
+
+  const uniqueSlugs = Array.from(new Set(allSlugs))
+
+  return uniqueSlugs.map((slug) => ({
+    slug,
+  }))
+}
+
+/* -------------------------------------------------------
+   READ CONTENT FILE
+------------------------------------------------------- */
+
+function readContentFile(
+  directory: string,
+  slug: string,
+  type: 'article' | 'page'
+): ContentItem | null {
+  const mdxPath = path.join(directory, `${slug}.mdx`)
+  const mdPath = path.join(directory, `${slug}.md`)
+
+  let filePath: string | null = null
+
+  if (fs.existsSync(mdxPath)) {
+    filePath = mdxPath
+  } else if (fs.existsSync(mdPath)) {
+    filePath = mdPath
   }
-}
 
-function formatDisplayDate(dateStr?: string): string {
-  if (!dateStr) return ''
-
-  const dateObj = new Date(dateStr)
-  if (Number.isNaN(dateObj.getTime())) return dateStr
-
-  return dateObj.toLocaleDateString('en-US', {
-    month: 'short',
-    day: 'numeric',
-    year: 'numeric',
-  })
-}
-
-async function getContent(slug: string): Promise<ContentItem | null> {
-  if (!isGoogleSheetsConfigured()) {
+  if (!filePath) {
     return null
   }
 
-  try {
-    const article = await fetchArticleBySlug(slug)
+  const fileContents = fs.readFileSync(filePath, 'utf8')
+  const { data, content } = matter(fileContents)
 
-    if (!article) {
-      return null
-    }
-
-    const wordCount = article.content ? article.content.trim().split(/\s+/).length : 0
-    const readingTime = Math.max(1, Math.ceil(wordCount / 225))
-
-    return {
-      type: (article.type as 'article' | 'page') || 'article',
-      data: {
-        title: article.title,
-        description: article.description,
-        date: article.date,
-        thumbnail: article.thumbnail,
-        author: article.author,
-        type: article.type,
-        geoRegion: article.geo_region,
-        geoPlacename: article.geo_placename,
-        geoPosition: article.geo_position,
-        seoKeywords: article.seo_keywords as string[] | undefined,
-        sources: article.sources as { name: string; url: string }[] | undefined,
-      },
-      content: article.content,
-    }
-  } catch {
-    return null
+  return {
+    type,
+    data: data as ContentData,
+    content,
   }
+}
+
+/* -------------------------------------------------------
+   GET CONTENT
+------------------------------------------------------- */
+
+function getContent(slug: string): ContentItem | null {
+  const article = readContentFile(articlesDir, slug, 'article')
+
+  if (article) {
+    return article
+  }
+
+  const page = readContentFile(pagesDir, slug, 'page')
+
+  if (page) {
+    return page
+  }
+
+  return null
 }
 
 function getRelatedArticles(slug: string) {
@@ -189,7 +215,38 @@ function getRelatedArticles(slug: string) {
   return group
     .filter((relatedSlug) => relatedSlug !== slug)
     .slice(0, 3)
+    .flatMap((relatedSlug) => {
+      const item = readContentFile(articlesDir, relatedSlug, 'article')
+
+      return item ? [{ slug: relatedSlug, title: item.data.title }] : []
+    })
 }
+
+/* -------------------------------------------------------
+   DATE FORMAT
+------------------------------------------------------- */
+
+function formatDisplayDate(dateStr?: string): string {
+  if (!dateStr) {
+    return ''
+  }
+
+  const dateObj = new Date(dateStr)
+
+  if (Number.isNaN(dateObj.getTime())) {
+    return dateStr
+  }
+
+  return dateObj.toLocaleDateString('en-US', {
+    month: 'short',
+    day: 'numeric',
+    year: 'numeric',
+  })
+}
+
+/* -------------------------------------------------------
+   METADATA
+------------------------------------------------------- */
 
 type PageProps = {
   params: Promise<{
@@ -202,7 +259,7 @@ export async function generateMetadata({
 }: PageProps): Promise<Metadata> {
   const { slug } = await params
 
-  const item = await getContent(slug)
+  const item = getContent(slug)
 
   if (!item) {
     return {
@@ -278,12 +335,16 @@ export async function generateMetadata({
   return baseMetadata
 }
 
+/* -------------------------------------------------------
+   ARTICLE PAGE
+------------------------------------------------------- */
+
 export default async function DynamicSlugPage({
   params,
 }: PageProps) {
   const { slug } = await params
 
-  const item = await getContent(slug)
+  const item = getContent(slug)
 
   if (!item) {
     notFound()
@@ -291,7 +352,8 @@ export default async function DynamicSlugPage({
 
   const { type, data, content } = item
   const articleSeo = type === 'article' ? articleSeoMetadata[slug] : undefined
-  const relatedSlugs = getRelatedArticles(slug)
+  const relatedArticles =
+    type === 'article' ? getRelatedArticles(slug) : []
 
   const resolveImageUrl = (url?: string) => {
     if (!url) return 'https://hellomacha.com/og-image.svg'
@@ -302,14 +364,28 @@ export default async function DynamicSlugPage({
     }
   }
 
-  const wordCount = content ? content.trim().split(/\s+/).length : 0
+  /* -------------------------------------------------------
+     READING TIME
+  ------------------------------------------------------- */
+
+  const wordCount = content
+    ? content.trim().split(/\s+/).length
+    : 0
 
   const readingTime = Math.max(
     1,
     Math.ceil(wordCount / 225)
   )
 
+  /* -------------------------------------------------------
+     AUTHOR
+  ------------------------------------------------------- */
+
   const authorName = data.author || 'Sivarama Krishna'
+
+  /* -------------------------------------------------------
+     DATE
+  ------------------------------------------------------- */
 
   const rawUpdatedDate =
     data.updatedDate ||
@@ -322,8 +398,16 @@ export default async function DynamicSlugPage({
       ? formatDisplayDate(data.date)
       : ''
 
+  /* -------------------------------------------------------
+     CANONICAL URL
+  ------------------------------------------------------- */
+
   const canonicalUrl =
     `https://hellomacha.com/${slug}`
+
+  /* -------------------------------------------------------
+     ARTICLE SCHEMA
+  ------------------------------------------------------- */
 
   const articleSchema =
     type === 'article'
@@ -358,6 +442,10 @@ export default async function DynamicSlugPage({
         }
       : null
 
+  /* -------------------------------------------------------
+     BREADCRUMB SCHEMA
+  ------------------------------------------------------- */
+
   const breadcrumbSchema = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
@@ -377,14 +465,11 @@ export default async function DynamicSlugPage({
     ],
   }
 
-  if (type === 'article') {
-    const relatedArticles = await Promise.all(
-      relatedSlugs.map(async (relatedSlug) => {
-        const item = await getContent(relatedSlug)
-        return item ? { slug: relatedSlug, title: item.data.title } : null
-      })
-    ).then((results) => results.filter(Boolean) as { slug: string; title: string }[])
+  /* -------------------------------------------------------
+     ARTICLE
+  ------------------------------------------------------- */
 
+  if (type === 'article') {
     return (
       <article className="mx-auto w-full max-w-4xl px-4 pb-12 pt-6 sm:px-6 sm:pt-8">
 
@@ -509,6 +594,10 @@ export default async function DynamicSlugPage({
       </article>
     )
   }
+
+  /* -------------------------------------------------------
+     STANDALONE PAGE
+  ------------------------------------------------------- */
 
   return (
     <main className="mx-auto w-full max-w-5xl px-4 pb-12 pt-6 sm:px-6">

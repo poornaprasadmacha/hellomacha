@@ -6,9 +6,5 @@
   "compatibility_flags": ["nodejs_compat"],
   "observability": {
     "enabled": true
-  },
-  "vars": {
-    "NEXT_PUBLIC_GOOGLE_SHEETS_WEB_APP_URL": "",
-    "ADMIN_PASSWORD": "Rk@2001**"
   }
 }
