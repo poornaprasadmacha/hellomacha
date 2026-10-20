@@ -157,7 +157,8 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
                 <img
                   src={featured.thumbnail}
                   alt={featured.title}
-                  loading="lazy"
+                  loading="eager"
+                  fetchPriority="high"
                   className="h-full w-full object-cover"
                 />
                 <div className="absolute inset-0 bg-[rgba(0,0,0,0.15)]" />
