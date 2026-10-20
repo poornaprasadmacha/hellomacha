@@ -53,8 +53,8 @@ const organizationSchema = {
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://hellomacha.com'),
-  title: 'HelloMacha | Financial Tips & Tech Reviews',
-  description: 'Your trusted source for tech reviews, financial tips, and home products.',
+  title: 'HelloMacha | Financial Tips, Tech Reviews & Buying Guides',
+  description: 'Practical insight for everyday decisions. Actionable guides, clear recommendations, and straightforward reviews to help you decide faster on finance, tech, and home products.',
   applicationName: 'HelloMacha',
   authors: [{ name: 'HelloMacha' }],
   keywords: ['financial tips', 'tech reviews', 'money advice', 'product guides'],
@@ -69,8 +69,8 @@ export const metadata: Metadata = {
     },
   },
   openGraph: {
-    title: 'HelloMacha | Financial Tips & Tech Reviews',
-    description: 'Your trusted source for tech reviews, financial tips, and home products.',
+    title: 'HelloMacha | Financial Tips, Tech Reviews & Buying Guides',
+    description: 'Practical insight for everyday decisions. Actionable guides, clear recommendations, and straightforward reviews to help you decide faster on finance, tech, and home products.',
     url: 'https://hellomacha.com',
     siteName: 'HelloMacha',
     images: [{ url: OG_IMAGE_URL, width: 1200, height: 630, alt: 'HelloMacha practical guides and financial tools' }],
@@ -79,8 +79,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'HelloMacha | Financial Tips & Tech Reviews',
-    description: 'Your trusted source for tech reviews, financial tips, and home products.',
+    title: 'HelloMacha | Financial Tips, Tech Reviews & Buying Guides',
+    description: 'Practical insight for everyday decisions. Actionable guides, clear recommendations, and straightforward reviews to help you decide faster on finance, tech, and home products.',
     images: [{ url: OG_IMAGE_URL, width: 1200, height: 630, alt: 'HelloMacha practical guides and financial tools' }],
   },
   icons: {
@@ -126,7 +126,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <GoogleAnalytics />
         </Suspense>
 
-        <main className="mx-auto w-full max-w-6xl flex-grow px-4 pt-12 md:pt-16 pb-6 sm:px-5 sm:pb-8">
+        <main className="mx-auto w-full max-w-6xl flex-grow px-4 pt-12 md:pt-16 pb-6 sm:px-5 sm:pb-8 min-h-[60vh]">
           {children}
         </main>
 
