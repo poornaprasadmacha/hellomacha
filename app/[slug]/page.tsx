@@ -269,7 +269,7 @@ export async function generateMetadata({
 
   const { type, data } = item
   const articleSeo = type === 'article' ? articleSeoMetadata[slug] : undefined
-  const metadataAuthorName = data.author || 'Sivarama Krishna'
+  const metadataAuthorName = data.author || 'Macha Venkata Sivarama Krishna'
   const canonicalUrl = `https://hellomacha.com/${slug}`
 
   const resolveImageUrl = (url?: string) => {
@@ -381,7 +381,7 @@ export default async function DynamicSlugPage({
      AUTHOR
   ------------------------------------------------------- */
 
-  const authorName = data.author || 'Sivarama Krishna'
+  const authorName = data.author || 'Macha Venkata Sivarama Krishna'
 
   /* -------------------------------------------------------
      DATE
@@ -506,7 +506,10 @@ export default async function DynamicSlugPage({
             {data.title}
           </h1>
 
-          <div className="mb-2 text-sm font-semibold text-[var(--ink)]">
+          <div className="mb-2 flex items-center gap-2 text-sm font-semibold text-[var(--ink)]">
+            <span className="text-xs font-medium uppercase tracking-[0.2em] text-[var(--muted)]">
+              Written by
+            </span>
             <Link href={`/authors/${authorSlug(data.author)}`} className="hover:text-[var(--brand-red)] hover:underline">
               {authorName}
             </Link>
@@ -514,18 +517,54 @@ export default async function DynamicSlugPage({
 
           <div className="mb-5 flex flex-wrap items-center gap-2 text-sm text-[var(--muted)]">
             {displayDate && (
-              <span>{displayDate}</span>
-            )}
-
-            {displayDate && (
-              <span className="text-[var(--line)]">
-                |
+              <span className="flex items-center gap-1">
+                <span className="text-[var(--line)]">|</span>
+                <span>Last updated {formatDisplayDate(rawUpdatedDate || data.date)}</span>
               </span>
             )}
 
-            <span>
-              {readingTime} min read
+            <span className="flex items-center gap-1">
+              <span className="text-[var(--line)]">|</span>
+              <span>{readingTime} min read</span>
             </span>
+
+            <span className="flex items-center gap-1">
+              <span className="text-[var(--line)]">|</span>
+              <a href="/editorial-policy" className="hover:text-[var(--brand-red)] hover:underline">
+                Editorial standards
+              </a>
+            </span>
+          </div>
+
+          {/* Author credentials */}
+          <div className="mb-6 rounded-lg border border-[var(--line)] bg-[#f9f9f9] p-4">
+            <div className="flex items-start gap-3">
+              <span className="mt-0.5 text-[var(--brand-red)] font-bold text-xs uppercase tracking-[0.16em]">
+                Author
+              </span>
+              <div>
+                <p className="text-sm font-semibold text-[var(--ink)]">
+                  {authorName}
+                </p>
+                {data.author === 'Sivarama Krishna Macha' || data.author === 'Sivarama Krishna' ? (
+                  <p className="text-xs text-[var(--muted)]">
+                    Lead researcher — personal finance, taxes, EPF, mutual funds, and wealth building for Indian households.
+                  </p>
+                ) : data.author === 'Poorna Prasad' ? (
+                  <p className="text-xs text-[var(--muted)]">
+                    Product researcher — TVs, laptops, appliances, and home-product buying guides for Indian households.
+                  </p>
+                ) : data.author === 'Chaitanya' ? (
+                  <p className="text-xs text-[var(--muted)]">
+                    Business writer — strategy, entrepreneurship, pricing, and founder stories.
+                  </p>
+                ) : (
+                  <p className="text-xs text-[var(--muted)]">
+                    Contributor to HelloMacha guides.
+                  </p>
+                )}
+              </div>
+            </div>
           </div>
 
           {/* Share Buttons */}

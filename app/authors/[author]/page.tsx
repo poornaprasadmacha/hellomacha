@@ -19,10 +19,10 @@ type AuthorProfile = {
 
 const authors: Record<string, AuthorProfile> = {
   'sivarama-krishna': {
-    name: 'Sivarama Krishna',
+    name: 'Macha Venkata Sivarama Krishna',
     focus: 'Personal finance, investing, money habits, and long-term wealth building for Indian readers.',
-    bio: 'Sivarama Krishna is the founder and lead researcher at HelloMacha. With over a decade of experience in financial technology and personal finance writing, he specialises in translating complex financial concepts into practical, everyday guidance for Indian households. His work focuses on budgeting, debt management, long-term investing, and the financial decisions that shape everyday life in India.',
-    philosophy: 'Sivarama Krishna researches every guide from primary sources — scheme documents, RBI notifications, fund fact sheets, and official portals — before writing a single line. His approach is deliberately practical: he translates compound interest, tax rules, and inflation into rupee amounts an Indian household can act on, and he favours boring, repeatable habits over hot tips. He writes the way he would explain a decision to a family member — slowly, with every assumption stated out loud.',
+    bio: 'Macha Venkata Sivarama Krishna is the founder and lead researcher at HelloMacha. With over a decade of experience in financial technology and personal finance writing, he specialises in translating complex financial concepts into practical, everyday guidance for Indian households. His work focuses on budgeting, debt management, long-term investing, and the financial decisions that shape everyday life in India.',
+    philosophy: 'Macha Venkata Sivarama Krishna researches every guide from primary sources — scheme documents, RBI notifications, fund fact sheets, and official portals — before writing a single line. His approach is deliberately practical: he translates compound interest, tax rules, and inflation into rupee amounts an Indian household can act on, and he favours boring, repeatable habits over hot tips. He writes the way he would explain a decision to a family member — slowly, with every assumption stated out loud.',
     expectations: 'Every finance guide follows the same editorial bar: primary and official sources first, estimates and assumptions labelled, and calculations shown in rupees. Sivarama updates articles when tax rules, scheme rates, or product terms change, and each piece names the sources it relied on. Nothing on the site is a product pitch — recommendations are chosen for usefulness to Indian readers, not commission.',
     topics: [
       { label: 'Personal finance', href: '/topics/finance' },
