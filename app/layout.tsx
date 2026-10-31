@@ -3,7 +3,6 @@ import { Suspense } from 'react'
 import Link from 'next/link'
 import { FiArrowRight, FiSearch } from 'react-icons/fi'
 import HelloMachaLogo from '../components/HelloMachaLogo'
-import ShareButtons from '../components/ShareButtons'
 import Header from '../components/Header'
 import CookieConsent from '../components/CookieConsent'
 import GoogleAnalytics from '../components/GoogleAnalytics'
@@ -44,10 +43,11 @@ const organizationSchema = {
   url: 'https://hellomacha.com',
   email: 'team.hellomacha@gmail.com',
   sameAs: [
-    'https://x.com/search?q=HelloMacha',
-    'https://www.instagram.com/explore/tags/hellomacha/',
-    'https://www.facebook.com/search/top?q=HelloMacha',
-    'https://www.youtube.com/results?search_query=HelloMacha',
+    'https://www.youtube.com/@HelloMacha',
+    'https://x.com/HelloMacha',
+    'https://www.linkedin.com/company/hellomacha',
+    'https://www.instagram.com/hellomacha',
+    'https://www.facebook.com/hellomacha',
   ],
 }
 
@@ -64,6 +64,10 @@ export const metadata: Metadata = {
   },
   alternates: {
     canonical: 'https://hellomacha.com',
+    languages: {
+      'en-IN': 'https://hellomacha.com',
+      'en': 'https://hellomacha.com',
+    },
     types: {
       'application/rss+xml': 'https://hellomacha.com/feed.xml',
     },
@@ -150,7 +154,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </p>
                 <div className="mt-6">
                   <p className="mb-2 text-xs font-bold uppercase tracking-[0.16em] text-[var(--ink)]">Follow HelloMacha</p>
-                  <ShareButtons />
+                  <div className="flex items-center gap-3">
+                    <a href="https://www.youtube.com/@HelloMacha" className="text-xs font-semibold text-[var(--brand-red)] hover:underline" target="_blank" rel="noopener noreferrer">YouTube</a>
+                    <a href="https://x.com/HelloMacha" className="text-xs font-semibold text-[var(--brand-red)] hover:underline" target="_blank" rel="noopener noreferrer">X</a>
+                    <a href="https://www.linkedin.com/company/hellomacha" className="text-xs font-semibold text-[var(--brand-red)] hover:underline" target="_blank" rel="noopener noreferrer">LinkedIn</a>
+                    <a href="https://www.instagram.com/hellomacha" className="text-xs font-semibold text-[var(--brand-red)] hover:underline" target="_blank" rel="noopener noreferrer">Instagram</a>
+                    <a href="https://www.facebook.com/hellomacha" className="text-xs font-semibold text-[var(--brand-red)] hover:underline" target="_blank" rel="noopener noreferrer">Facebook</a>
+                  </div>
                 </div>
                 <Link href="/financial-calculators" className="mt-6 inline-flex items-center gap-2 border border-[var(--brand-red)] px-4 py-2 text-xs font-bold uppercase tracking-[0.12em] text-[var(--brand-red)] transition hover:bg-[var(--brand-red)] hover:text-white">
                   Explore our tools <FiArrowRight size={13} />
