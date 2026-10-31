@@ -578,7 +578,9 @@ export default async function DynamicSlugPage({
               <img
                 src={data.thumbnail}
                 alt={data.title}
-                loading="lazy"
+                loading="eager"
+                width={1200}
+                height={630}
                 className="block h-auto w-full"
               />
             </div>

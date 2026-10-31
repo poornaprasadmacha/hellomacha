@@ -1,0 +1,35 @@
+# HelloMacha - llms.txt
+# AI crawler friendly site summary
+
+## Site Overview
+HelloMacha is an independent Indian personal finance and consumer advice website.
+URL: https://hellomacha.com
+
+## Key Sections
+- Home: https://hellomacha.com
+- Articles: https://hellomacha.com/[slug]
+- Financial Calculators: https://hellomacha.com/financial-calculators
+- Calculator listing: https://hellomacha.com/financial-calculators
+- About: https://hellomacha.com/about
+- Editorial Policy: https://hellomacha.com/editorial-policy
+- Privacy Policy: https://hellomacha.com/privacy-policy
+- Cookie Policy: https://hellomacha.com/cookie-policy
+- Disclaimer: https://hellomacha.com/disclaimer
+- Terms and Conditions: https://hellomacha.com/terms-and-conditions
+- Contact: https://hellomacha.com/contact
+- RSS Feed: https://hellomacha.com/feed.xml
+- Sitemap: https://hellomacha.com/sitemap.xml
+
+## Topics
+- Personal Finance
+- Tax Planning
+- EPF, PPF, NPS
+- Mutual Funds
+- Retirement Planning
+- Home Loans
+- Insurance
+- Consumer Buying Guides (TVs, Laptops, Appliances)
+
+## Contact
+Email: team.hellomacha@gmail.com
+Location: Andhra Pradesh, India

@@ -41,6 +41,7 @@ const organizationSchema = {
   '@type': 'Organization',
   name: 'HelloMacha',
   url: 'https://hellomacha.com',
+  logo: 'https://hellomacha.com/icon.png',
   email: 'team.hellomacha@gmail.com',
   sameAs: [
     'https://www.youtube.com/@HelloMacha',
@@ -114,12 +115,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link
-          rel="stylesheet"
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-        />
-      </head>
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
+          />
+        </head>
       <body className="min-h-screen flex flex-col bg-[var(--page)] text-[var(--ink)]" suppressHydrationWarning>
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-50 p-4 text-[var(--ink)] bg-white border border-[var(--brand-red)]">Skip to main content</a>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
@@ -138,7 +140,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <GoogleAnalytics />
         </Suspense>
 
-        <main className="mx-auto w-full max-w-6xl flex-grow px-4 pt-12 md:pt-16 pb-6 sm:px-5 sm:pb-8 min-h-[60vh]">
+        <main id="main-content" className="mx-auto w-full max-w-6xl flex-grow px-4 pt-12 md:pt-16 pb-6 sm:px-5 sm:pb-8 min-h-[60vh]">
           {children}
         </main>
 

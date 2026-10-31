@@ -4,10 +4,16 @@ export const dynamic = 'force-static'
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: {
-      userAgent: '*',
-      allow: '/',
-    },
+    rules: [
+      {
+        userAgent: '*',
+        allow: '/',
+      },
+      {
+        userAgent: ['GPTBot', 'Google-Extended', 'CCBot', 'anthropic-ai', 'Claude-Web', 'Bytespider', 'Amazonbot'],
+        allow: '/',
+      },
+    ],
     sitemap: 'https://hellomacha.com/sitemap.xml',
     host: 'https://hellomacha.com',
   }
