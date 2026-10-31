@@ -247,8 +247,9 @@ img {
   display: block;
   max-width: 100%;
   overflow-x: auto;
-  overflow: hidden;
+  overflow-y: hidden;
   border-radius: 0.75rem;
+  margin-bottom: 1rem;
 }
 
 .prose th {
