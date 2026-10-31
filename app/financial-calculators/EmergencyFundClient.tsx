@@ -189,7 +189,7 @@ export default function EmergencyFundClient() {
       <nav className="mb-8 text-xs text-[var(--muted)]" aria-label="Breadcrumb">
         <Link href="/" className="hover:text-[var(--brand-red)]">Home</Link>
         <span className="px-2">/</span>
-        <Link href="/calculators" className="hover:text-[var(--brand-red)]">Calculators</Link>
+        <Link href="/financial-calculators" className="hover:text-[var(--brand-red)]">Financial Calculators</Link>
         <span className="px-2">/</span>
         <span>Emergency Fund Calculator</span>
       </nav>
@@ -337,7 +337,7 @@ export default function EmergencyFundClient() {
         </div>
       </section>
 
-      <p className="mt-8 text-sm text-[var(--muted)]">Explore more tools <FiArrowRight className="inline text-[var(--brand-red)]" size={14} /> from the <Link href="/calculators" className="font-semibold text-[var(--brand-red)] hover:underline">Calculators section</Link>.</p>
+      <p className="mt-8 text-sm text-[var(--muted)]">Explore more tools <FiArrowRight className="inline text-[var(--brand-red)]" size={14} /> from the <Link href="/financial-calculators" className="font-semibold text-[var(--brand-red)] hover:underline">Financial Calculators section</Link>.</p>
     </div>
   )
 }

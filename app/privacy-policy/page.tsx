@@ -1,14 +1,15 @@
 import type { Metadata } from 'next'
+import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy — HelloMacha',
-  description: 'HelloMacha privacy policy: how we collect, use, and protect your personal information. Google Analytics, cookies, email, and contact data disclosure.',
+  title: 'Privacy Policy | HelloMacha',
+  description: 'HelloMacha privacy policy — how we collect, use, and protect your personal information.',
   alternates: {
     canonical: 'https://hellomacha.com/privacy-policy',
   },
   openGraph: {
-    title: 'Privacy Policy — HelloMacha',
-    description: 'How HelloMacha collects, uses, and protects your personal information.',
+    title: 'Privacy Policy | HelloMacha',
+    description: 'Read the HelloMacha privacy policy to understand how we collect, use, and protect your information.',
     url: 'https://hellomacha.com/privacy-policy',
     siteName: 'HelloMacha',
     type: 'website',
@@ -26,53 +27,41 @@ export default function PrivacyPolicyPage() {
           Privacy Policy
         </h1>
         <p className="mb-4 text-sm text-[var(--muted)]">
-          Last updated: October 20, 2026
+          Last updated: October 30, 2026
         </p>
 
         <p className="mb-6 text-base leading-relaxed text-[var(--ink)]">
-          This privacy policy explains how HelloMacha ("we," "us," "our") collects, uses, and protects information when you visit hellomacha.com (the "Site").
+          HelloMacha ('we', 'us', 'our') operates hellomacha.com ('the Site'). This privacy policy explains how we collect, use, disclose, and protect your information when you visit or use the Site.
         </p>
 
         <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">1. Information we collect</h2>
         <p className="mb-6 text-base leading-relaxed text-[var(--muted)]">
-          We do not collect personal information from visitors simply by browsing the Site. Personal information is only collected if you voluntarily provide it, for example by emailing us at team.hellomacha@gmail.com or using the contact form.
+          We may collect personal information you voluntarily provide, such as your name and email address when you contact us via email or subscribe to updates. We also collect non-personal usage data such as browser type, IP address, pages visited, and referral sources through standard server logs and analytics tools.
         </p>
 
         <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">2. How we use your information</h2>
         <p className="mb-6 text-base leading-relaxed text-[var(--muted)]">
-          If you email us, we use your email address and message solely to respond to your inquiry, correct published content, or discuss collaboration. We do not sell, rent, or share your personal information with third parties.
+          We use collected information to: respond to your inquiries; send updates you have opted into; improve the Site and our content; and analyze aggregate usage trends. We do not sell your personal information to third parties.
         </p>
 
-        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">3. Analytics and advertising</h2>
+        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">3. Cookies and tracking</h2>
         <p className="mb-6 text-base leading-relaxed text-[var(--muted)]">
-          The Site uses Google Analytics to measure anonymous traffic and usage patterns. Google Analytics uses cookies and similar technologies to collect non-personal information such as IP address, browser type, pages visited, and referral source. This data is aggregated and anonymised.
-        </p>
-        <p className="mb-6 text-base leading-relaxed text-[var(--muted)]">
-          The Site may display advertisements served through Google AdSense. Google uses cookies to serve ads based on your prior visits to this Site and other websites. You may opt out of personalised advertising by visiting the Google Ads Settings page.
+          The Site may use cookies or similar technologies to remember preferences and analyze traffic. You can control cookies through your browser settings. See our <Link href="/cookie-policy">Cookie Policy</Link> for details.
         </p>
 
-        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">4. Cookies</h2>
+        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">4. Third-party links</h2>
         <p className="mb-6 text-base leading-relaxed text-[var(--muted)]">
-          The Site uses cookies for analytics, advertising, and site functionality. You can control or disable cookies through your browser settings. Disabling cookies may affect some Site features.
+          The Site may contain links to third-party websites or services. We are not responsible for the privacy practices or content of those sites. We encourage you to read their privacy policies before providing any personal information.
         </p>
 
-        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">5. Third-party links</h2>
+        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">5. Your rights</h2>
         <p className="mb-6 text-base leading-relaxed text-[var(--muted)]">
-          The Site may contain links to third-party websites (e.g., government portals, product retailers). We are not responsible for the privacy practices of those sites. We encourage you to read their privacy policies before providing any personal information.
+          You may request access to, correction of, or deletion of your personal information by emailing us at team.hellomacha@gmail.com. We will respond within a reasonable timeframe.
         </p>
 
-        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">6. Data security</h2>
+        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">6. Contact us</h2>
         <p className="mb-6 text-base leading-relaxed text-[var(--muted)]">
-          We take reasonable technical and organisational measures to protect any personal information you provide to us. However, no method of transmission over the internet is completely secure, and we cannot guarantee absolute security.
-        </p>
-
-        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">7. Contact us</h2>
-        <p className="mb-0 text-base leading-relaxed text-[var(--muted)]">
-          If you have questions about this privacy policy or your personal information, contact us at{' '}
-          <a href="mailto:team.hellomacha@gmail.com" className="text-[var(--brand-red)] hover:underline">
-            team.hellomacha@gmail.com
-          </a>
-          .
+          If you have questions about this privacy policy, contact us at team.hellomacha@gmail.com.
         </p>
       </div>
     </main>

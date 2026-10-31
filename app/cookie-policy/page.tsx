@@ -1,14 +1,14 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Cookie Policy — HelloMacha',
-  description: 'HelloMacha cookie policy: what cookies we use, why, and how to manage them. Google Analytics and AdSense cookies disclosed.',
+  title: 'Cookie Policy | HelloMacha',
+  description: 'HelloMacha cookie policy — how we use cookies and similar technologies on our site.',
   alternates: {
     canonical: 'https://hellomacha.com/cookie-policy',
   },
   openGraph: {
-    title: 'Cookie Policy — HelloMacha',
-    description: 'What cookies HelloMacha uses, why, and how to manage them.',
+    title: 'Cookie Policy | HelloMacha',
+    description: 'Read the HelloMacha cookie policy to understand how we use cookies and similar technologies.',
     url: 'https://hellomacha.com/cookie-policy',
     siteName: 'HelloMacha',
     type: 'website',
@@ -26,46 +26,38 @@ export default function CookiePolicyPage() {
           Cookie Policy
         </h1>
         <p className="mb-4 text-sm text-[var(--muted)]">
-          Last updated: October 20, 2026
+          Last updated: October 30, 2026
         </p>
 
         <p className="mb-6 text-base leading-relaxed text-[var(--ink)]">
-          This cookie policy explains what cookies are, how HelloMacha ("we," "us," "our") uses them on hellomacha.com (the "Site"), and your choices regarding cookies.
+          HelloMacha ('we', 'us', 'our') uses cookies and similar technologies on hellomacha.com ('the Site'). This cookie policy explains what cookies are, how we use them, and your choices regarding their use.
         </p>
 
-        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">What are cookies</h2>
+        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">1. What are cookies</h2>
         <p className="mb-6 text-base leading-relaxed text-[var(--muted)]">
-          Cookies are small text files placed on your device (computer, tablet, or mobile) when you visit a website. They help the site remember information about your visit, such as your preferred language and other settings, and can be used for analytics and advertising.
+          Cookies are small text files placed on your device when you visit a website. They help the site remember your preferences, improve functionality, and analyze how visitors interact with the site.
         </p>
 
-        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">Cookies we use</h2>
+        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">2. Types of cookies we use</h2>
         <p className="mb-6 text-base leading-relaxed text-[var(--muted)]">
-          <strong>Analytics cookies:</strong> We use Google Analytics to understand how visitors interact with the Site. These cookies collect anonymous information such as pages visited, time spent on the Site, and referral source.
-        </p>
-        <p className="mb-6 text-base leading-relaxed text-[var(--muted)]">
-          <strong>Advertising cookies:</strong> The Site may display ads through Google AdSense. Google uses cookies to serve ads based on your interests and prior visits. You can opt out of personalised ads via the Google Ads Settings page.
-        </p>
-        <p className="mb-6 text-base leading-relaxed text-[var(--muted)]">
-          <strong>Functional cookies:</strong> We use a cookie to remember your cookie consent preference so the consent banner does not reappear on every visit.
+          <strong>Essential cookies:</strong> Necessary for the Site to function properly, including security and session management.<br />
+          <strong>Analytics cookies:</strong> Help us understand how visitors use the Site so we can improve performance and content. These may be provided by third-party analytics services.<br />
+          <strong>Preference cookies:</strong> Remember your settings and choices, such as language or display preferences.
         </p>
 
-        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">Managing cookies</h2>
+        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">3. Third-party cookies</h2>
         <p className="mb-6 text-base leading-relaxed text-[var(--muted)]">
-          You can control or disable cookies through your browser settings. Most browsers allow you to block or delete cookies from specific sites or all sites. Disabling cookies may prevent some Site features from working properly.
+          Third parties, such as analytics providers, may set cookies on your device when you visit the Site. These cookies are subject to the third party's own privacy policy, not ours.
         </p>
 
-        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">Third-party cookies</h2>
+        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">4. Your choices</h2>
         <p className="mb-6 text-base leading-relaxed text-[var(--muted)]">
-          Third parties such as Google may place cookies on your device when you visit the Site. These third parties have their own privacy and cookie policies. We encourage you to review them.
+          You can accept or decline cookies through your browser settings. Most browsers allow you to block or delete cookies. Disabling cookies may affect the functionality of some parts of the Site.
         </p>
 
-        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">Contact us</h2>
-        <p className="mb-0 text-base leading-relaxed text-[var(--muted)]">
-          If you have questions about this cookie policy, contact us at{' '}
-          <a href="mailto:team.hellomacha@gmail.com" className="text-[var(--brand-red)] hover:underline">
-            team.hellomacha@gmail.com
-          </a>
-          .
+        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">5. Contact us</h2>
+        <p className="mb-6 text-base leading-relaxed text-[var(--muted)]">
+          If you have questions about this cookie policy, contact us at team.hellomacha@gmail.com.
         </p>
       </div>
     </main>

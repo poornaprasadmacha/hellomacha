@@ -2,8 +2,32 @@
 
 import { useMemo, useState } from 'react'
 import Link from 'next/link'
-import { FiArrowRight, FiGrid, FiInfo, FiAlertTriangle, FiHelpCircle } from 'react-icons/fi'
+import { FiArrowRight, FiGrid, FiInfo, FiAlertTriangle, FiHelpCircle, FiTrendingUp, FiRefreshCw, FiClock, FiTarget, FiMinus, FiDollarSign, FiThermometer, FiActivity, FiShield, FiUsers, FiBriefcase, FiHome, FiPercent, FiCreditCard, FiZap, FiPieChart } from 'react-icons/fi'
+import { MdOutlineSchool, MdCompareArrows, MdStore, MdDirectionsCar } from 'react-icons/md'
 import type { CalculatorDefinition } from './calculatorData'
+
+const ICON_MAP: Record<string, React.ComponentType<{ size?: number; className?: string }>> = {
+  TrendingUp: FiTrendingUp,
+  RefreshCw: FiRefreshCw,
+  Clock: FiClock,
+  Target: FiTarget,
+  Minus: FiMinus,
+  DollarSign: FiDollarSign,
+  Thermometer: FiThermometer,
+  Activity: FiActivity,
+  Shield: FiShield,
+  Users: FiUsers,
+  Briefcase: FiBriefcase,
+  Home: FiHome,
+  Percent: FiPercent,
+  CreditCard: FiCreditCard,
+  Zap: FiZap,
+  PieChart: FiPieChart,
+  OutlineSchool: MdOutlineSchool,
+  CompareArrows: MdCompareArrows,
+  Store: MdStore,
+  DirectionsCar: MdDirectionsCar,
+}
 
 function monthlyFutureValue(monthly: number, annualRate: number, years: number) {
   const months = years * 12
@@ -65,6 +89,30 @@ function getMethodology(slug: string) {
       return 'Uses the employee and employer contributions entered by the user with monthly compounding. This is a simplified estimate: actual EPF balances depend on eligible wages, EPS allocation, contribution rules, interest declarations, and employment history.'
     case 'home-loan-emi':
       return 'Uses the standard reducing-balance EMI formula. It excludes processing fees, insurance, floating-rate changes, taxes, prepayments, and other lender charges.'
+    case 'mortgage-calculator':
+      return 'Subtracts the down payment from the property price to get the loan principal, then applies the standard reducing-balance EMI formula. It excludes stamp duty, registration, insurance, processing fees, and other charges.'
+    case 'house-affordability':
+      return 'Calculates the maximum loan amount from monthly income minus expenses using the EMI formula in reverse, then adds your down payment to get the maximum affordable home price. It assumes all income minus expenses is available for EMI.'
+    case 'debt-to-income':
+      return 'Divides total monthly debt payments by monthly gross income and multiplies by 100. Lenders typically prefer DTI below 40%; higher ratios reduce loan eligibility.'
+    case 'down-payment':
+      return 'Multiplies the house price by the down payment percentage to get the required down payment, then divides by monthly savings to estimate months needed to save.'
+    case 'rent-vs-buy':
+      return 'Compares total rent paid over the period against the net cost of buying (EMI payments plus maintenance minus home price appreciation). A positive result means buying costs more; negative means buying is cheaper.'
+    case 'auto-loan-emi':
+      return 'Subtracts the down payment from the on-road car price to get the loan principal, then applies the standard reducing-balance EMI formula. It excludes insurance, registration, processing fees, and other charges.'
+    case 'net-worth':
+      return 'Sums all assets (cash, investments, property, other) and subtracts all liabilities (home loan, other loans, credit card dues) to calculate net worth.'
+    case 'bond-yield':
+      return 'Current yield is the annual coupon payment divided by the market price. Yield to maturity also accounts for the difference between market price and face value amortized over years to maturity.'
+    case 'compound-interest':
+      return 'Uses the compound interest formula A = P(1 + r/n)^(nt), where P is principal, r is annual rate, n is compounding frequency per year, and t is years.'
+    case 'present-value':
+      return 'Discounts a future sum back to today using PV = FV / (1 + r)^t, where FV is future value, r is the discount rate, and t is years.'
+    case 'annuity-payout':
+      return 'Uses the annuity payment formula PMT = PV × r / (1 - (1 + r)^-n), where PV is the corpus, r is the monthly rate, and n is total months.'
+    case 'apr-calculator':
+      return 'Calculates the effective annual percentage rate by comparing total repayment (including fees embedded in the loan) against the principal over the loan tenure.'
     default:
       return 'This estimate uses the inputs shown above and does not account for taxes, fees, or changes in market conditions.'
   }
@@ -103,7 +151,31 @@ function getWhyThisMatters(slug: string) {
     case 'epf':
       return 'EPF is the foundation of most salaried Indians\' retirement corpus: 12% of basic (matched by employer) earning ~8.25% tax-free. VPF (Voluntary PF) lets you contribute up to 100% of basic at the same rate — the highest guaranteed, tax-free return available. For a ₹50,000 basic, maxing VPF adds ₹60,000/year at 8.25% tax-free. Over 25 years, that alone builds ~₹4.7 crore. This calculator shows the power of maximizing VPF.'
     case 'home-loan-emi':
-      return 'A home loan is likely your largest financial commitment. A ₹50 lakh loan at 8.5% for 20 years costs ~₹1.04 crore total — ₹54 lakh in interest alone. Reducing tenure to 15 years raises EMI by ~₹8,000 but saves ~₹22 lakh in interest. Prepaying ₹5 lakh in year 5 saves ~₹18 lakh and cuts 4 years. This calculator quantifies these trade-offs so you can decide: prepay vs invest, shorter vs longer tenure, float vs fix.'
+      return 'A home loan is likely your largest financial commitment. A ₹50 lakh loan at 8.5% for 20 years costs ~₹1.04 crore total — ₹54 lakh in interest alone. Reducing tenure to 15 years raises EMI by ~₹8,000 but saves ~₹22 lakh in interest.'
+    case 'mortgage-calculator':
+      return 'A mortgage combines the property price, down payment, and loan terms into one monthly payment. The down payment directly reduces the loan principal and therefore the EMI and total interest — every ₹1 lakh extra down payment saves meaningful interest over 20 years.'
+    case 'house-affordability':
+      return 'Lenders cap your EMI at a fraction of your income. This calculator shows the maximum home price your income can support before you fall in love with a house you cannot afford. It prevents house-poor situations where the EMI leaves no room for savings or emergencies.'
+    case 'debt-to-income':
+      return 'Your DTI ratio is one of the first things lenders check. A DTI above 40–50% often means loan rejection or higher interest rates. Knowing your DTI before applying tells you whether to pay down debt first or expect a smaller loan.'
+    case 'down-payment':
+      return 'A larger down payment reduces the loan, lowers the EMI, cuts total interest, and may get you a better interest rate. This calculator shows exactly how much you need and how long to save, turning a vague goal into a monthly savings target.'
+    case 'rent-vs-buy':
+      return 'Renting offers flexibility; buying builds equity but adds EMI, maintenance, and transaction costs. The answer depends on how long you stay, price appreciation, and rent growth. This calculator quantifies the trade-off over your actual time horizon.'
+    case 'auto-loan-emi':
+      return 'Cars depreciate while loans accrue interest. A ₹10 lakh car loan at 9% for 5 years costs ~₹12.4 lakh total — ₹2.4 lakh in interest on a falling asset. A bigger down payment or shorter tenure dramatically cuts the interest cost.'
+    case 'net-worth':
+      return 'Net worth is the single most important measure of financial health — it tells you where you stand regardless of income. Tracking it annually reveals whether your assets are growing faster than your debts.'
+    case 'bond-yield':
+      return 'Bond yields move inversely with prices. When market prices fall, yields rise. The current yield tells you the income return today; yield to maturity estimates total return if held to maturity, including price convergence to face value.'
+    case 'compound-interest':
+      return 'Compound interest is interest on interest. The compounding frequency matters — monthly compounding beats annual at the same nominal rate. Over long periods, compounding dominates the result, which is why starting early beats starting big.'
+    case 'present-value':
+      return 'A rupee tomorrow is worth less than a rupee today because of inflation and opportunity cost. Present value tells you what a future sum is worth now — essential for comparing lump-sum vs installment offers, insurance payouts, or future goals.'
+    case 'annuity-payout':
+      return 'An annuity converts a lump-sum corpus into a predictable income stream for a fixed period or life. The payout rate depends on the corpus, expected return, and payout period — this calculator helps you see if an annuity offer is fair.'
+    case 'apr-calculator':
+      return 'The nominal interest rate hides the true cost of borrowing. Processing fees and other charges effectively raise your rate. APR spreads those fees across the loan tenure to show the effective annual cost — use it to compare loan offers, not just interest rates.'
     default:
       return 'This calculator helps you quantify a specific financial decision. Understanding the numbers behind your choices — whether investing, borrowing, or planning — turns anxiety into action. Use the result as a starting point for deeper research or a conversation with a qualified advisor.'
   }
@@ -143,7 +215,31 @@ function getCommonMistakes(slug: string) {
       return 'Not transferring EPF when changing jobs — multiple accounts complicate tracking and claims. Withdrawing EPF before 5 years — becomes taxable (both contribution and interest). Not checking annual interest credit — employers sometimes delay deposits; interest is lost for those months. Opting out of EPF (if salary >₹15K) — you lose the employer match (12% of basic = 100% instant return). Not nominating — delays claims for family.'
     case 'home-loan-emi':
       return 'Focusing only on EMI fit, not total interest — a 30-year loan costs 2× the principal in interest. Not negotiating the spread — banks often reduce spread by 0.05–0.15% for good credit profiles. Ignoring prepayment charges on fixed-rate loans — floating rate loans have zero prepayment charges (RBI mandate). Not buying term insurance to cover the loan — family loses the home if you are not there. Not modeling rate hikes — a 1% increase on ₹50L adds ~₹3,000/EMI.'
-      default:
+    case 'mortgage-calculator':
+      return 'Using the property price instead of loan principal — the EMI applies to price minus down payment, not the full price. Ignoring stamp duty and registration (5–10% of price) — these are upfront, not financed. Not comparing floating vs fixed rates — floating rates can reset upward mid-tenure. Forgeting that a lower down payment may trigger PMI or higher interest.'
+    case 'house-affordability':
+      return 'Using gross income instead of take-home income — you cannot spend tax and PF deductions on EMI. Not budgeting for maintenance, property tax, insurance, and society charges — these add 1–2% of home value yearly. Assuming income will rise — plan on current income, not hoped-for hikes. Maxing out affordability leaves no buffer for job loss or emergencies.'
+    case 'debt-to-income':
+      return 'Forgetting to include all debt — credit cards, personal loans, BNPL, and existing EMIs all count. Using net income instead of gross — lenders use gross. Not accounting for the new loan EMI you are applying for — include it in monthly debt. Thinking a high DTI is fine because you pay on time — lenders still cap DTI strictly.'
+    case 'down-payment':
+      return 'Underestimating the down payment — 20% is typical, but some lenders need more for self-employed or lower credit scores. Forgetting closing costs — stamp duty, registration, legal, and brokerage can add 5–8% beyond the down payment. Not keeping an emergency fund separate — do not drain all savings into the down payment.'
+    case 'rent-vs-buy':
+      return 'Ignoring transaction costs — buying and selling costs 4–7% each way, which erodes buying advantage in short horizons. Assuming 6–8% appreciation every year — prices can be flat or fall for years. Comparing only EMI vs rent — buying adds maintenance, property tax, insurance, and opportunity cost of the down payment. Not factoring how long you stay — buying wins only over 7–10+ years typically.'
+    case 'auto-loan-emi':
+      return 'Financing the on-road price including insurance and registration — these should be paid upfront, not borrowed at 9%. Extending tenure to lower EMI — a 7-year loan costs far more interest than 5 years. Not comparing dealer financing with bank or credit union rates — dealer rates are often higher. Rolling negative equity from an old car into a new loan — this compounds debt quickly.'
+    case 'net-worth':
+      return 'Overvaluing property — use realistic market value, not purchase price or aspiration. Forgetting liabilities — credit cards and personal loans count fully. Not updating annually — net worth is only useful if tracked consistently. Including lifestyle assets (cars, electronics) at full value — they depreciate fast.'
+    case 'bond-yield':
+      return 'Confusing current yield with yield to maturity — current yield ignores capital gain/loss at maturity. Not accounting for credit risk — a high yield on a corporate bond may mean default risk. Ignoring interest rate risk — if you sell before maturity, rising rates lower the bond price. Not checking coupon frequency — some bonds pay semi-annually, changing effective yield.'
+    case 'compound-interest':
+      return 'Assuming the nominal rate equals the effective rate — monthly compounding at 8% is 8.3% effective, not 8%. Ignoring inflation — an 8% nominal return at 6% inflation is only 2% real. Not accounting for taxes on interest — FD interest is taxed at slab rate, reducing effective return. Using inconsistent compounding frequencies when comparing products.'
+    case 'present-value':
+      return 'Using the wrong discount rate — this should be your opportunity cost or required return, not inflation. Ignoring risk — a risky future sum should be discounted at a higher rate than a safe one. Not comparing present values of alternatives — PV only makes sense when comparing options. Forgetting that PV is sensitive to small rate changes over long periods.'
+    case 'annuity-payout':
+      return 'Not realizing annuity income is taxable — unlike PPF/EPF, annuity payouts are taxed at slab rate. Assuming the payout is guaranteed for life — most annuities have a fixed period or joint-life option. Ignoring inflation — a fixed ₹50,000 payout loses half its purchasing power in 12 years at 6% inflation. Not comparing with SWP from mutual funds, which may be more tax-efficient.'
+    case 'apr-calculator':
+      return 'Comparing APR across different tenures — a 3-year loan at 14% APR and a 5-year loan at 12% APR are not directly comparable; total cost differs. Ignoring that APR assumes you keep the loan to full tenure — prepaying changes the effective cost. Not including all fees — processing, documentation, insurance, and prepayment charges all affect true cost. Using APR alone — also compare total repayment and EMI affordability.'
+    default:
       return 'Using the calculator once and forgetting it — financial planning is iterative; revisit when income, expenses, goals, or market conditions change. Treating the output as a guarantee — it is an estimate based on assumptions. Not consulting a qualified advisor for large, irreversible decisions (home purchase, retirement corpus withdrawal, large lump-sum deployment).'
   }
 }
@@ -280,11 +376,108 @@ function getStepByStep(slug: string) {
       ]
     case 'home-loan-emi':
       return [
-        'Enter the loan amount.',
+        'Enter the loan amount you need.',
         'Enter the annual interest rate your lender offers.',
         'Choose the tenure — prefer the shortest you can comfortably afford.',
         'Read the EMI and total interest, and compare total repayment with the principal.',
         'Model a prepayment by reducing the tenure, not just the EMI, to save the most interest.',
+      ]
+    case 'mortgage-calculator':
+      return [
+        'Enter the property price you are considering.',
+        'Enter the down payment you can afford upfront.',
+        'Enter the annual interest rate and choose the loan tenure.',
+        'Read the monthly mortgage payment and total interest.',
+        'Try a larger down payment or shorter tenure to see how much interest you save.',
+      ]
+    case 'house-affordability':
+      return [
+        'Enter your monthly take-home income.',
+        'Enter monthly expenses excluding rent (you will not pay rent after buying).',
+        'Enter the down payment you have available.',
+        'Enter the expected home loan rate and tenure.',
+        'Read the maximum affordable home price — stay below this, not at it.',
+      ]
+    case 'debt-to-income':
+      return [
+        'Enter your monthly gross income before tax and deductions.',
+        'Enter all monthly debt payments — EMIs, credit card minimums, personal loans.',
+        'Read your DTI percentage.',
+        'If DTI is above 40%, pay down smaller debts first before applying for a new loan.',
+        'Re-check after any income change or debt payoff.',
+      ]
+    case 'down-payment':
+      return [
+        'Enter the house price you are targeting.',
+        'Enter the down payment percentage (typically 10–20%).',
+        'Enter how much you can save each month.',
+        'Read the required down payment and months needed to save.',
+        'If the timeline is too long, consider a lower-priced home or a higher monthly savings rate.',
+      ]
+    case 'rent-vs-buy':
+      return [
+        'Enter the monthly rent you currently pay or would pay.',
+        'Enter the home price and down payment you can afford.',
+        'Enter the home loan rate and comparison period.',
+        'Set expected home price appreciation and annual maintenance.',
+        'Read the net difference — negative means buying is cheaper over the period.',
+      ]
+    case 'auto-loan-emi':
+      return [
+        'Enter the on-road car price.',
+        'Enter the down payment you will pay upfront.',
+        'Enter the annual interest rate and choose the loan tenure.',
+        'Read the monthly EMI and total interest.',
+        'Prefer a tenure of 3–5 years; longer tenures cost significantly more in interest.',
+      ]
+    case 'net-worth':
+      return [
+        'Enter cash, savings, and bank balances.',
+        'Enter investment values — mutual funds, stocks, PPF, EPF, NPS.',
+        'Enter the current market value of any property.',
+        'Enter other assets (gold, jewelry, vehicle at resale value).',
+        'Enter liabilities — home loan, car loan, personal loan, credit card dues.',
+        'Read your net worth: assets minus liabilities.',
+      ]
+    case 'bond-yield':
+      return [
+        'Enter the face value of the bond (typically ₹1,000).',
+        'Enter the annual coupon rate the bond pays.',
+        'Enter the current market price (may be above or below face value).',
+        'Enter years remaining until maturity.',
+        'Read the current yield — annual coupon divided by market price.',
+      ]
+    case 'compound-interest':
+      return [
+        'Enter the principal amount you are investing.',
+        'Enter the annual interest rate.',
+        'Choose the compounding frequency — monthly (12) is typical for most products.',
+        'Enter the investment period in years.',
+        'Read the maturity value and total interest earned.',
+      ]
+    case 'present-value':
+      return [
+        'Enter the future sum you expect to receive.',
+        'Enter the discount rate — your opportunity cost or required return.',
+        'Enter the number of years until you receive it.',
+        'Read the present value — what that future sum is worth today.',
+        'Compare present values when choosing between receiving money now vs later.',
+      ]
+    case 'annuity-payout':
+      return [
+        'Enter the corpus you have available to annuitize.',
+        'Enter the expected annual return on the corpus during payout.',
+        'Enter the payout period in years.',
+        'Read the estimated monthly payout.',
+        'Compare with annuity quotes from insurers — check if their rate is competitive.',
+      ]
+    case 'apr-calculator':
+      return [
+        'Enter the loan amount you need.',
+        'Enter the nominal interest rate quoted by the lender.',
+        'Enter all processing fees and upfront charges.',
+        'Enter the loan tenure in years.',
+        'Read the effective APR — use it to compare loan offers across lenders.',
       ]
     default:
       return [
@@ -333,6 +526,30 @@ function getRealLifeExample(slug: string) {
       return 'Ravi, 30, contributes ₹7,500 a month and the employer matches it, earning 8.25% for 28 years. Total contributions are ₹50.4 lakh and the estimate shows about ₹1.98 crore — fully tax-free. Opting into VPF to raise his own contribution compounds the corpus further at the same rate.'
     case 'home-loan-emi':
       return 'Anita takes a ₹40 lakh home loan at 8.5% for 20 years. Her EMI is about ₹34,700 and total interest is roughly ₹43.3 lakh — nearly the principal again. Prepaying ₹5 lakh in year 3 could shorten the loan by about 4 years and save around ₹12–13 lakh in interest.'
+    case 'mortgage-calculator':
+      return 'Rahul is buying a ₹60 lakh home with ₹12 lakh down payment. The loan is ₹48 lakh at 8.5% for 20 years. His monthly payment is about ₹41,600 and total interest is roughly ₹51.9 lakh. Increasing the down payment to ₹18 lakh lowers the loan to ₹42 lakh, cutting the EMI to about ₹36,400 and saving roughly ₹9 lakh in interest.'
+    case 'house-affordability':
+      return 'Priya earns ₹1.2 lakh monthly and spends ₹45,000 on expenses, leaving ₹75,000 for EMI. With ₹15 lakh down payment, 8.5% rate, and 20-year tenure, she can afford a home priced up to about ₹78 lakh. Looking at ₹90 lakh homes would stretch her EMI beyond sustainable levels.'
+    case 'debt-to-income':
+      return 'Suresh earns ₹80,000 monthly and pays ₹20,000 in EMIs and credit card minimums. His DTI is 25% — comfortably within lender limits. If he adds a ₹25,000 car loan EMI, DTI rises to 56%, likely making lenders reject the application. Paying off a ₹50,000 personal loan first brings DTI back under 40%.'
+    case 'down-payment':
+      return 'A ₹75 lakh home needs ₹15 lakh down payment at 20%. Saving ₹25,000 monthly takes 5 years (60 months) to reach the target. Saving ₹40,000 monthly cuts it to about 3 years and 2 months, letting Priya buy sooner and borrow less.'
+    case 'rent-vs-buy':
+      return 'Renting at ₹25,000/month costs ₹30 lakh over 10 years. Buying a ₹60 lakh home with ₹12 lakh down at 8.5% for 10 years costs about ₹46.5 lakh in EMIs plus ₹3.6 lakh maintenance. If the home appreciates 6% annually, it is worth ₹107 lakh after 10 years — making buying substantially cheaper after accounting for appreciation.'
+    case 'auto-loan-emi':
+      return 'An 8 lakh on-road car with ₹1.6 lakh down leaves a ₹6.4 lakh loan at 9% for 5 years. The EMI is about ₹13,300 and total repayment is ₹7.98 lakh — ₹1.58 lakh in interest. Choosing a 3-year tenure raises EMI to ₹20,300 but cuts interest to about ₹87,000, saving ₹71,000.'
+    case 'net-worth':
+      return 'Ravi has ₹2 lakh cash, ₹5 lakh in mutual funds, a ₹30 lakh home, and ₹1 lakh other assets (₹38.1 lakh total assets). Against ₹20 lakh home loan, ₹3 lakh car loan, and ₹50,000 credit card dues (₹23.55 lakh total liabilities), his net worth is about ₹14.55 lakh. Tracking this annually shows whether he is building wealth or just earning and spending.'
+    case 'bond-yield':
+      return 'A ₹1,000 face value bond with a 7% coupon pays ₹70 annually. If the market price is ₹950, the current yield is about 7.37%. If held to 5-year maturity, the gain from ₹950 to ₹1,000 adds roughly 1% annualized, putting approximate YTM near 8.5%.'
+    case 'compound-interest':
+      return '₹1 lakh invested at 8% compounded monthly for 10 years grows to about ₹2.22 lakh — interest of ₹1.22 lakh. At annual compounding, it would be ₹2.16 lakh. Monthly compounding adds about ₹6,000 over the decade, showing why frequency matters.'
+    case 'present-value':
+      return 'You are promised ₹10 lakh in 10 years. At an 8% discount rate, that is worth about ₹4.63 lakh today. If someone offers you ₹5 lakh now instead, taking ₹5 lakh now is better than waiting for ₹10 lakh in 10 years.'
+    case 'annuity-payout':
+      return 'A ₹1 crore corpus at 7% return over 20 years can pay about ₹77,500 monthly. Over 20 years that is ₹1.86 crore in total payouts. If the annuity company offers only ₹65,000 monthly for the same corpus, their effective return is lower — you would do better managing it yourself or choosing another provider.'
+    case 'apr-calculator':
+      return 'A ₹5 lakh personal loan at 12% nominal rate for 5 years with ₹10,000 processing fees has a monthly EMI of about ₹11,122 and total repayment of ₹6.67 lakh. The effective APR works out to roughly 13.2% — the fees add over a percentage point to the true cost. A lender offering 12.5% with no fees would be cheaper.'
     default:
       return 'Run the calculator with current numbers, then change one assumption at a time. The difference between two results is the cost or benefit of that single decision — which is exactly what this tool is designed to make visible.'
   }
@@ -466,6 +683,128 @@ export default function CalculatorClient({ calculator }: { calculator: Calculato
         secondary = `Total interest: ${formatCurrency(totalRepayment - value('principal'))}`
         break
       }
+      case 'mortgage-calculator': {
+        const loanPrincipal = value('principal') - value('downPayment')
+        const emi = calculateEmi(loanPrincipal, value('rate'), years)
+        const totalRepayment = emi * years * 12
+        primary = emi
+        label = 'Estimated monthly mortgage payment'
+        secondary = `Loan amount: ${formatCurrency(loanPrincipal)} · Total interest: ${formatCurrency(totalRepayment - loanPrincipal)}`
+        break
+      }
+      case 'house-affordability': {
+        const monthlyRate = value('rate') / 12 / 100
+        const months = years * 12
+        const availableForEmi = value('monthlyIncome') - value('monthlyExpenses')
+        const maxLoan = monthlyRate === 0
+          ? availableForEmi * months
+          : availableForEmi / ((1 - Math.pow(1 + monthlyRate, -months)) / monthlyRate)
+        const maxHomePrice = maxLoan + value('downPayment')
+        primary = maxHomePrice
+        label = 'Maximum affordable home price'
+        secondary = `Max loan: ${formatCurrency(maxLoan)} · Down payment: ${formatCurrency(value('downPayment'))}`
+        break
+      }
+      case 'debt-to-income': {
+        const dti = value('monthlyIncome') > 0
+          ? (value('monthlyDebt') / value('monthlyIncome')) * 100
+          : 0
+        primary = dti
+        label = 'Debt-to-income ratio'
+        secondary = `Monthly debt: ${formatCurrency(value('monthlyDebt'))} · Monthly income: ${formatCurrency(value('monthlyIncome'))}`
+        break
+      }
+      case 'down-payment': {
+        const downPaymentAmount = value('housePrice') * value('downPaymentPercent') / 100
+        const monthsToSave = value('monthlySavings') > 0
+          ? Math.ceil(downPaymentAmount / value('monthlySavings'))
+          : 0
+        primary = downPaymentAmount
+        label = 'Down payment required'
+        secondary = `Months to save at ${formatCurrency(value('monthlySavings'))}/month: ${monthsToSave}`
+        break
+      }
+      case 'rent-vs-buy': {
+        const loanPrincipal = value('homePrice') - value('downPayment')
+        const monthlyRate = value('rate') / 12 / 100
+        const months = years * 12
+        const emi = monthlyRate === 0
+          ? loanPrincipal / months
+          : loanPrincipal * monthlyRate * Math.pow(1 + monthlyRate, months) / (Math.pow(1 + monthlyRate, months) - 1)
+        const totalRent = value('monthlyRent') * months
+        const totalLoanPayments = emi * months
+        const homeAppreciated = value('homePrice') * Math.pow(1 + value('appreciation') / 100, years)
+        const maintenanceTotal = value('homePrice') * (value('maintenance') / 100) * years
+        const buyNetCost = totalLoanPayments + maintenanceTotal - (homeAppreciated - value('homePrice'))
+        primary = buyNetCost - totalRent
+        label = 'Buy vs rent net difference'
+        secondary = `Total rent over ${years} years: ${formatCurrency(totalRent)} · Estimated buy net cost: ${formatCurrency(buyNetCost)}`
+        break
+      }
+      case 'auto-loan-emi': {
+        const loanPrincipal = value('carPrice') - value('downPayment')
+        const emi = calculateEmi(loanPrincipal, value('rate'), years)
+        const totalRepayment = emi * years * 12
+        primary = emi
+        label = 'Estimated monthly EMI'
+        secondary = `Loan amount: ${formatCurrency(loanPrincipal)} · Total interest: ${formatCurrency(totalRepayment - loanPrincipal)}`
+        break
+      }
+      case 'net-worth': {
+        const totalAssets = value('cash') + value('investments') + value('property') + value('otherAssets')
+        const totalLiabilities = value('homeLoan') + value('otherLoans') + value('creditCards')
+        primary = totalAssets - totalLiabilities
+        label = 'Net worth'
+        secondary = `Total assets: ${formatCurrency(totalAssets)} · Total liabilities: ${formatCurrency(totalLiabilities)}`
+        break
+      }
+      case 'bond-yield': {
+        const annualCoupon = value('faceValue') * value('couponRate') / 100
+        const currentYield = value('marketPrice') > 0 ? (annualCoupon / value('marketPrice')) * 100 : 0
+        primary = currentYield
+        label = 'Current yield'
+        secondary = `Annual coupon: ${formatCurrency(annualCoupon)} · Market price: ${formatCurrency(value('marketPrice'))}`
+        break
+      }
+      case 'compound-interest': {
+        const compounding = value('compounding') || 1
+        const maturity = value('principal') * Math.pow(1 + value('rate') / 100 / compounding, compounding * years)
+        primary = maturity
+        label = 'Maturity value'
+        secondary = `Interest earned: ${formatCurrency(maturity - value('principal'))}`
+        break
+      }
+      case 'present-value': {
+        const pv = value('futureValue') / Math.pow(1 + value('rate') / 100, years)
+        primary = pv
+        label = 'Present value'
+        secondary = `Future value: ${formatCurrency(value('futureValue'))} · Discount rate: ${value('rate')}%`
+        break
+      }
+      case 'annuity-payout': {
+        const monthlyRate = value('rate') / 12 / 100
+        const months = years * 12
+        const payout = monthlyRate === 0
+          ? value('corpus') / months
+          : value('corpus') * monthlyRate / (1 - Math.pow(1 + monthlyRate, -months))
+        primary = payout
+        label = 'Estimated monthly payout'
+        secondary = `Total payouts over ${years} years: ${formatCurrency(payout * months)}`
+        break
+      }
+      case 'apr-calculator': {
+        const monthlyRate = value('interestRate') / 12 / 100
+        const months = years * 12
+        const emi = monthlyRate === 0
+          ? value('loanAmount') / months
+          : value('loanAmount') * monthlyRate * Math.pow(1 + monthlyRate, months) / (Math.pow(1 + monthlyRate, months) - 1)
+        const totalRepayment = emi * months
+        const apr = totalRepayment > 0 ? ((totalRepayment - value('loanAmount')) / value('loanAmount')) / years * 100 : 0
+        primary = apr
+        label = 'Effective APR'
+        secondary = `Monthly EMI: ${formatCurrency(emi)} · Total repayment: ${formatCurrency(totalRepayment)}`
+        break
+      }
       default:
         primary = 0
     }
@@ -473,12 +812,14 @@ export default function CalculatorClient({ calculator }: { calculator: Calculato
     return { primary, secondary, label }
   }, [calculator.slug, values])
 
+  const IconComponent = ICON_MAP[calculator.icon] || FiTrendingUp
+
   return (
     <div className="mx-auto max-w-5xl px-4 py-4 sm:px-5 sm:py-8">
       <nav className="mb-8 text-xs text-[var(--muted)]" aria-label="Breadcrumb">
         <Link href="/" className="hover:text-[var(--brand-red)]">Home</Link>
         <span className="px-2">/</span>
-        <Link href="/calculators" className="hover:text-[var(--brand-red)]">Calculators</Link>
+        <Link href="/financial-calculators" className="hover:text-[var(--brand-red)]">Financial Calculators</Link>
         <span className="px-2">/</span>
         <span>{calculator.title}</span>
       </nav>
@@ -486,7 +827,10 @@ export default function CalculatorClient({ calculator }: { calculator: Calculato
         <div className="mb-4 inline-flex items-center gap-2 border border-[var(--brand-red)]/30 bg-[var(--brand-red)]/5 px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--brand-red)]">
           <FiGrid size={14} /> Financial tool
         </div>
-        <h1 className="font-yapa text-3xl font-normal leading-tight text-[var(--ink)] sm:text-5xl">{calculator.title}</h1>
+        <h1 className="flex items-center gap-3 font-yapa text-3xl font-normal leading-tight text-[var(--ink)] sm:text-5xl">
+          <IconComponent size={32} className="text-[var(--brand-red)] shrink-0" />
+          {calculator.title}
+        </h1>
         <p className="mt-4 max-w-2xl text-base leading-relaxed text-[var(--muted)]">{calculator.description}</p>
       </section>
 

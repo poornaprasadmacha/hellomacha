@@ -13,11 +13,11 @@ export const metadata: Metadata = {
     'retirement calculator',
     'mutual fund calculator',
   ],
-  alternates: { canonical: 'https://hellomacha.com/calculators' },
+  alternates: { canonical: 'https://hellomacha.com/financial-calculators' },
   openGraph: {
     title: 'Financial Calculators | HelloMacha',
     description: 'Free calculators for SIPs, retirement planning, inflation, withdrawals, and long-term investing.',
-    url: 'https://hellomacha.com/calculators',
+    url: 'https://hellomacha.com/financial-calculators',
     siteName: 'HelloMacha',
     type: 'website',
     locale: 'en_IN',
@@ -52,38 +52,74 @@ export default function CalculatorsPage() {
       </section>
 
       <section className="mb-10">
-        <h2 className="mb-5 text-2xl font-bold text-[var(--ink)]">Popular calculators</h2>
+        <h2 className="mb-5 text-2xl font-bold text-[var(--ink)]">Financial Calculators</h2>
         <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <article className="border border-[var(--line)] bg-white p-5">
-            <h3 className="font-bold text-[var(--ink)]">SIP Calculator</h3>
+          <Link
+            href="/financial-calculators/sip"
+            className="group border border-[var(--line)] bg-white p-5 transition hover:border-[var(--brand-red)]"
+          >
+            <h3 className="font-bold text-[var(--ink)] group-hover:text-[var(--brand-red)]">SIP Calculator</h3>
             <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">Estimate the future value of monthly mutual fund investments. See how compounding grows your wealth over time.</p>
-          </article>
-          <article className="border border-[var(--line)] bg-white p-5">
-            <h3 className="font-bold text-[var(--ink)]">Retirement Planner</h3>
+            <span className="mt-5 inline-flex items-center gap-2 text-xs font-semibold text-[var(--brand-red)]">
+              Open calculator <FiArrowRight size={13} />
+            </span>
+          </Link>
+          <Link
+            href="/financial-calculators/retirement"
+            className="group border border-[var(--line)] bg-white p-5 transition hover:border-[var(--brand-red)]"
+          >
+            <h3 className="font-bold text-[var(--ink)] group-hover:text-[var(--brand-red)]">Retirement Planner</h3>
             <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">Calculate the corpus you need and the monthly SIP required to fund your retirement lifestyle.</p>
-          </article>
-          <article className="border border-[var(--line)] bg-white p-5">
-            <h3 className="font-bold text-[var(--ink)]">Step-Up SIP Calculator</h3>
+            <span className="mt-5 inline-flex items-center gap-2 text-xs font-semibold text-[var(--brand-red)]">
+              Open calculator <FiArrowRight size={13} />
+            </span>
+          </Link>
+          <Link
+            href="/financial-calculators/step-up-sip"
+            className="group border border-[var(--line)] bg-white p-5 transition hover:border-[var(--brand-red)]"
+          >
+            <h3 className="font-bold text-[var(--ink)] group-hover:text-[var(--brand-red)]">Step-Up SIP Calculator</h3>
             <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">See how increasing your SIP annually (with salary hikes) dramatically accelerates corpus growth.</p>
-          </article>
-          <article className="border border-[var(--line)] bg-white p-5">
-            <h3 className="font-bold text-[var(--ink)]">Cost of Delaying SIP</h3>
+            <span className="mt-5 inline-flex items-center gap-2 text-xs font-semibold text-[var(--brand-red)]">
+              Open calculator <FiArrowRight size={13} />
+            </span>
+          </Link>
+          <Link
+            href="/financial-calculators/delay-cost"
+            className="group border border-[var(--line)] bg-white p-5 transition hover:border-[var(--brand-red)]"
+          >
+            <h3 className="font-bold text-[var(--ink)] group-hover:text-[var(--brand-red)]">Cost of Delaying SIP</h3>
             <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">Quantify the wealth lost by postponing your investment start date — the most powerful argument for starting today.</p>
-          </article>
-          <article className="border border-[var(--line)] bg-white p-5">
-            <h3 className="font-bold text-[var(--ink)]">SWP / Withdrawal Planner</h3>
+            <span className="mt-5 inline-flex items-center gap-2 text-xs font-semibold text-[var(--brand-red)]">
+              Open calculator <FiArrowRight size={13} />
+            </span>
+          </Link>
+          <Link
+            href="/financial-calculators/swp"
+            className="group border border-[var(--line)] bg-white p-5 transition hover:border-[var(--brand-red)]"
+          >
+            <h3 className="font-bold text-[var(--ink)] group-hover:text-[var(--brand-red)]">SWP / Withdrawal Planner</h3>
             <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">Plan systematic withdrawals in retirement. Estimate how long your corpus lasts with monthly drawdowns.</p>
-          </article>
-          <article className="border border-[var(--line)] bg-white p-5">
-            <h3 className="font-bold text-[var(--ink)]">Home Loan EMI Calculator</h3>
+            <span className="mt-5 inline-flex items-center gap-2 text-xs font-semibold text-[var(--brand-red)]">
+              Open calculator <FiArrowRight size={13} />
+            </span>
+          </Link>
+          <Link
+            href="/financial-calculators/home-loan-emi"
+            className="group border border-[var(--line)] bg-white p-5 transition hover:border-[var(--brand-red)]"
+          >
+            <h3 className="font-bold text-[var(--ink)] group-hover:text-[var(--brand-red)]">Home Loan EMI Calculator</h3>
             <p className="mt-2 text-sm leading-relaxed text-[var(--muted)]">Calculate EMI, total interest, and total repayment. Model prepayment scenarios to save lakhs in interest.</p>
-          </article>
+            <span className="mt-5 inline-flex items-center gap-2 text-xs font-semibold text-[var(--brand-red)]">
+              Open calculator <FiArrowRight size={13} />
+            </span>
+          </Link>
         </div>
       </section>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <Link
-          href="/calculators/emergency-fund"
+          href="/financial-calculators/emergency-fund"
           className="group border border-[var(--brand-red)]/40 bg-[#fffaf4] p-5 transition hover:border-[var(--brand-red)]"
         >
           <h2 className="text-lg font-bold text-[var(--ink)] group-hover:text-[var(--brand-red)]">Emergency Fund Calculator</h2>
@@ -95,7 +131,7 @@ export default function CalculatorsPage() {
         {calculators.map((calculator) => (
           <Link
             key={calculator.slug}
-            href={`/calculators/${calculator.slug}`}
+            href={`/financial-calculators/${calculator.slug}`}
             className="group border border-[var(--line)] bg-white p-5 transition hover:border-[var(--brand-red)]"
           >
             <h2 className="text-lg font-bold text-[var(--ink)] group-hover:text-[var(--brand-red)]">{calculator.title}</h2>

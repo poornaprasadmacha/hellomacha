@@ -60,7 +60,7 @@ export default function NotFound() {
               <span className="mt-1 block text-xs leading-relaxed text-[var(--muted)]">Guides on money, investing, retirement, loans, and tax.</span>
             </Link>
             <Link
-              href="/calculators"
+              href="/financial-calculators"
               className="border border-[var(--line)] bg-white p-4 text-left transition hover:border-[var(--brand-red)]"
             >
               <span className="text-sm font-bold text-[var(--ink)]">Financial calculators</span>

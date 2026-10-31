@@ -2,7 +2,7 @@ import fs from 'fs'
 import path from 'path'
 import matter from 'gray-matter'
 import type { MetadataRoute } from 'next'
-import { calculators } from './calculators/calculatorData'
+import { calculators } from './financial-calculators/calculatorData'
 import { topics } from './topics/topicData'
 
 export const dynamic = 'force-static'
@@ -89,13 +89,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.5,
     })),
     {
-      url: `${baseUrl}/calculators/emergency-fund`,
+      url: `${baseUrl}/financial-calculators/emergency-fund`,
       lastModified: new Date(),
       changeFrequency: 'monthly',
       priority: 0.8,
     },
     ...calculators.map(({ slug }) => ({
-      url: `${baseUrl}/calculators/${slug}`,
+      url: `${baseUrl}/financial-calculators/${slug}`,
       lastModified: new Date(),
       changeFrequency: 'monthly' as const,
       priority: 0.7,

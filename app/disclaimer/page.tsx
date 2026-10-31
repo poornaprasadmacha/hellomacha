@@ -1,14 +1,14 @@
 import type { Metadata } from 'next'
 
 export const metadata: Metadata = {
-  title: 'Disclaimer — HelloMacha',
-  description: 'HelloMacha disclaimer: financial content is for educational purposes only and is not professional financial advice. Consult a qualified advisor before making financial decisions.',
+  title: 'Disclaimer | HelloMacha',
+  description: 'HelloMacha disclaimer — informational purposes only, not financial advice.',
   alternates: {
     canonical: 'https://hellomacha.com/disclaimer',
   },
   openGraph: {
-    title: 'Disclaimer — HelloMacha',
-    description: 'HelloMacha disclaimer — educational content, not professional financial advice.',
+    title: 'Disclaimer | HelloMacha',
+    description: 'Read the HelloMacha disclaimer. Content is for informational purposes only and does not constitute financial advice.',
     url: 'https://hellomacha.com/disclaimer',
     siteName: 'HelloMacha',
     type: 'website',
@@ -26,45 +26,36 @@ export default function DisclaimerPage() {
           Disclaimer
         </h1>
         <p className="mb-4 text-sm text-[var(--muted)]">
-          Last updated: October 20, 2026
+          Last updated: October 30, 2026
         </p>
 
         <p className="mb-6 text-base leading-relaxed text-[var(--ink)]">
-          HelloMacha ("we," "us," "our") publishes general information about personal finance, taxes, government schemes, mutual funds, loans, insurance, and consumer products for educational purposes only. The content on hellomacha.com is not professional financial advice.
+          The content on hellomacha.com ('the Site') is provided for general informational and educational purposes only. It is not intended to be, and does not constitute, professional financial, investment, legal, tax, or insurance advice.
         </p>
 
-        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">Not financial advice</h2>
+        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">1. Not financial advice</h2>
         <p className="mb-6 text-base leading-relaxed text-[var(--muted)]">
-          Nothing on this Site constitutes professional financial, tax, investment, legal, or insurance advice. The information is general in nature and may not be suitable for your individual circumstances. Before making any financial decision, consult a qualified financial advisor, tax professional, or other licensed expert who can evaluate your specific situation.
+          Nothing on the Site should be construed as a recommendation to buy, sell, or hold any security, investment product, or financial instrument. All calculators, examples, and illustrations are hypothetical and for educational purposes only. Actual results may vary.
         </p>
 
-        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">No guarantee of accuracy</h2>
+        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">2. No guarantees</h2>
         <p className="mb-6 text-base leading-relaxed text-[var(--muted)]">
-          We strive to keep information accurate and up to date, but we make no representations or warranties of any kind, express or implied, about the completeness, accuracy, reliability, suitability, or availability of the content. Tax rules, scheme rates, product prices, and terms change frequently. Always verify information with official sources (e.g., EPFO, Income Tax Department, RBI, SEBI) before acting on it.
+          We do not guarantee the accuracy, completeness, timeliness, or reliability of any information on the Site. Financial products, interest rates, tax rules, and government schemes change frequently. Always verify current terms with the relevant provider or authority before making a decision.
         </p>
 
-        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">No endorsement</h2>
+        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">3. Consult a professional</h2>
         <p className="mb-6 text-base leading-relaxed text-[var(--muted)]">
-          Mention of any product, service, company, or government scheme does not constitute an endorsement or recommendation. Product comparisons are based on publicly available specifications, pricing, and features at the time of writing. Prices and availability may change without notice.
+          Before making any financial decision, consult a qualified financial advisor, tax professional, or attorney who can evaluate your specific situation. The Site and its authors are not liable for any losses or damages resulting from reliance on the content.
         </p>
 
-        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">No liability</h2>
+        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">4. External links</h2>
         <p className="mb-6 text-base leading-relaxed text-[var(--muted)]">
-          To the fullest extent permitted by law, HelloMacha and its authors are not liable for any loss, damage, or expense arising directly or indirectly from your use of or reliance on any content on this Site. You use the Site and its content at your own risk.
+          The Site may link to third-party websites. We do not endorse or control those sites and are not responsible for their content or practices.
         </p>
 
-        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">External links</h2>
+        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">5. Contact us</h2>
         <p className="mb-6 text-base leading-relaxed text-[var(--muted)]">
-          The Site may contain links to external websites. We do not control, endorse, or assume responsibility for the content of those sites. Your use of external links is at your own risk.
-        </p>
-
-        <h2 className="mb-4 text-xl font-bold text-[var(--ink)]">Contact us</h2>
-        <p className="mb-0 text-base leading-relaxed text-[var(--muted)]">
-          If you have questions about this disclaimer, contact us at{' '}
-          <a href="mailto:team.hellomacha@gmail.com" className="text-[var(--brand-red)] hover:underline">
-            team.hellomacha@gmail.com
-          </a>
-          .
+          If you have questions about this disclaimer, contact us at team.hellomacha@gmail.com.
         </p>
       </div>
     </main>

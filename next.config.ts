@@ -39,6 +39,16 @@ const nextConfig: NextConfig = {
         destination: "/",
         permanent: true,
       },
+      {
+        source: "/calculators",
+        destination: "/financial-calculators",
+        permanent: true,
+      },
+      {
+        source: "/calculators/:slug",
+        destination: "/financial-calculators/:slug",
+        permanent: true,
+      },
     ];
   },
 };

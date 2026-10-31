@@ -13,7 +13,7 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
   const { slug } = await params
   const calculator = calculatorBySlug[slug]
   if (!calculator) return {}
-  const canonicalUrl = `https://hellomacha.com/calculators/${slug}`
+  const canonicalUrl = `https://hellomacha.com/financial-calculators/${slug}`
 
   return {
     title: `${calculator.title} | HelloMacha`,
@@ -44,7 +44,7 @@ export default async function CalculatorPage({ params }: { params: Promise<{ slu
   const calculator = calculatorBySlug[slug]
   if (!calculator) notFound()
 
-  const canonicalUrl = `https://hellomacha.com/calculators/${slug}`
+  const canonicalUrl = `https://hellomacha.com/financial-calculators/${slug}`
   const structuredData = {
     '@context': 'https://schema.org',
     '@graph': [
@@ -67,7 +67,7 @@ export default async function CalculatorPage({ params }: { params: Promise<{ slu
         '@type': 'BreadcrumbList',
         itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://hellomacha.com' },
-          { '@type': 'ListItem', position: 2, name: 'Calculators', item: 'https://hellomacha.com/calculators' },
+          { '@type': 'ListItem', position: 2, name: 'Financial Calculators', item: 'https://hellomacha.com/financial-calculators' },
           { '@type': 'ListItem', position: 3, name: calculator.title, item: canonicalUrl },
         ],
       },
