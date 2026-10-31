@@ -219,6 +219,8 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
                       src={article.thumbnail}
                       alt={article.title}
                       loading="lazy"
+                      width={400}
+                      height={225}
                       className="aspect-[16/9] w-full object-cover"
                     />
                   </div>

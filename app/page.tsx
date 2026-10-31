@@ -79,7 +79,7 @@ function getArticles(): ArticleMeta[] {
 
 export default function HomePage() {
   // This now runs securely at build-time, safely extracting your articles
-  const articles = getArticles()
+  const articles = getArticles().slice(0, 12)
 
   return (
     <div className="pb-16">

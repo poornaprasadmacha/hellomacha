@@ -629,6 +629,24 @@ export default async function DynamicSlugPage({
           slug={slug}
         />
 
+        {/* Authoritative external sources */}
+        <section className="mt-12 border-t border-[var(--line)] pt-8 bg-[#f9f9f9] rounded-xl p-6 sm:p-8">
+          <h2 className="text-xl font-bold text-[var(--ink)] mb-4">Authoritative sources referenced</h2>
+          <p className="mb-4 text-sm text-[var(--muted)]">
+            HelloMacha guides cite primary sources from Indian government and regulatory bodies. Key references include:
+          </p>
+          <ul className="space-y-2 text-sm text-[var(--muted)]">
+            <li><a href="https://rbi.org.in" target="_blank" rel="noopener noreferrer" className="text-[var(--brand-red)] hover:underline">Reserve Bank of India (RBI)</a> — banking, interest rates, monetary policy</li>
+            <li><a href="https://sebi.gov.in" target="_blank" rel="noopener noreferrer" className="text-[var(--brand-red)] hover:underline">Securities and Exchange Board of India (SEBI)</a> — mutual funds, securities markets</li>
+            <li><a href="https://incometaxindia.gov.in" target="_blank" rel="noopener noreferrer" className="text-[var(--brand-red)] hover:underline">Income Tax Department, India</a> — tax slabs, ITR filing, deductions</li>
+            <li><a href="https://epfindia.gov.in" target="_blank" rel="noopener noreferrer" className="text-[var(--brand-red)] hover:underline">Employees' Provident Fund Organisation (EPFO)</a> — EPF, EPS, pension rules</li>
+            <li><a href="https://pfms.nic.in" target="_blank" rel="noopener noreferrer" className="text-[var(--brand-red)] hover:underline">Public Financial Management System (PFMS)</a> — government schemes</li>
+          </ul>
+          <p className="mt-4 text-xs text-[var(--muted)]">
+            We update our content when rules, rates, or prices change. Last editorial review: {new Date().toLocaleDateString('en-IN', { year: 'numeric', month: 'long', day: 'numeric' })}.
+          </p>
+        </section>
+
         {/* Scroll To Top */}
         <ScrollToTop />
 

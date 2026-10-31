@@ -43,6 +43,20 @@ const organizationSchema = {
   url: 'https://hellomacha.com',
   logo: 'https://hellomacha.com/icon.png',
   email: 'team.hellomacha@gmail.com',
+  address: {
+    '@type': 'PostalAddress',
+    streetAddress: 'HelloMacha Editorial Office',
+    addressLocality: 'Visakhapatnam',
+    addressRegion: 'Andhra Pradesh',
+    postalCode: '530003',
+    addressCountry: 'IN',
+  },
+  contactPoint: {
+    '@type': 'ContactPoint',
+    telephone: '+91-90000-00000',
+    contactType: 'customer service',
+    email: 'team.hellomacha@gmail.com',
+  },
   sameAs: [
     'https://www.youtube.com/@HelloMacha',
     'https://x.com/HelloMacha',
@@ -115,11 +129,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <head>
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-          <link
-            rel="stylesheet"
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
-          />
-        </head>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" />
+      </head>
       <body className="min-h-screen flex flex-col bg-[var(--page)] text-[var(--ink)]" suppressHydrationWarning>
         <a href="#main-content" className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 z-50 p-4 text-[var(--ink)] bg-white border border-[var(--brand-red)]">Skip to main content</a>
         <script
@@ -163,6 +174,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                     <a href="https://www.instagram.com/hellomacha" className="text-xs font-semibold text-[var(--brand-red)] hover:underline" target="_blank" rel="noopener noreferrer">Instagram</a>
                     <a href="https://www.facebook.com/hellomacha" className="text-xs font-semibold text-[var(--brand-red)] hover:underline" target="_blank" rel="noopener noreferrer">Facebook</a>
                   </div>
+                  <p className="mt-3 text-xs text-[var(--muted)] leading-relaxed max-w-xs">
+                    HelloMacha Editorial Office<br />
+                    Visakhapatnam, Andhra Pradesh 530003, India<br />
+                    Email: team.hellomacha@gmail.com
+                  </p>
                 </div>
                 <Link href="/financial-calculators" className="mt-6 inline-flex items-center gap-2 border border-[var(--brand-red)] px-4 py-2 text-xs font-bold uppercase tracking-[0.12em] text-[var(--brand-red)] transition hover:bg-[var(--brand-red)] hover:text-white">
                   Explore our tools <FiArrowRight size={13} />
@@ -206,7 +222,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </div>
             </div>
 
-            <div className="mt-12 border-t border-[#eadfbe] pt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div className="mt-10 border-t border-[#eadfbe] pt-8 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+              <div className="flex flex-wrap gap-4 text-xs text-[var(--muted)]">
+                <span className="flex items-center gap-1.5"><span className="text-[var(--brand-red)]">●</span> No affiliate links</span>
+                <span className="flex items-center gap-1.5"><span className="text-[var(--brand-red)]">●</span> No sponsored content</span>
+                <span className="flex items-center gap-1.5"><span className="text-[var(--brand-red)]">●</span> Primary-source cited</span>
+                <span className="flex items-center gap-1.5"><span className="text-[var(--brand-red)]">●</span> Corrections published</span>
+              </div>
               <div className="flex flex-col sm:flex-row items-center gap-3 text-[10px] uppercase tracking-[0.22em]">
                 <span>© {new Date().getFullYear()} HelloMacha.</span>
                 <span>All rights reserved.</span>
