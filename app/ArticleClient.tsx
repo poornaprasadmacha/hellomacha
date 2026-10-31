@@ -159,6 +159,8 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
                   alt={featured.title}
                   loading="eager"
                   fetchPriority="high"
+                  width={1200}
+                  height={630}
                   className="h-full w-full object-cover"
                 />
                 <div className="absolute inset-0 bg-[rgba(0,0,0,0.15)]" />
@@ -202,7 +204,7 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
 <section className="mb-10">
         <div className="mb-6 flex items-center justify-between gap-3">
           <div>
-            <p className="text-[10px] font-bold uppercase tracking-[0.28em] text-[#62735d]">All guides</p>
+            <h2 className="text-[10px] font-bold uppercase tracking-[0.28em] text-[#62735d]">All guides</h2>
           </div>
           <span className="hidden items-center gap-1 text-sm font-semibold text-[var(--brand-red)] sm:inline-flex">
             {filteredArticles.length} {filteredArticles.length === 1 ? 'guide' : 'guides'} <FiChevronRight size={14} />
@@ -221,6 +223,8 @@ export default function ArticleClient({ articles }: { articles: ArticleMeta[] })
                       loading="lazy"
                       width={400}
                       height={225}
+                      srcSet={`${article.thumbnail} 400w, ${article.thumbnail} 800w, ${article.thumbnail} 1200w`}
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="aspect-[16/9] w-full object-cover"
                     />
                   </div>

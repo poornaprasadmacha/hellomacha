@@ -89,7 +89,10 @@ export default function HomePage() {
           <p className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--brand-red)]">HelloMacha</p>
           <h2 className="mt-3 font-yapa text-3xl font-normal text-[var(--ink)] sm:text-4xl">Why HelloMacha</h2>
           <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[var(--muted)]">
-            We exist to help Indian households make better financial and purchase decisions with confidence.
+            We exist to help Indian households make better financial and purchase decisions with confidence. Every guide is researched from primary sources — RBI circulars, SEBI regulations, Income Tax Act, government gazettes, and manufacturer specifications — and written in plain language anyone can use.
+          </p>
+          <p className="mt-4 max-w-2xl text-lg leading-relaxed text-[var(--muted)]">
+            From EPF withdrawal rules and mutual fund taxation to TV buying guides and laptop comparisons, we cover the everyday money and consumer decisions that affect your household budget. Our editorial approach prioritizes evidence over opinion, and we update content whenever rules, rates, or prices change.
           </p>
           <div className="mt-8 grid gap-6 sm:grid-cols-3">
             <article className="border border-[var(--line)] bg-white p-6">
